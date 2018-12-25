@@ -1,0 +1,52 @@
+#ifndef BALL_ORIG
+#define BALL_ORIG
+
+#include "Arduino.h"
+#include "advMath.h"
+
+class Ball {
+	public:
+		Ball(uint8_t get_QTY, uint8_t *get_PORT, uint16_t *get_MAX_IR, uint16_t *get_AVG_IR, double get_MULTI_AVG,
+			uint8_t get_QTY_SLOPE_DIR, double (*get_SLOPE_DIR)[2], double (*get_INTERCEPT_DIR)[2], double (*get_POINT_DIR)[2],
+			uint8_t get_P_CATCH, uint16_t get_BORDER_CATCH, uint8_t get_MAX_C_CATCH);
+		vectorRT_t get(bool hasFilter);
+		uint16_t getForward();
+		double getDir(double theta, bool isClose);
+		bool getCatching();
+		uint16_t *getValue();
+		uint8_t getQTY();
+		uint16_t getValueCatch();
+		uint8_t getCountCatch();
+		uint8_t getMAX_C_CATCH();
+	private:
+		uint8_t QTY;
+		uint8_t *PORT;
+
+		double *COS_IR;
+		double *SIN_IR;
+
+		uint16_t *MAX_IR;
+		uint16_t *AVG_IR;
+		uint16_t avg_MAX_IR = 0;
+		uint16_t avg_AVG_IR = 0;
+
+		double MULTI_AVG;
+
+		uint8_t QTY_SLOPE_DIR;
+		double (*SLOPE_DIR)[2];
+		double (*INTERCEPT_DIR)[2];
+		double (*POINT_DIR)[2];
+
+		uint16_t *value;
+		uint16_t *prv;
+		uint16_t *crt;
+
+		uint8_t P_CATCH;
+		uint16_t BORDER_CATCH;
+		uint8_t MAX_C_CATCH;
+
+		uint16_t valueCatch;
+		uint8_t countCatch;
+};
+
+#endif

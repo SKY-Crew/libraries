@@ -1,0 +1,48 @@
+#ifndef LINE_ORIG
+#define LINE_ORIG
+
+#include "Arduino.h"
+#include "advMath.h"
+
+typedef struct {
+	bool isOutside;
+	bool isHalfOut;
+	double dirInside;
+	bool isInAir;
+	bool canPause;
+} line_t;
+
+class Line {
+	public:
+		Line(bool get_CAN_LEAVE_LINE, uint8_t get_QTY, uint8_t *get_PORT, uint8_t get_MAX_CIIA,
+			uint16_t get_BORDER_BLACK, uint16_t get_BORDER_WHITE, uint8_t get_BORDER_IS_IN_AIR, double get_MULTI_AVG);
+		line_t get(bool isFW, bool canUseGyro, int16_t gyro);
+		uint16_t *getValue();
+		uint8_t *getState();
+		uint8_t getQTY();
+	private:
+		bool CAN_LEAVE_LINE;
+
+		uint8_t QTY;
+		uint8_t *PORT;
+
+		uint8_t MAX_CIIA;
+		uint16_t BORDER_BLACK;
+		uint16_t BORDER_WHITE;
+		uint8_t BORDER_IS_IN_AIR;
+
+		double MULTI_AVG;
+
+		uint16_t *value;
+		uint16_t *crt;
+		uint8_t *state;
+		uint8_t *crtState;
+		double prvDI = -1;
+
+		uint8_t countIIA = 0;
+		bool isOutside = false;
+		bool isHalfOut = false;
+
+};
+
+#endif

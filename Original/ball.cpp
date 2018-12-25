@@ -1,0 +1,155 @@
+#include "ball.h"
+
+Ball::Ball(uint8_t get_QTY, uint8_t *get_PORT, uint16_t *get_MAX_IR, uint16_t *get_AVG_IR, double get_MULTI_AVG,
+	uint8_t get_QTY_SLOPE_DIR, double (*get_SLOPE_DIR)[2], double (*get_INTERCEPT_DIR)[2], double (*get_POINT_DIR)[2],
+	uint8_t get_P_CATCH, uint16_t get_BORDER_CATCH, uint8_t get_MAX_C_CATCH) {
+	//copy
+	QTY = get_QTY;
+	PORT = new uint8_t[QTY];
+	copyArray(PORT, get_PORT, QTY);
+
+	COS_IR = new double[QTY];
+	SIN_IR = new double[QTY];
+	for(int i = 0; i < QTY; i ++) {
+		COS_IR[i] = cos(toRadians(i * 360.0 / 16.0));
+		SIN_IR[i] = sin(toRadians(i * 360.0 / 16.0));
+	}
+
+	MAX_IR = new uint16_t[QTY];
+	copyArray(MAX_IR, get_MAX_IR, QTY);
+	AVG_IR = new uint16_t[QTY];
+	copyArray(AVG_IR, get_AVG_IR, QTY);
+	for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
+		avg_MAX_IR += MAX_IR[numBall];
+		avg_AVG_IR += AVG_IR[numBall];
+	}
+	avg_MAX_IR /= QTY;
+	avg_AVG_IR /= QTY;
+
+	MULTI_AVG = get_MULTI_AVG;
+	delay(1000);
+	QTY_SLOPE_DIR = get_QTY_SLOPE_DIR;
+	SLOPE_DIR = new double[QTY_SLOPE_DIR][2];
+	copyArray(&SLOPE_DIR[0][0], &get_SLOPE_DIR[0][0], QTY_SLOPE_DIR, 2);
+	INTERCEPT_DIR = new double[QTY_SLOPE_DIR][2];
+	copyArray(&INTERCEPT_DIR[0][0], &get_INTERCEPT_DIR[0][0], QTY_SLOPE_DIR, 2);
+	POINT_DIR = new double[QTY_SLOPE_DIR - 1][2];
+	copyArray(&POINT_DIR[0][0], &get_POINT_DIR[0][0], QTY_SLOPE_DIR - 1, 2);
+
+	value = new uint16_t[QTY];
+	prv = new uint16_t[QTY];
+	crt = new uint16_t[QTY];
+
+	P_CATCH = get_P_CATCH;
+	BORDER_CATCH = get_BORDER_CATCH;
+	MAX_C_CATCH = get_MAX_C_CATCH;
+
+	for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
+		prv[numBall] = 0;
+	}
+
+	//init
+	for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
+		pinMode(PORT[numBall], INPUT);
+	}
+}
+
+
+vectorRT_t Ball::get(bool hasFilter) {
+	vectorRT_t vRT = {0, 0};
+	bool canSeeBall = true;
+	//初期化
+	for(int numBall = 0; numBall < QTY; numBall ++) {
+		value[numBall] = 0;
+	}
+	//計測
+	uint64_t time = micros();
+	uint16_t countMax = 0;
+	while(micros() - time < 1666) {
+		countMax ++;
+		for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
+			value[numBall] += !digitalRead(PORT[numBall]);
+		}
+	}
+	// for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
+	// 	Serial.print(value[numBall]);
+	// 	Serial.print("\t");
+	// }
+	// Serial.println();
+	// 平均値計算
+	for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
+		value[numBall] *= 1000.0 / (double) countMax;
+		if(value[numBall] > 0) {
+			canSeeBall = false;
+			if(hasFilter) {
+				value[numBall] = map(value[numBall], avg_AVG_IR, MAX_IR[numBall], avg_AVG_IR, avg_MAX_IR);
+				if(prv[numBall] != 0) {
+					value[numBall] = prv[numBall] * MULTI_AVG + value[numBall] * (1 - MULTI_AVG);
+				}
+			}
+		}
+		prv[numBall] = value[numBall];
+	}
+	//ベクトル合成 距離計算
+	vectorXY_t vXY = {0, 0};
+	for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
+		vXY.x += value[numBall] * COS_IR[numBall];
+		vXY.y += value[numBall] * SIN_IR[numBall];
+		vRT.r += value[numBall];
+	}
+	vRT.t = simplifyDeg(toDegrees(atan2(vXY.y, vXY.x)));
+	vRT.r /= 1.0 * QTY;
+	//ボールが遠すぎるか
+	if(canSeeBall) {
+		vRT.t = -1;
+	}
+	return vRT;
+}
+
+uint16_t Ball::getForward() {
+	return value[0];
+}
+
+double Ball::getDir(double theta, bool isClose) {
+	double dir = -1;
+	if(theta >= 0) {
+		dir = simplifyDeg(theta + 180) - 180;
+		uint8_t key = 0;
+		for(; key < QTY_SLOPE_DIR - 1; key ++) {
+			if(abs(dir) <= POINT_DIR[key][isClose]) { break; }
+		}
+		double plusDir = dir * SLOPE_DIR[key][isClose] + signum(dir) * INTERCEPT_DIR[key][isClose];
+		dir = simplifyDeg(dir + plusDir);
+	}
+
+	return dir;
+}
+
+bool Ball::getCatching() {
+	valueCatch = analogRead(P_CATCH);
+	countCatch = valueCatch < BORDER_CATCH ? MAX_C_CATCH : max(0, countCatch - 1);
+	return countCatch > 0;
+}
+
+uint16_t *Ball::getValue() {
+	for(int numBall = 0; numBall < QTY; numBall ++) {
+		crt[numBall] = value[numBall];
+	}
+	return crt;
+}
+
+uint8_t Ball::getQTY() {
+	return QTY;
+}
+
+uint16_t Ball::getValueCatch() {
+	return valueCatch;
+}
+
+uint8_t Ball::getCountCatch() {
+	return countCatch;
+}
+
+uint8_t Ball::getMAX_C_CATCH() {
+	return MAX_C_CATCH;
+}
