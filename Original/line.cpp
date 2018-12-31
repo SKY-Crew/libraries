@@ -23,7 +23,6 @@ Line::Line(bool get_CAN_LEAVE_LINE, uint8_t get_QTY, uint8_t *get_PORT, uint8_t 
 }
 
 line_t Line::get(bool isFW, bool canUseGyro, int16_t gyro) {
-	double dirInside = -1;
 	int qtyILW = 0;
 	int qtyILB = 0;
 	for(int numLine = 0; numLine < QTY; numLine ++) {
@@ -37,28 +36,23 @@ line_t Line::get(bool isFW, bool canUseGyro, int16_t gyro) {
 			case 0: break;
 		}
 	}
-	bool isInAir = qtyILB >= BORDER_IS_IN_AIR;
-	bool canPause = false;
 
 	if(!CAN_LEAVE_LINE) {
-		isOutside = false;
-		isHalfOut = false;
-		dirInside = -1;
-		isInAir = false;
-	}else if(isInAir) {
+		//ライン無効
+		line = {false, false, false, false, -1, false}
+	}else if(qtyILB >= BORDER_IS_IN_AIR) {
 		//持ち上げられている
 		countIIA ++;
 		if(countIIA >= MAX_CIIA) {
 			countIIA = MAX_CIIA;
-			isOutside = false;
-			isHalfOut = false;
-			dirInside = -1;
+			line = {false, false, false, true, -1, false}
 		}
 	}else if(qtyILW <= 1) {
 		//ライン上でない
 		countIIA = 0;
-		isOutside = isHalfOut && prvDI >= 0;
-		dirInside = isOutside ? prvDI : -1;
+		line.isOutside = line.isHalfOut && prvDI >= 0;
+		line.isWholeOut = line.isOutside;
+		line.dirInside = line.isOutside ? prvDI : -1;
 	}else {
 		//ライン上
 		countIIA = 0;
@@ -87,42 +81,42 @@ line_t Line::get(bool isFW, bool canUseGyro, int16_t gyro) {
 			}
 		}
 		double numDI = posILW[posMaxIntvL] + maxIntvL * 0.5;
-		dirInside = simplifyDeg(numDI / QTY * 360);
+		line.dirInside = simplifyDeg(numDI / QTY * 360);
 		//前回と比較
 		if(prvDI >= 0) {
 			//半分以上外か
-			isHalfOut = false;
-			if(insideAngle(dirInside, prvDI + 110, prvDI + 250)) {
-				dirInside = simplifyDeg(dirInside + 180);
-				isHalfOut = true;
+			line.isHalfOut = line.isWholeOut;
+			if(line.isHalfOut || insideAngle(line.dirInside, prvDI + 110, prvDI + 250)) {
+				line.dirInside = simplifyDeg(line.dirInside + 180);
+				line.isHalfOut = true;
 			}
 			//平均値計算
-			if(abs(dirInside - prvDI) <= 180) {
-				dirInside = prvDI * MULTI_AVG + dirInside * (1 - MULTI_AVG);
+			if(abs(line.dirInside - prvDI) <= 180) {
+				line.dirInside = prvDI * MULTI_AVG + line.dirInside * (1 - MULTI_AVG);
 			}else {
-				dirInside = prvDI * MULTI_AVG + dirInside * (1 - MULTI_AVG)
-								+ 360 * (dirInside >= prvDI ? MULTI_AVG : 1 - MULTI_AVG);
+				line.dirInside = prvDI * MULTI_AVG + line.dirInside * (1 - MULTI_AVG)
+								+ 360 * (line.dirInside >= prvDI ? MULTI_AVG : 1 - MULTI_AVG);
 			}
-			dirInside = simplifyDeg(dirInside);
+			line.dirInside = simplifyDeg(line.dirInside);
 		}
 
-		isOutside = false;
+		line.isOutside = false;
+		line.isWholeOut = false;
 
 		//後ろのライン・前方の角にいるか
 		if(canUseGyro) {
-			isOutside |= insideAngle(dirInside - gyro + 360, 125, 235) || insideAngle(dirInside - gyro + 360, 305, 55);
-			canPause = isHalfOut;
+			line.isOutside |= insideAngle(line.dirInside - gyro + 360, 125, 235) || insideAngle(line.dirInside - gyro + 360, 305, 55);
+			line.canPause = line.isHalfOut;
 		}else {
-			isOutside |= isHalfOut;
-			canPause = true;
+			line.isOutside |= line.isHalfOut;
+			line.canPause = true;
 		}
 		if(!isFW) {
-			isOutside = true;
+			line.isOutside = true;
 		}
 	}
 
-	prvDI = dirInside;
-	line_t line = {isOutside, isHalfOut, dirInside, isInAir, canPause};
+	prvDI = line.dirInside;
 	return line;
 }
 

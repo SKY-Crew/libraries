@@ -6,9 +6,10 @@
 
 typedef struct {
 	bool isOutside;
+	bool isWholeOut;
 	bool isHalfOut;
-	double dirInside;
 	bool isInAir;
+	double dirInside;
 	bool canPause;
 } line_t;
 
@@ -40,9 +41,8 @@ class Line {
 		double prvDI = -1;
 
 		uint8_t countIIA = 0;
-		bool isOutside = false;
-		bool isHalfOut = false;
 
+		line_t line;
 };
 
 #endif
