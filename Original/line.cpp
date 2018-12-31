@@ -39,13 +39,13 @@ line_t Line::get(bool isFW, bool canUseGyro, int16_t gyro) {
 
 	if(!CAN_LEAVE_LINE) {
 		//ライン無効
-		line = {false, false, false, false, -1, false}
+		line = {false, false, false, false, -1, false};
 	}else if(qtyILB >= BORDER_IS_IN_AIR) {
 		//持ち上げられている
 		countIIA ++;
 		if(countIIA >= MAX_CIIA) {
 			countIIA = MAX_CIIA;
-			line = {false, false, false, true, -1, false}
+			line = {false, false, false, true, -1, false};
 		}
 	}else if(qtyILW <= 1) {
 		//ライン上でない
