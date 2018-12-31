@@ -2,7 +2,7 @@
 #define BALL_ORIG
 
 #include "Arduino.h"
-#include "advMath.h"
+#include "AdvMath.h"
 
 class Ball {
 	public:

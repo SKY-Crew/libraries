@@ -2,11 +2,11 @@
 #define LCD_ORIG
 
 #include "Arduino.h"
-#include "advMath.h"
+#include "AdvMath.h"
 #include "MGLCD.h"
-#include "line.h"
-#include "comc.h"
-#include "cam.h"
+#include "Line.h"
+#include "Comc.h"
+#include "Cam.h"
 
 #define OOO char(160)
 

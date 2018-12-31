@@ -1,4 +1,4 @@
-#include "ball.h"
+#include "Ball.h"
 
 Ball::Ball(uint8_t get_QTY, uint8_t *get_PORT, uint16_t *get_MAX_IR, uint16_t *get_AVG_IR, double get_MULTI_AVG,
 	uint8_t get_QTY_SLOPE_DIR, double (*get_SLOPE_DIR)[2], double (*get_INTERCEPT_DIR)[2], double (*get_POINT_DIR)[2],

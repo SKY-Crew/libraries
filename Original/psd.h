@@ -3,7 +3,7 @@
 
 #include "Arduino.h"
 #include "Wire.h"
-#include "advMath.h"
+#include "AdvMath.h"
 
 class PSD {
 	public:

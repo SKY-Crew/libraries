@@ -1,4 +1,4 @@
-#include "actuator.h"
+#include "Actuator.h"
 
 Actuator::Actuator(bool get_CAN_MOVE, uint8_t get_QTY, uint8_t *get_P_DIR, uint8_t *get_P_PWR,
 	int16_t firstRM, double get_SLOPE_POWER, double get_INTERCEPT_POWER,

@@ -4,7 +4,7 @@
 #include "Arduino.h"
 #include "Wire.h"
 #include "VL53L0X.h"
-// #include "advMath.h"
+#include "AdvMath.h"
 
 class Lazer {
 	public:

@@ -1,4 +1,4 @@
-#include "cam.h"
+#include "Cam.h"
 
 Cam::Cam(uint8_t get_X, uint8_t get_P_ONOFF, uint8_t get_CENTER_OPP_GOAL, uint8_t get_CENTER_OWN_GOAL,
 	uint16_t get_SLOPE_RG, uint16_t get_INTERCEPT_RG) {

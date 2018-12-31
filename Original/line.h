@@ -1,8 +1,7 @@
 #ifndef LINE_ORIG
 #define LINE_ORIG
-
 #include "Arduino.h"
-#include "advMath.h"
+#include "AdvMath.h"
 
 typedef struct {
 	bool isOutside;

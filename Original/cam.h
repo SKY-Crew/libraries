@@ -2,7 +2,7 @@
 #define CAM_ORIG
 
 #include "Arduino.h"
-#include "advMath.h"
+#include "AdvMath.h"
 
 typedef struct {
 	int8_t distGK;//0~2

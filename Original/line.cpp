@@ -1,4 +1,4 @@
-#include "line.h"
+#include "Line.h"
 
 Line::Line(bool get_CAN_LEAVE_LINE, uint8_t get_QTY, uint8_t *get_PORT, uint8_t get_MAX_CIIA,
 	uint16_t get_BORDER_BLACK, uint16_t get_BORDER_WHITE, uint8_t get_BORDER_IS_IN_AIR, double get_MULTI_AVG) {

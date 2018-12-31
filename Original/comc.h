@@ -2,7 +2,7 @@
 #define COMC_ORIG
 
 #include "Arduino.h"
-#include "advMath.h"
+#include "AdvMath.h"
 
 typedef struct {
 	bool exists;

@@ -1,4 +1,4 @@
-#include "psd.h"
+#include "PSD.h"
 
 PSD::PSD(uint8_t get_X, double get_MULTI_AVG, uint16_t get_BORDER_IS_CLOSE, uint8_t get_MAX_CC) {
 	//copy

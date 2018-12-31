@@ -1,6 +1,6 @@
-#include "ina219.h"
+#include "INA219.h"
 
-Ina219::Ina219(uint8_t get_X, double get_LOW_VOLT, double get_HIGH_VOLT, uint8_t get_MAX_CR, uint8_t get_MAX_CVL) {
+INA219::INA219(uint8_t get_X, double get_LOW_VOLT, double get_HIGH_VOLT, uint8_t get_MAX_CR, uint8_t get_MAX_CVL) {
 	//copy
 	LOW_VOLT = get_LOW_VOLT;
 	HIGH_VOLT = get_HIGH_VOLT;
@@ -11,7 +11,7 @@ Ina219::Ina219(uint8_t get_X, double get_LOW_VOLT, double get_HIGH_VOLT, uint8_t
 	ina219.begin(get_X, 0x41);
 }
 
-bool Ina219::checkVolt() {
+bool INA219::checkVolt() {
 	countRead ++;
 	if(countRead >= MAX_CR) {
 		value = ina219.getBusVoltage_V();
@@ -26,6 +26,6 @@ bool Ina219::checkVolt() {
 	return false;
 }
 
-double Ina219::getValue() {
+double INA219::getValue() {
 	return value;
 }

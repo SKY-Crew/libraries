@@ -1,4 +1,4 @@
-#include "lazer.h"
+#include "Lazer.h"
 
 Lazer::Lazer(uint8_t get_X, double get_MULTI_AVG, uint16_t get_BORDER_IS_CLOSE) {
 	//copy

@@ -1,4 +1,4 @@
-#include "comc.h"
+#include "Comc.h"
 
 Comc::Comc(uint8_t get_X, uint8_t get_P_ONOFF, uint16_t get_MAX_C_SND, uint16_t get_MAX_C_NR) {
 	//copy

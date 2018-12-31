@@ -5,9 +5,9 @@
 #include "advMath.h"
 #include "Adafruit_INA219.h"
 
-class Ina219 {
+class INA219 {
 	public:
-		Ina219(uint8_t get_X, double get_LOW_VOLT, double get_HIGH_VOLT, uint8_t get_MAX_CR, uint8_t get_MAX_CVL);
+		INA219(uint8_t get_X, double get_LOW_VOLT, double get_HIGH_VOLT, uint8_t get_MAX_CR, uint8_t get_MAX_CVL);
 		bool checkVolt();
 		double getValue();
 	private:
