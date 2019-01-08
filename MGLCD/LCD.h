@@ -12,18 +12,17 @@
 
 class LCD {
 	public:
-		LCD(uint8_t get_P_REDRAW, uint8_t get_P_SCK, uint8_t get_P_MOSI, uint8_t get_P_CS, uint8_t get_P_DI,
-			uint32_t get_WAIT, uint8_t get_MAX_CP, uint8_t get_QTY_LINE);
-		void run(int16_t gyro, line_t line, bool canUseKicker, bool canUseCam, bool canUseGyro, bool isFW, bool canUseComc, comc_t fellow,
-			uint8_t QTY_LINE, uint16_t *valueLine, uint8_t *stateLine, double valueIna219, cam_t goal,
-			vectorRT_t ball, uint8_t QTY_IR, uint16_t *valueIR,
-			uint16_t valueCatch, bool catchingBall, uint16_t valueBF, bool isBallForward, bool isBallClose,
-			uint16_t valueFrontPSD, bool enemyStandsFront, uint16_t valueBackPSD, bool isGoalClosePSD);
-		void run4IR(uint8_t QTY, uint16_t *maxIR, uint16_t *minIR, double *avgIR);
-		void clear(bool resetPage);
-		void write(String data, uint8_t XCoord, uint8_t YCoord);
-		void drawMeter(int16_t angleM,uint8_t XCoordM, bool canDrawCircle);
-		void drawAngelRing(uint8_t QTY_LINE, uint8_t *stateLine, uint8_t XCoord);
+		LCD(uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint32_t, uint8_t, uint8_t);
+		void run(int16_t, line_t, bool, bool, bool, bool, bool, comc_t,
+			uint8_t, uint16_t*, uint8_t*, double, cam_t,
+			vectorRT_t, uint8_t, uint16_t*,
+			uint16_t, bool, uint16_t, bool, bool,
+			uint16_t, bool, uint16_t, bool);
+		void run4IR(uint8_t, uint16_t*, uint16_t*, double*);
+		void clear(bool);
+		void write(String, uint8_t, uint8_t);
+		void drawMeter(int16_t, uint8_t, bool);
+		void drawAngelRing(uint8_t, uint8_t*, uint8_t);
 		void redraw();
 	private:
 		uint8_t P_REDRAW;

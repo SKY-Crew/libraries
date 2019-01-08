@@ -6,12 +6,12 @@
 
 class Ball {
 	public:
-		Ball(uint8_t get_QTY, uint8_t *get_PORT, uint16_t *get_MAX_IR, uint16_t *get_AVG_IR, double get_MULTI_AVG,
-			uint8_t get_QTY_SLOPE_DIR, double (*get_SLOPE_DIR)[2], double (*get_INTERCEPT_DIR)[2], double (*get_POINT_DIR)[2],
-			uint8_t get_P_CATCH, uint16_t get_BORDER_CATCH, uint8_t get_MAX_C_CATCH);
-		vectorRT_t get(bool hasFilter);
+		Ball(uint8_t, uint8_t*, uint16_t*, uint16_t*, double,
+			uint8_t, double(*)[2], double(*)[2], double(*)[2],
+			uint8_t, uint16_t, uint8_t);
+		vectorRT_t get(bool);
 		uint16_t getForward();
-		double getDir(double theta, bool isClose);
+		double getDir(double, bool);
 		bool getCatching();
 		uint16_t *getValue();
 		uint8_t getQTY();

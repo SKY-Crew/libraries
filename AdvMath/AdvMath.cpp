@@ -1,15 +1,5 @@
 #include "AdvMath.h"
 
-typedef struct {
-	double x;
-	double y;
-} vectorXY_t;
-
-typedef struct {
-	double r;
-	double t;
-} vectorRT_t;
-
 int8_t signum(double x) {
 	return x > 0 ? 1
 		: x < 0 ? -1
@@ -57,6 +47,6 @@ void copyArray(double *copiedArray, double *basisArray, uint8_t size, uint8_t si
 	}
 }
 ////
-bool insideAngle(double a, double b, double c) {
-	return true;
+bool insideAngle(double angle, double min, double max) {
+	return simplifyDeg(angle - min) <= simplifyDeg(max - min);
 }

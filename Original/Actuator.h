@@ -6,13 +6,12 @@
 
 class Actuator {
 	public:
-		Actuator(bool get_CAN_MOVE, uint8_t get_QTY, uint8_t *get_P_DIR, uint8_t *get_P_PWR,
-			int16_t firstRM, double get_SLOPE_POWER, double get_INTERCEPT_POWER,
-			uint8_t get_P_KICKER, uint8_t get_P_ONOFF_KICKER, uint8_t get_P_RUN_KICKER, uint16_t get_MAX_CK, uint16_t get_MAX_CKW);
-		void run(int16_t moveAngle, int16_t rotPower, uint16_t maxPower);
-		void spin(uint8_t port, int16_t power);
-		void setHaveRun(bool get_haveRun);
-		void kick(bool startKick);
+		Actuator(bool, uint8_t, uint8_t*, uint8_t*, int16_t, double, double,
+			uint8_t, uint8_t, uint8_t, uint16_t, uint16_t);
+		void run(int16_t, int16_t, uint16_t);
+		void spin(uint8_t, int16_t);
+		void setHaveRun(bool);
+		void kick(bool);
 		void checkKick();
 		bool getCanUseKicker();
 		bool getIsKicking();

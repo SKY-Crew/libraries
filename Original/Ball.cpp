@@ -1,12 +1,12 @@
 #include "Ball.h"
 
-Ball::Ball(uint8_t get_QTY, uint8_t *get_PORT, uint16_t *get_MAX_IR, uint16_t *get_AVG_IR, double get_MULTI_AVG,
-	uint8_t get_QTY_SLOPE_DIR, double (*get_SLOPE_DIR)[2], double (*get_INTERCEPT_DIR)[2], double (*get_POINT_DIR)[2],
-	uint8_t get_P_CATCH, uint16_t get_BORDER_CATCH, uint8_t get_MAX_C_CATCH) {
+Ball::Ball(uint8_t given_QTY, uint8_t *given_PORT, uint16_t *given_MAX_IR, uint16_t *given_AVG_IR, double given_MULTI_AVG,
+	uint8_t given_QTY_SLOPE_DIR, double (*given_SLOPE_DIR)[2], double (*given_INTERCEPT_DIR)[2], double (*given_POINT_DIR)[2],
+	uint8_t given_P_CATCH, uint16_t given_BORDER_CATCH, uint8_t given_MAX_C_CATCH) {
 	//copy
-	QTY = get_QTY;
+	QTY = given_QTY;
 	PORT = new uint8_t[QTY];
-	copyArray(PORT, get_PORT, QTY);
+	copyArray(PORT, given_PORT, QTY);
 
 	COS_IR = new double[QTY];
 	SIN_IR = new double[QTY];
@@ -16,9 +16,9 @@ Ball::Ball(uint8_t get_QTY, uint8_t *get_PORT, uint16_t *get_MAX_IR, uint16_t *g
 	}
 
 	MAX_IR = new uint16_t[QTY];
-	copyArray(MAX_IR, get_MAX_IR, QTY);
+	copyArray(MAX_IR, given_MAX_IR, QTY);
 	AVG_IR = new uint16_t[QTY];
-	copyArray(AVG_IR, get_AVG_IR, QTY);
+	copyArray(AVG_IR, given_AVG_IR, QTY);
 	for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
 		avg_MAX_IR += MAX_IR[numBall];
 		avg_AVG_IR += AVG_IR[numBall];
@@ -26,23 +26,23 @@ Ball::Ball(uint8_t get_QTY, uint8_t *get_PORT, uint16_t *get_MAX_IR, uint16_t *g
 	avg_MAX_IR /= QTY;
 	avg_AVG_IR /= QTY;
 
-	MULTI_AVG = get_MULTI_AVG;
+	MULTI_AVG = given_MULTI_AVG;
 	delay(1000);
-	QTY_SLOPE_DIR = get_QTY_SLOPE_DIR;
+	QTY_SLOPE_DIR = given_QTY_SLOPE_DIR;
 	SLOPE_DIR = new double[QTY_SLOPE_DIR][2];
-	copyArray(&SLOPE_DIR[0][0], &get_SLOPE_DIR[0][0], QTY_SLOPE_DIR, 2);
+	copyArray(&SLOPE_DIR[0][0], &given_SLOPE_DIR[0][0], QTY_SLOPE_DIR, 2);
 	INTERCEPT_DIR = new double[QTY_SLOPE_DIR][2];
-	copyArray(&INTERCEPT_DIR[0][0], &get_INTERCEPT_DIR[0][0], QTY_SLOPE_DIR, 2);
+	copyArray(&INTERCEPT_DIR[0][0], &given_INTERCEPT_DIR[0][0], QTY_SLOPE_DIR, 2);
 	POINT_DIR = new double[QTY_SLOPE_DIR - 1][2];
-	copyArray(&POINT_DIR[0][0], &get_POINT_DIR[0][0], QTY_SLOPE_DIR - 1, 2);
+	copyArray(&POINT_DIR[0][0], &given_POINT_DIR[0][0], QTY_SLOPE_DIR - 1, 2);
 
 	value = new uint16_t[QTY];
 	prv = new uint16_t[QTY];
 	crt = new uint16_t[QTY];
 
-	P_CATCH = get_P_CATCH;
-	BORDER_CATCH = get_BORDER_CATCH;
-	MAX_C_CATCH = get_MAX_C_CATCH;
+	P_CATCH = given_P_CATCH;
+	BORDER_CATCH = given_BORDER_CATCH;
+	MAX_C_CATCH = given_MAX_C_CATCH;
 
 	for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
 		prv[numBall] = 0;

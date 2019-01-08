@@ -7,7 +7,7 @@
 
 class INA219 {
 	public:
-		INA219(uint8_t get_X, double get_LOW_VOLT, double get_HIGH_VOLT, uint8_t get_MAX_CR, uint8_t get_MAX_CVL);
+		INA219(uint8_t, double, double, uint8_t, uint8_t);
 		bool checkVolt();
 		double getValue();
 	private:

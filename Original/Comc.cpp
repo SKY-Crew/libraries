@@ -1,8 +1,8 @@
 #include "Comc.h"
 
-Comc::Comc(uint8_t get_X, uint8_t get_P_ONOFF, uint16_t get_MAX_C_SND, uint16_t get_MAX_C_NR) {
+Comc::Comc(uint8_t given_X, uint8_t given_P_ONOFF, uint16_t given_MAX_C_SND, uint16_t given_MAX_C_NR) {
 	//copy
-	switch(get_X) {
+	switch(given_X) {
 		case 1: SerialX = &Serial1; break;
 		case 2: SerialX = &Serial2; break;
 		case 3: SerialX = &Serial3; break;
@@ -10,9 +10,9 @@ Comc::Comc(uint8_t get_X, uint8_t get_P_ONOFF, uint16_t get_MAX_C_SND, uint16_t 
 		case 5: SerialX = &Serial5; break;
 		case 6: SerialX = &Serial6; break;
 	}
-	P_ONOFF = get_P_ONOFF;
-	MAX_C_SND = get_MAX_C_SND;
-	MAX_C_NR = get_MAX_C_NR;
+	P_ONOFF = given_P_ONOFF;
+	MAX_C_SND = given_MAX_C_SND;
+	MAX_C_NR = given_MAX_C_NR;
 
 	//init
 	SerialX->begin(9600);

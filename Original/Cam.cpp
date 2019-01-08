@@ -1,9 +1,9 @@
 #include "Cam.h"
 
-Cam::Cam(uint8_t get_X, uint8_t get_P_ONOFF, uint8_t get_CENTER_OPP_GOAL, uint8_t get_CENTER_OWN_GOAL,
-	uint16_t get_SLOPE_RG, uint16_t get_INTERCEPT_RG) {
+Cam::Cam(uint8_t given_X, uint8_t given_P_ONOFF, uint8_t given_CENTER_OPP_GOAL, uint8_t given_CENTER_OWN_GOAL,
+	uint16_t given_SLOPE_RG, uint16_t given_INTERCEPT_RG) {
 	//copy
-	switch(get_X) {
+	switch(given_X) {
 		case 1: SerialX = &Serial1; break;
 		case 2: SerialX = &Serial2; break;
 		case 3: SerialX = &Serial3; break;
@@ -11,11 +11,11 @@ Cam::Cam(uint8_t get_X, uint8_t get_P_ONOFF, uint8_t get_CENTER_OPP_GOAL, uint8_
 		case 5: SerialX = &Serial5; break;
 		case 6: SerialX = &Serial6; break;
 	}
-	P_ONOFF = get_P_ONOFF;
-	CENTER_OPP_GOAL = get_CENTER_OPP_GOAL;
-	CENTER_OWN_GOAL = get_CENTER_OWN_GOAL;
-	SLOPE_RG = get_SLOPE_RG;
-	INTERCEPT_RG = get_INTERCEPT_RG;
+	P_ONOFF = given_P_ONOFF;
+	CENTER_OPP_GOAL = given_CENTER_OPP_GOAL;
+	CENTER_OWN_GOAL = given_CENTER_OWN_GOAL;
+	SLOPE_RG = given_SLOPE_RG;
+	INTERCEPT_RG = given_INTERCEPT_RG;
 
 	//init
 	SerialX->begin(9600);

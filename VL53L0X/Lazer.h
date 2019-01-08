@@ -8,7 +8,7 @@
 
 class Lazer {
 	public:
-		Lazer(uint8_t get_X, double get_MULTI_AVG, uint16_t get_BORDER_IS_CLOSE);
+		Lazer(uint8_t given_X, double given_MULTI_AVG, uint16_t given_BORDER_IS_CLOSE);
 		bool get();
 		double getValue();
 	private:

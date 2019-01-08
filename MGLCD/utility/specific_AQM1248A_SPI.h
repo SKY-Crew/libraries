@@ -119,6 +119,7 @@ template<class T> int8_t AQM1248A_extension<T>::SetVolumeResistor(uint8_t val)
   
   AQM1248A_extension<T>::specific.WriteData(MGLCD_COMMAND, 0x81);
   AQM1248A_extension<T>::specific.WriteData(MGLCD_COMMAND, val);
+  return 0;
 } // AQM1248A_extension<T>::SetVolumeResistor
 
 template<class T> int8_t AQM1248A_extension<T>::InvertDisplay(uint8_t val)

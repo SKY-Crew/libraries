@@ -7,7 +7,7 @@
 
 class PSD {
 	public:
-		PSD(uint8_t get_X, double get_MULTI_AVG, uint16_t get_BORDER_IS_CLOSE, uint8_t get_MAX_CC);
+		PSD(uint8_t, double, uint16_t, uint8_t);
 		bool get();
 		double getValue();
 	private:

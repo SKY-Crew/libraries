@@ -14,9 +14,9 @@ typedef struct {
 
 class Line {
 	public:
-		Line(bool get_CAN_LEAVE_LINE, uint8_t get_QTY, uint8_t *get_PORT, uint8_t get_MAX_CIIA,
-			uint16_t get_BORDER_BLACK, uint16_t get_BORDER_WHITE, uint8_t get_BORDER_IS_IN_AIR, double get_MULTI_AVG);
-		line_t get(bool isFW, bool canUseGyro, int16_t gyro);
+		Line(bool, uint8_t, uint8_t*, uint8_t,
+			uint16_t, uint16_t, uint8_t, double);
+		line_t get(bool, bool, int16_t);
 		uint16_t *getValue();
 		uint8_t *getState();
 		uint8_t getQTY();

@@ -1,16 +1,16 @@
 #include "PSD.h"
 
-PSD::PSD(uint8_t get_X, double get_MULTI_AVG, uint16_t get_BORDER_IS_CLOSE, uint8_t get_MAX_CC) {
+PSD::PSD(uint8_t given_X, double given_MULTI_AVG, uint16_t given_BORDER_IS_CLOSE, uint8_t given_MAX_CC) {
 	//copy
-	switch(get_X) {
+	switch(given_X) {
 		case 0: WireX = &Wire; break;
 		case 1: WireX = &Wire1; break;
 		case 2: WireX = &Wire2; break;
 	}
 
-	MULTI_AVG = get_MULTI_AVG;
-	BORDER_IS_CLOSE = get_BORDER_IS_CLOSE;
-	MAX_CC = get_MAX_CC;
+	MULTI_AVG = given_MULTI_AVG;
+	BORDER_IS_CLOSE = given_BORDER_IS_CLOSE;
+	MAX_CC = given_MAX_CC;
 
 	//init
 	WireX->begin();

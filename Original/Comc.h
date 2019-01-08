@@ -11,11 +11,11 @@ typedef struct {
 
 class Comc {
 	public:
-		Comc(uint8_t get_X, uint8_t get_P_ONOFF, uint16_t get_MAX_C_SND, uint16_t get_MAX_C_NR);
-		comc_t communicate(bool canRun, bool isFW);
+		Comc(uint8_t, uint8_t, uint16_t, uint16_t);
+		comc_t communicate(bool, bool);
 		bool getCanUse();
 	private:
-		void sndWireless(bool canRun, bool isFW);
+		void sndWireless(bool, bool);
 		bool rcvWireless();
 
 		HardwareSerial *SerialX;

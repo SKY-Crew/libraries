@@ -1,11 +1,11 @@
 #include "Lazer.h"
 
-Lazer::Lazer(uint8_t get_X, double get_MULTI_AVG, uint16_t get_BORDER_IS_CLOSE) {
+Lazer::Lazer(uint8_t given_X, double given_MULTI_AVG, uint16_t given_BORDER_IS_CLOSE) {
 	//copy
-	lazer = new VL53L0X(get_X);
+	lazer = new VL53L0X(given_X);
 
-	MULTI_AVG = get_MULTI_AVG;
-	BORDER_IS_CLOSE = get_BORDER_IS_CLOSE;
+	MULTI_AVG = given_MULTI_AVG;
+	BORDER_IS_CLOSE = given_BORDER_IS_CLOSE;
 
 	//init
 	lazer->init();

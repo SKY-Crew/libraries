@@ -15,10 +15,9 @@ typedef struct {
 
 class Cam {
 	public:
-		Cam(uint8_t get_X, uint8_t get_P_ONOFF, uint8_t get_CENTER_OPP_GOAL, uint8_t get_CENTER_OWN_GOAL,
-			uint16_t get_SLOPE_RG, uint16_t get_INTERCEPT_RG);
+		Cam(uint8_t, uint8_t, uint8_t, uint8_t, uint16_t, uint16_t);
 		cam_t get();
-		int16_t multiRotGoal(int16_t rotGoal);
+		int16_t multiRotGoal(int16_t);
 		bool getCanUse();
 	private:
 		HardwareSerial *SerialX;
