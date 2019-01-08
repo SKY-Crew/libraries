@@ -1,28 +1,28 @@
 #include "Actuator.h"
 
-Actuator::Actuator(bool get_CAN_MOVE, uint8_t get_QTY, uint8_t *get_P_DIR, uint8_t *get_P_PWR,
-	int16_t firstRM, double get_SLOPE_POWER, double get_INTERCEPT_POWER,
-	uint8_t get_P_KICKER, uint8_t get_P_ONOFF_KICKER, uint8_t get_P_RUN_KICKER, uint16_t get_MAX_CK, uint16_t get_MAX_CKW) {
+Actuator::Actuator(bool given_CAN_MOVE, uint8_t given_QTY, uint8_t *given_P_DIR, uint8_t *given_P_PWR,
+	int16_t firstRM, double given_SLOPE_POWER, double given_INTERCEPT_POWER,
+	uint8_t given_P_KICKER, uint8_t given_P_ONOFF_KICKER, uint8_t given_P_RUN_KICKER, uint16_t given_MAX_CK, uint16_t given_MAX_CKW) {
 	//copy
-	CAN_MOVE = get_CAN_MOVE;
-	QTY = get_QTY;
+	CAN_MOVE = given_CAN_MOVE;
+	QTY = given_QTY;
 	P_DIR = new uint8_t[QTY];
-	copyArray(P_DIR, get_P_DIR, QTY);
+	copyArray(P_DIR, given_P_DIR, QTY);
 	P_PWR = new uint8_t[QTY];
-	copyArray(P_PWR, get_P_PWR, QTY);
+	copyArray(P_PWR, given_P_PWR, QTY);
 	ROT_MOTOR = new int16_t[QTY];
 	ROT_WHEEL = new int16_t[QTY];
 	SIN_RW = new double[QTY];
 	COS_RW = new double[QTY];
 	MAX_DVP = abs(cos(toRadians(firstRM)) * QTY);
-	SLOPE_POWER = get_SLOPE_POWER;
-	INTERCEPT_POWER = get_INTERCEPT_POWER;
+	SLOPE_POWER = given_SLOPE_POWER;
+	INTERCEPT_POWER = given_INTERCEPT_POWER;
 
-	P_KICKER = get_P_KICKER;
-	P_ONOFF_KICKER =  get_P_ONOFF_KICKER;
-	P_RUN_KICKER =  get_P_RUN_KICKER;
-	MAX_CK = get_MAX_CK;
-	MAX_CKW = get_MAX_CKW;
+	P_KICKER = given_P_KICKER;
+	P_ONOFF_KICKER =  given_P_ONOFF_KICKER;
+	P_RUN_KICKER =  given_P_RUN_KICKER;
+	MAX_CK = given_MAX_CK;
+	MAX_CKW = given_MAX_CKW;
 
 	for(uint8_t numM = 0; numM < QTY; numM ++) {
 		ROT_MOTOR[numM] = firstRM * ((numM % 2) == 0 ? 1 : -1)
@@ -36,7 +36,7 @@ Actuator::Actuator(bool get_CAN_MOVE, uint8_t get_QTY, uint8_t *get_P_DIR, uint8
 	for(uint8_t numM = 0; numM < QTY; numM ++) {
 		pinMode(P_DIR[numM], OUTPUT);
 		pinMode(P_PWR[numM], OUTPUT);
-		analogWriteFrequency(P_PWR[numM], 250*1000);
+		analogWriteFrequency(P_PWR[numM], 250 * 1000);
 	}
 
 	pinMode(P_KICKER, OUTPUT);
@@ -87,8 +87,8 @@ void Actuator::spin(uint8_t port, int16_t power) {
 	}
 }
 
-void Actuator::setHaveRun(bool get_haveRun) {
-	haveRun = get_haveRun;
+void Actuator::setHaveRun(bool given_haveRun) {
+	haveRun = given_haveRun;
 }
 
 void Actuator::kick(bool startKick) {
