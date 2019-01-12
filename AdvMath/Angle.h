@@ -9,12 +9,16 @@ class Angle {
 		double angle;
 	public:
 		inline Angle(bool given_hasValue = false, double given_angle = 0) {
+			setAngle(given_hasValue, given_angle);
+		}
+		inline Angle(bool given_hasValue, int given_angle) {
+			setAngle(given_hasValue, (double)given_angle);
+		}
+		inline Angle(double given_angle) { setAngle(true, given_angle); }
+		inline Angle(int given_angle) { setAngle(true, (double)given_angle); }
+		inline void setAngle(bool given_hasValue = false, int given_angle = 0) {
 			hasValue = given_hasValue;
 			angle = hasValue ? simplifyDeg(given_angle) : 0;
-		}
-		inline Angle(double given_angle) {
-			hasValue = true;
-			angle = simplifyDeg(given_angle);
 		}
 
 		inline String string() const{ return (hasValue ? String(angle) : "null"); }
@@ -47,35 +51,35 @@ class Angle {
 		bool inside(const Angle&, const Angle&) const;
 };
 
-const Angle operator+(const Angle& a, const Angle& b) { return Angle(a) += b; }
-const Angle operator-(const Angle& a, const Angle& b) { return Angle(a) -= b; }
-const Angle operator*(const Angle& a, double multi) { return Angle(a) *= multi; }
-const Angle operator/(const Angle& a, double div) { return Angle(a) /= div; }
+inline const Angle operator+(const Angle& a, const Angle& b) { return Angle(a) += b; }
+inline const Angle operator-(const Angle& a, const Angle& b) { return Angle(a) -= b; }
+inline const Angle operator*(const Angle& a, double multi) { return Angle(a) *= multi; }
+inline const Angle operator/(const Angle& a, double div) { return Angle(a) /= div; }
 
-bool operator>(const Angle& a, const Angle& b) {
+inline bool operator>(const Angle& a, const Angle& b) {
 	return a && (!bool(b) || double(a) > double(b));
 }
-bool operator<(const Angle& a, const Angle& b) { return b > a; }
-bool operator==(const Angle& a, const Angle& b) { return !(a > b) && !(a < b); }
-bool operator!=(const Angle& a, const Angle& b) { return !(a == b); }
-bool operator>=(const Angle& a, const Angle& b) { return a > b || a == b; }
-bool operator<=(const Angle& a, const Angle& b) { return b >= a; }
+inline bool operator<(const Angle& a, const Angle& b) { return b > a; }
+inline bool operator==(const Angle& a, const Angle& b) { return !(a > b) && !(a < b); }
+inline bool operator!=(const Angle& a, const Angle& b) { return !(a == b); }
+inline bool operator>=(const Angle& a, const Angle& b) { return a > b || a == b; }
+inline bool operator<=(const Angle& a, const Angle& b) { return b >= a; }
 
-bool Angle::inside(const Angle& A_min, const Angle& A_max) const{
+inline bool Angle::inside(const Angle& A_min, const Angle& A_max) const{
 	return bool(*this) && (*this - A_min - 180.) <= (A_max - A_min - 180.);
 }
 
-double diff(const Angle& a, const Angle& b) {
+inline double diff(const Angle& a, const Angle& b) {
 	return max(double(a - b), double(b - a));
 }
 
-double cos(const Angle& a) {
+inline double cos(const Angle& a) {
 	return bool(a) ? advRound(sin(toRadians(double(a))), 5) : 0;
 }
-double sin(const Angle& a) {
+inline double sin(const Angle& a) {
 	return bool(a) ? advRound(sin(toRadians(double(a))), 5) : 0;
 }
-double tan(const Angle& a) {
+inline double tan(const Angle& a) {
 	return bool(a) ? advRound(tan(toRadians(double(a))), 5) : 0;
 }
 
