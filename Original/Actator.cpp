@@ -10,8 +10,8 @@ Actuator::Actuator(bool given_CAN_MOVE, uint8_t given_QTY, uint8_t *given_P_DIR,
 	copyArray(P_DIR, given_P_DIR, QTY);
 	P_PWR = new uint8_t[QTY];
 	copyArray(P_PWR, given_P_PWR, QTY);
-	ROT_MOTOR = new int16_t[QTY];
-	ROT_WHEEL = new int16_t[QTY];
+	ROT_MOTOR = new Angle[QTY];
+	ROT_WHEEL = new Angle[QTY];
 	SIN_RW = new double[QTY];
 	COS_RW = new double[QTY];
 	MAX_DVP = abs(cos(toRadians(firstRM)) * QTY);
@@ -19,24 +19,26 @@ Actuator::Actuator(bool given_CAN_MOVE, uint8_t given_QTY, uint8_t *given_P_DIR,
 	INTERCEPT_POWER = given_INTERCEPT_POWER;
 
 	P_KICKER = given_P_KICKER;
-	P_ONOFF_KICKER =  given_P_ONOFF_KICKER;
-	P_RUN_KICKER =  given_P_RUN_KICKER;
+	P_ONOFF_KICKER = given_P_ONOFF_KICKER;
+	P_RUN_KICKER = given_P_RUN_KICKER;
 	MAX_CK = given_MAX_CK;
 	MAX_CKW = given_MAX_CKW;
 
-	for(uint8_t numM = 0; numM < QTY; numM ++) {
-		ROT_MOTOR[numM] = firstRM * ((numM % 2) == 0 ? 1 : -1)
-			+ 180 * ((numM % 3) == 0 ? 0 : 1);
-		ROT_WHEEL[numM] = ROT_MOTOR[numM] + 90;
-		SIN_RW[numM] = sin(toRadians(ROT_WHEEL[numM]));
-		COS_RW[numM] = cos(toRadians(ROT_WHEEL[numM]));
+	for(uint8_t i = 0; i < QTY; i ++) {
+		ROT_MOTOR[i] = new Angle();
+		ROT_MOTOR[i] = firstRM * ((i % 2) == 0 ? 1 : -1)
+			+ 180 * ((i % 3) == 0 ? 0 : 1);
+		ROT_WHEEL[i] = new Angle();
+		ROT_WHEEL[i] = ROT_MOTOR[i] + 90;
+		COS_RW[i] = cos(ROT_WHEEL[i]);
+		SIN_RW[i] = sin(ROT_WHEEL[i]);
 	}
 
 	//init
-	for(uint8_t numM = 0; numM < QTY; numM ++) {
-		pinMode(P_DIR[numM], OUTPUT);
-		pinMode(P_PWR[numM], OUTPUT);
-		analogWriteFrequency(P_PWR[numM], 250 * 1000);
+	for(uint8_t i = 0; i < QTY; i ++) {
+		pinMode(P_DIR[i], OUTPUT);
+		pinMode(P_PWR[i], OUTPUT);
+		analogWriteFrequency(P_PWR[i], 250 * 1000);
 	}
 
 	pinMode(P_KICKER, OUTPUT);
@@ -44,36 +46,36 @@ Actuator::Actuator(bool given_CAN_MOVE, uint8_t given_QTY, uint8_t *given_P_DIR,
 	pinMode(P_RUN_KICKER, INPUT);
 }
 
-void Actuator::run(int16_t moveAngle, int16_t rotPower, uint16_t maxPower) {
+void Actuator::run(Angle moveAngle, int16_t rotPower, uint16_t maxPower) {
 	if(!haveRun) {
 		int16_t power[QTY];
 		//モーターパワー計算
-		if(moveAngle < 0) {
+		if(!moveAngle) {
 			//回転移動のみ
-			for(uint8_t numM = 0; numM < QTY; numM ++) {
-				power[numM] = rotPower;
+			for(uint8_t i = 0; i < QTY; i ++) {
+				power[i] = rotPower;
 			}
 		}else {
 			//平行+回転移動
 			float ratePower[QTY];
-			vectorXY_t vxyPower = {0, 0};
-			for(uint8_t numM = 0; numM < QTY; numM ++) {
-				ratePower[numM] =  cos(toRadians(ROT_WHEEL[numM] - moveAngle));
-				vxyPower.x += COS_RW[numM] * ratePower[numM];
-				vxyPower.y += SIN_RW[numM] * ratePower[numM];
+			vectorXY_t xyPower = {0, 0};
+			for(uint8_t i = 0; i < QTY; i ++) {
+				ratePower[i] =  cos(ROT_WHEEL[i] - moveAngle);
+				xyPower.x += COS_RW[i] * ratePower[i];
+				xyPower.y += SIN_RW[i] * ratePower[i];
 			}
-			float distVP = sqrt(vxyPower.x * vxyPower.x + vxyPower.y * vxyPower.y);
-			for(uint8_t numM = 0; numM < QTY; numM ++) {
-				power[numM] = maxPower * ratePower[numM] / distVP * MAX_DVP + rotPower;
+			float distVP = sqrt(xyPower.x * xyPower.x + xyPower.y * xyPower.y);
+			for(uint8_t i = 0; i < QTY; i ++) {
+				power[i] = maxPower * ratePower[i] / distVP * MAX_DVP + rotPower;
 			}
 		}
 		//パワー変換
-		for(uint8_t numM = 0; numM < QTY; numM ++) {
-			power[numM] = power[numM] == 0 ? 0 : power[numM] * SLOPE_POWER + signum(power[numM]) * INTERCEPT_POWER;
+		for(uint8_t i = 0; i < QTY; i ++) {
+			power[i] = power[i] == 0 ? 0 : power[i] * SLOPE_POWER + signum(power[i]) * INTERCEPT_POWER;
 		}
 		//モーター制御
-		for(uint8_t numM = 0; numM < QTY; numM ++) {
-			spin(numM, power[numM]);
+		for(uint8_t i = 0; i < QTY; i ++) {
+			spin(i, power[i]);
 		}
 	}
 	haveRun = true;
