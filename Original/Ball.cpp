@@ -82,7 +82,7 @@ vectorRT_t Ball::get(bool hasFilter) {
 		if(value[numBall] > 0) {
 			canSeeBall = false;
 			if(hasFilter) {
-				value[numBall] = map(value[numBall], avg_AVG_IR, MAX_IR[numBall], avg_AVG_IR, avg_MAX_IR);
+				// value[numBall] = map(value[numBall], avg_AVG_IR, MAX_IR[numBall], avg_AVG_IR, avg_MAX_IR);
 				if(prv[numBall] != 0) {
 					value[numBall] = prv[numBall] * MULTI_AVG + value[numBall] * (1 - MULTI_AVG);
 				}

@@ -3,12 +3,13 @@
 
 #include "Arduino.h"
 #include "AdvMath.h"
+#include "Angle.h"
 
 class Actuator {
 	public:
 		Actuator(bool, uint8_t, uint8_t*, uint8_t*, int16_t, double, double,
 			uint8_t, uint8_t, uint8_t, uint16_t, uint16_t);
-		void run(int16_t, int16_t, uint16_t);
+		void run(Angle, int16_t, uint16_t);
 		void spin(uint8_t, int16_t);
 		void setHaveRun(bool);
 		void kick(bool);
@@ -20,10 +21,10 @@ class Actuator {
 		uint8_t QTY;
 		uint8_t *P_DIR;
 		uint8_t *P_PWR;
-		int16_t *ROT_MOTOR;
-		int16_t *ROT_WHEEL;
-		double *SIN_RW;
+		Angle *ROT_MOTOR;
+		Angle *ROT_WHEEL;
 		double *COS_RW;
+		double *SIN_RW;
 		double MAX_DVP;
 		double SLOPE_POWER;
 		double INTERCEPT_POWER;

@@ -85,17 +85,19 @@ line_t Line::get(bool isFW, bool canUseGyro, int16_t gyro) {
 		//前回と比較
 		if(prvDI >= 0) {
 			//半分以上外か
-			line.isHalfOut = line.isWholeOut;
-			if(line.isHalfOut || insideAngle(line.dirInside, prvDI + 110, prvDI + 250)) {
+			line.isHalfOut = false;
+			if(line.isWholeOut || insideAngle(line.dirInside, prvDI + 110, prvDI + 250)) {
 				line.dirInside = simplifyDeg(line.dirInside + 180);
 				line.isHalfOut = true;
 			}
 			//平均値計算
-			if(abs(line.dirInside - prvDI) <= 180) {
-				line.dirInside = prvDI * MULTI_AVG + line.dirInside * (1 - MULTI_AVG);
-			}else {
-				line.dirInside = prvDI * MULTI_AVG + line.dirInside * (1 - MULTI_AVG)
-								+ 360 * (line.dirInside >= prvDI ? MULTI_AVG : 1 - MULTI_AVG);
+			if(!line.isWholeOut) {
+				if(abs(line.dirInside - prvDI) <= 180) {
+					line.dirInside = prvDI * MULTI_AVG + line.dirInside * (1 - MULTI_AVG);
+				}else {
+					line.dirInside = prvDI * MULTI_AVG + line.dirInside * (1 - MULTI_AVG)
+									+ 360 * (line.dirInside >= prvDI ? MULTI_AVG : 1 - MULTI_AVG);
+				}
 			}
 			line.dirInside = simplifyDeg(line.dirInside);
 		}
