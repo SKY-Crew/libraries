@@ -18,8 +18,8 @@ Line::Line(bool given_CAN_LEAVE_LINE, uint8_t given_QTY, uint8_t *given_PORT, ui
 
 	value = new uint16_t[QTY];
 	crt = new uint16_t[QTY];
-	state = new uint8_t[QTY];
-	crtState = new uint8_t[QTY];
+	state = new Color[QTY];
+	crtState = new Color[QTY];
 }
 
 line_t Line::get(bool isFW, bool canUseGyro, Angle gyro) {
@@ -28,12 +28,12 @@ line_t Line::get(bool isFW, bool canUseGyro, Angle gyro) {
 	for(int numLine = 0; numLine < QTY; numLine ++) {
 		//ライン読み取り
 		value[numLine] = analogRead(PORT[numLine]);
-		state[numLine] = value[numLine] <= BORDER_BLACK ? 2
-			: value[numLine] >= BORDER_WHITE ? 1 : 0;
+		state[numLine] = value[numLine] <= BORDER_BLACK ? BLACK
+			: value[numLine] >= BORDER_WHITE ? WHITE : GREEN;
 		switch(state[numLine]) {
-			case 2: qtyILB ++; break;
-			case 1: qtyILW ++; break;
-			case 0: break;
+			case BLACK: qtyILB ++; break;
+			case WHITE: qtyILW ++; break;
+			case GREEN: break;
 		}
 	}
 
@@ -60,7 +60,7 @@ line_t Line::get(bool isFW, bool canUseGyro, Angle gyro) {
 		int posILW[qtyILW];
 		int numILW = 0;
 		for(int numLine = 0; numLine < QTY; numLine ++) {
-			if(state[numLine] == 1) {
+			if(state[numLine] == WHITE) {
 				posILW[numILW] = numLine;
 				numILW ++;
 			}
@@ -129,7 +129,7 @@ uint16_t *Line::getValue() {
 	return crt;
 }
 
-uint8_t *Line::getState() {
+Color *Line::getState() {
 	for(int numLine = 0; numLine < QTY; numLine ++) {
 		crtState[numLine] = state[numLine];
 	}

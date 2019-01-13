@@ -12,9 +12,9 @@ LCD::LCD(uint8_t given_P_REDRAW, uint8_t given_P_SCK, uint8_t given_P_MOSI, uint
 	COS_LINE = new double[QTY_LINE];
 
 	for(uint8_t numLine = 0; numLine < QTY_LINE; numLine ++) {
-		double angleLine = numLine * 360.0 / QTY_LINE;
-		SIN_LINE[numLine] = sin(toRadians(simplifyDeg(90 + angleLine)));
-		COS_LINE[numLine] = cos(toRadians(simplifyDeg(90 + angleLine)));
+		Angle angleLine = numLine * 360.0 / QTY_LINE + 90;
+		SIN_LINE[numLine] = sin(angleLine);
+		COS_LINE[numLine] = cos(angleLine);
 	}
 
 	//init
@@ -65,14 +65,14 @@ void LCD::drawMeter(Angle theta, uint8_t XCoord, bool canDrawCircle) {
 	}
 }
 
-void LCD::drawAngelRing(uint8_t QTY_LINE, uint8_t *stateLine, uint8_t XCoord) {
+void LCD::drawAngelRing(uint8_t QTY_LINE, Color *stateLine, uint8_t XCoord) {
 	for(uint8_t numLine = 0; numLine < QTY_LINE; numLine ++) {
 		uint8_t XCoordLine = 24 + 20 * COS_LINE[numLine] + XCoord * 6;
 		uint8_t YCoordLine = 24 + 20 * SIN_LINE[numLine];
 
-		if(stateLine[numLine] == 2) {
+		if(stateLine[numLine] == BLACK) {
 			lcd->FillCircle(XCoordLine, YCoordLine, 1);
-		}else if(stateLine[numLine] == 1) {
+		}else if(stateLine[numLine] == WHITE) {
 			lcd->Circle(XCoordLine, YCoordLine, 2);
 		}else {
 			lcd->FillCircle(XCoordLine, YCoordLine, 2);

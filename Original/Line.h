@@ -14,13 +14,17 @@ typedef struct {
 	bool canPause;
 } line_t;
 
+enum Color {
+	BLACK, WHITE, GREEN
+};
+
 class Line {
 	public:
 		Line(bool, uint8_t, uint8_t*, uint8_t,
 			uint16_t, uint16_t, uint8_t, double);
 		line_t get(bool, bool, Angle);
 		uint16_t *getValue();
-		uint8_t *getState();
+		Color *getState();
 		uint8_t getQTY();
 	private:
 		bool CAN_LEAVE_LINE;
@@ -37,8 +41,8 @@ class Line {
 
 		uint16_t *value;
 		uint16_t *crt;
-		uint8_t *state;
-		uint8_t *crtState;
+		Color *state;
+		Color *crtState;
 		Angle prvDI = false;
 
 		uint8_t countIIA = 0;
