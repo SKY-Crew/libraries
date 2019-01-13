@@ -22,7 +22,7 @@ Line::Line(bool given_CAN_LEAVE_LINE, uint8_t given_QTY, uint8_t *given_PORT, ui
 	crtState = new uint8_t[QTY];
 }
 
-line_t Line::get(bool isFW, bool canUseGyro, int16_t gyro) {
+line_t Line::get(bool isFW, bool canUseGyro, Angle gyro) {
 	int qtyILW = 0;
 	int qtyILB = 0;
 	for(int numLine = 0; numLine < QTY; numLine ++) {
@@ -83,7 +83,7 @@ line_t Line::get(bool isFW, bool canUseGyro, int16_t gyro) {
 		double numDI = posILW[posMaxIntvL] + maxIntvL * 0.5;
 		line.dirInside = numDI / QTY * 360;
 		//前回と比較
-		if(prvDI) {
+		if(bool(prvDI)) {
 			//半分以上外か
 			line.isHalfOut = false;
 			if(line.isWholeOut || line.dirInside.inside(prvDI + 110, prvDI + 250)) {

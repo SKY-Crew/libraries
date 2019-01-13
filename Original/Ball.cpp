@@ -112,7 +112,7 @@ uint16_t Ball::getForward() {
 
 Angle Ball::getDir(Angle theta, bool isClose) {
 	Angle dir = theta;
-	if(theta >= 0) {
+	if(bool(theta)) {
 		uint8_t key = 0;
 		for(; key < QTY_SLOPE_DIR - 1; key ++) {
 			if(absAngle(dir) <= POINT_DIR[key][isClose]) { break; }

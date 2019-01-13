@@ -22,7 +22,6 @@ class Angle {
 			angle = hasValue ? simplifyDeg(given_angle) : 0;
 		}
 
-		inline String string() const{ return (hasValue ? String(angle) : "null"); }
 		inline explicit operator bool() const{ return this->hasValue; }
 		inline explicit operator double() const{ return this->angle; }
 
@@ -51,6 +50,8 @@ class Angle {
 
 		bool inside(const Angle&, const Angle&) const;
 };
+
+inline String string(const Angle& a) { return (bool(a) ? String(double(a)) : "null"); }
 
 inline const Angle operator+(const Angle& a, const Angle& b) { return Angle(a) += b; }
 inline const Angle operator-(const Angle& a, const Angle& b) { return Angle(a) -= b; }

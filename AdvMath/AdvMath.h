@@ -24,8 +24,7 @@ inline double advRound(double val, int index) {
 }
 
 inline double simplifyDeg(double deg) {
-	return fmod(fmod(deg, 360) + 360, 360);
-	// return fmod(fmod(deg, 360) + 360 + 180, 360) - 180;
+	return fmod(fmod(deg, 360) + 360 + 180, 360) - 180;
 }
 
 inline uint8_t createBinOnes(uint8_t length) { return (1 << length) - 1; }
@@ -54,10 +53,6 @@ inline void copyArray(double *copiedArray, double *basisArray, uint8_t size, uin
 			*(copiedArray + num * size2 + num2) = *(basisArray + num * size2 + num2);
 		}
 	}
-}
-////
-inline bool insideAngle(double angle, double min, double max) {
-	return simplifyDeg(angle - min) <= simplifyDeg(max - min);
 }
 
 #endif

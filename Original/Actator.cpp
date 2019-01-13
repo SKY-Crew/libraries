@@ -50,7 +50,7 @@ void Actuator::run(Angle moveAngle, int16_t rotPower, uint16_t maxPower) {
 	if(!haveRun) {
 		int16_t power[QTY];
 		//モーターパワー計算
-		if(!moveAngle) {
+		if(!bool(moveAngle)) {
 			//回転移動のみ
 			for(uint8_t i = 0; i < QTY; i ++) {
 				power[i] = rotPower;

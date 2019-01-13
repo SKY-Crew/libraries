@@ -18,7 +18,7 @@ class Line {
 	public:
 		Line(bool, uint8_t, uint8_t*, uint8_t,
 			uint16_t, uint16_t, uint8_t, double);
-		line_t get(bool, bool, int16_t);
+		line_t get(bool, bool, Angle);
 		uint16_t *getValue();
 		uint8_t *getState();
 		uint8_t getQTY();
@@ -39,7 +39,7 @@ class Line {
 		uint16_t *crt;
 		uint8_t *state;
 		uint8_t *crtState;
-		Angle prvDI = Angle(false);
+		Angle prvDI = false;
 
 		uint8_t countIIA = 0;
 
