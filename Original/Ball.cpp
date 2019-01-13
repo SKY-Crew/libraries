@@ -1,7 +1,7 @@
 #include "Ball.h"
 
 Ball::Ball(uint8_t given_QTY, uint8_t *given_PORT, uint16_t *given_MAX_IR, uint16_t *given_AVG_IR, double given_MULTI_AVG,
-	uint8_t given_QTY_SLOPE_DIR, double (*given_SLOPE_DIR)[2], double (*given_INTERCEPT_DIR)[2], double (*given_POINT_DIR)[2],
+	uint8_t given_SIZE_SLOPE_DIR, double (*given_SLOPE_DIR)[2], double (*given_INTERCEPT_DIR)[2], double (*given_POINT_DIR)[2],
 	uint8_t given_P_CATCH, uint16_t given_BORDER_CATCH, uint8_t given_MAX_C_CATCH) {
 	//copy
 	QTY = given_QTY;
@@ -27,14 +27,13 @@ Ball::Ball(uint8_t given_QTY, uint8_t *given_PORT, uint16_t *given_MAX_IR, uint1
 	avg_AVG_IR /= QTY;
 
 	MULTI_AVG = given_MULTI_AVG;
-	delay(1000);
-	QTY_SLOPE_DIR = given_QTY_SLOPE_DIR;
-	SLOPE_DIR = new double[QTY_SLOPE_DIR][2];
-	copyArray(&SLOPE_DIR[0][0], &given_SLOPE_DIR[0][0], QTY_SLOPE_DIR, 2);
-	INTERCEPT_DIR = new double[QTY_SLOPE_DIR][2];
-	copyArray(&INTERCEPT_DIR[0][0], &given_INTERCEPT_DIR[0][0], QTY_SLOPE_DIR, 2);
-	POINT_DIR = new double[QTY_SLOPE_DIR - 1][2];
-	copyArray(&POINT_DIR[0][0], &given_POINT_DIR[0][0], QTY_SLOPE_DIR - 1, 2);
+	SIZE_SLOPE_DIR = given_SIZE_SLOPE_DIR;
+	SLOPE_DIR = new double[SIZE_SLOPE_DIR][2];
+	copyArray(&SLOPE_DIR[0][0], &given_SLOPE_DIR[0][0], SIZE_SLOPE_DIR, 2);
+	INTERCEPT_DIR = new double[SIZE_SLOPE_DIR][2];
+	copyArray(&INTERCEPT_DIR[0][0], &given_INTERCEPT_DIR[0][0], SIZE_SLOPE_DIR, 2);
+	POINT_DIR = new double[SIZE_SLOPE_DIR - 1][2];
+	copyArray(&POINT_DIR[0][0], &given_POINT_DIR[0][0], SIZE_SLOPE_DIR - 1, 2);
 
 	value = new uint16_t[QTY];
 	prv = new uint16_t[QTY];
@@ -114,7 +113,7 @@ Angle Ball::getDir(Angle theta, bool isClose) {
 	Angle dir = theta;
 	if(bool(theta)) {
 		uint8_t key = 0;
-		for(; key < QTY_SLOPE_DIR - 1; key ++) {
+		for(; key < SIZE_SLOPE_DIR - 1; key ++) {
 			if(absAngle(dir) <= POINT_DIR[key][isClose]) { break; }
 		}
 		Angle plusDir = dir * SLOPE_DIR[key][isClose] + signum(dir) * INTERCEPT_DIR[key][isClose];

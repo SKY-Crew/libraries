@@ -81,7 +81,7 @@ int16_t getGyro() {
 
 int16_t multiRotGyro(Angle rotGyro) {
   uint8_t key = 0;
-  for(; key < SIZE_SRG - 1; key ++) {
+  for(; key < SIZE_SLOPE_RG - 1; key ++) {
     if(absAngle(rotGyro) <= POINT_RG[key]) { break; }
   }
   return signum(rotGyro) * SLOPE_RG[key];

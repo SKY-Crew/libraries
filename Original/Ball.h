@@ -33,7 +33,7 @@ class Ball {
 
 		double MULTI_AVG;
 
-		uint8_t QTY_SLOPE_DIR;
+		uint8_t SIZE_SLOPE_DIR;
 		double (*SLOPE_DIR)[2];
 		double (*INTERCEPT_DIR)[2];
 		double (*POINT_DIR)[2];
