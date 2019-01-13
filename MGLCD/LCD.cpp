@@ -42,28 +42,25 @@ void LCD::write(String data, uint8_t XCoord, uint8_t YCoord) {
 	lcd->print(data);
 }
 
-void LCD::drawMeter(int16_t angleM, uint8_t XCoordM, bool canDrawCircle) {
-	int16_t displayAngleM = simplifyDeg(angleM + 180);
-	if(insideAngle(displayAngleM, 90, 270)) {
-		lcd->Locate(3 + XCoordM, 2);
+void LCD::drawMeter(Angle theta, uint8_t XCoord, bool canDrawCircle) {
+	theta += 180;
+	if(theta.inside(90, 270)) {
+		lcd->Locate(3 + XCoord, 2);
 	}else {
-		lcd->Locate(3 + XCoordM, 3);
+		lcd->Locate(3 + XCoord, 3);
 	}
-	lcd->print(angleM);
+	lcd->print(string(theta));
 	if(canDrawCircle) {
-		lcd->Circle(24 + XCoordM * 6, 24, 23);
+		lcd->Circle(24 + XCoord * 6, 24, 23);
 	}
-	double radM = toRadians(displayAngleM);
-	double sinM = sin(radM);
-	double cosM = cos(radM);
-	double lineX = sinM * 23;
-	double lineY = -cosM * 23;
-	double lineWeightX = -cosM * 0.5;
-	double lineWeightY = -sinM * 0.5;
+	double lineX = sin(theta) * 23;
+	double lineY = -cos(theta) * 23;
+	double lineWeightX = -cos(theta) * 0.5;
+	double lineWeightY = -sin(theta) * 0.5;
 	for(int8_t numLine = -1; numLine <= 1; numLine ++) {
-		lcd->Line(	24 + lineWeightX * numLine + XCoordM * 6,
+		lcd->Line(	24 + lineWeightX * numLine + XCoord * 6,
 					24 + lineWeightY * numLine,
-					24 + lineWeightX * numLine + lineX + XCoordM * 6,
+					24 + lineWeightX * numLine + lineX + XCoord * 6,
 					24 + lineWeightY * numLine + lineY);
 	}
 }

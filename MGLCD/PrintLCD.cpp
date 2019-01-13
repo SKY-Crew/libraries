@@ -1,6 +1,6 @@
 #include "LCD.h"
 
-void LCD::run(int16_t gyro, line_t line, bool canUseKicker, bool canUseCam, bool canUseGyro, bool isFW, bool canUseComc, comc_t fellow,
+void LCD::run(Angle gyro, line_t line, bool canUseKicker, bool canUseCam, bool canUseGyro, bool isFW, bool canUseComc, comc_t fellow,
 		uint8_t QTY_LINE, uint16_t *valueLine, uint8_t *stateLine, double valueIna219, cam_t goal,
 		vectorRT_t ball, uint8_t QTY_IR, uint16_t *valueIR,
 		uint16_t valueCatch, bool catchingBall, uint16_t valueBF, bool isBallForward, bool isBallClose,
