@@ -1,14 +1,16 @@
 #ifndef LINE_ORIG
 #define LINE_ORIG
+
 #include "Arduino.h"
 #include "AdvMath.h"
+#include "Angle.h"
 
 typedef struct {
 	bool isOutside;
 	bool isWholeOut;
 	bool isHalfOut;
 	bool isInAir;
-	double dirInside;
+	Angle dirInside;
 	bool canPause;
 } line_t;
 
@@ -37,7 +39,7 @@ class Line {
 		uint16_t *crt;
 		uint8_t *state;
 		uint8_t *crtState;
-		double prvDI = -1;
+		Angle prvDI = Angle(false);
 
 		uint8_t countIIA = 0;
 

@@ -115,7 +115,7 @@ Angle Ball::getDir(Angle theta, bool isClose) {
 	if(theta >= 0) {
 		uint8_t key = 0;
 		for(; key < QTY_SLOPE_DIR - 1; key ++) {
-			if(abs(dir) <= POINT_DIR[key][isClose]) { break; }
+			if(absAngle(dir) <= POINT_DIR[key][isClose]) { break; }
 		}
 		Angle plusDir = dir * SLOPE_DIR[key][isClose] + signum(dir) * INTERCEPT_DIR[key][isClose];
 		dir = dir + plusDir;

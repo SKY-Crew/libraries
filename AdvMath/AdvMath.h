@@ -2,17 +2,11 @@
 #define ADV_MATH_ORIG
 
 #include "Arduino.h"
-#include "Angle.h"
 
 typedef struct {
 	double x;
 	double y;
 } vectorXY_t;
-
-typedef struct {
-	double r;
-	Angle t;
-} vectorRT_t;
 
 inline int8_t signum(double x) {
 	return x > 0 ? 1

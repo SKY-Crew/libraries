@@ -2,6 +2,7 @@
 #define ANGLE_ORIG
 
 #include "Arduino.h"
+#include "advMath.h"
 
 class Angle {
 	private:
@@ -73,6 +74,13 @@ inline double diff(const Angle& a, const Angle& b) {
 	return max(double(a - b), double(b - a));
 }
 
+inline double absAngle(const Angle& a) {
+	return bool(a) ? abs(double(a)) : 0;
+}
+inline int8_t signum(const Angle& a) {
+	return bool(a) ? signum(double(a)) : 0;
+}
+
 inline double cos(const Angle& a) {
 	return bool(a) ? advRound(sin(toRadians(double(a))), 5) : 0;
 }
@@ -82,5 +90,10 @@ inline double sin(const Angle& a) {
 inline double tan(const Angle& a) {
 	return bool(a) ? advRound(tan(toRadians(double(a))), 5) : 0;
 }
+
+typedef struct {
+	double r;
+	Angle t;
+} vectorRT_t;
 
 #endif

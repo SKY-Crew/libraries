@@ -39,20 +39,20 @@ line_t Line::get(bool isFW, bool canUseGyro, int16_t gyro) {
 
 	if(!CAN_LEAVE_LINE) {
 		//ライン無効
-		line = {false, false, false, false, -1, false};
+		line = {false, false, false, false, false, false};
 	}else if(qtyILB >= BORDER_IS_IN_AIR) {
 		//持ち上げられている
 		countIIA ++;
 		if(countIIA >= MAX_CIIA) {
 			countIIA = MAX_CIIA;
-			line = {false, false, false, true, -1, false};
+			line = {false, false, false, true, false, false};
 		}
 	}else if(qtyILW <= 1) {
 		//ライン上でない
 		countIIA = 0;
-		line.isOutside = line.isHalfOut && prvDI >= 0;
+		line.isOutside = line.isHalfOut && bool(prvDI);
 		line.isWholeOut = line.isOutside;
-		line.dirInside = line.isOutside ? prvDI : -1;
+		line.dirInside = line.isOutside ? bool(prvDI) : Angle(false);
 	}else {
 		//ライン上
 		countIIA = 0;
@@ -81,13 +81,13 @@ line_t Line::get(bool isFW, bool canUseGyro, int16_t gyro) {
 			}
 		}
 		double numDI = posILW[posMaxIntvL] + maxIntvL * 0.5;
-		line.dirInside = simplifyDeg(numDI / QTY * 360);
+		line.dirInside = numDI / QTY * 360;
 		//前回と比較
-		if(prvDI >= 0) {
+		if(prvDI) {
 			//半分以上外か
 			line.isHalfOut = false;
-			if(line.isWholeOut || insideAngle(line.dirInside, prvDI + 110, prvDI + 250)) {
-				line.dirInside = simplifyDeg(line.dirInside + 180);
+			if(line.isWholeOut || line.dirInside.inside(prvDI + 110, prvDI + 250)) {
+				line.dirInside += 180;
 				line.isHalfOut = true;
 			}
 			//平均値計算
@@ -99,7 +99,6 @@ line_t Line::get(bool isFW, bool canUseGyro, int16_t gyro) {
 									+ 360 * (line.dirInside >= prvDI ? MULTI_AVG : 1 - MULTI_AVG);
 				}
 			}
-			line.dirInside = simplifyDeg(line.dirInside);
 		}
 
 		line.isOutside = false;
@@ -107,7 +106,8 @@ line_t Line::get(bool isFW, bool canUseGyro, int16_t gyro) {
 
 		//後ろのライン・前方の角にいるか
 		if(canUseGyro) {
-			line.isOutside |= insideAngle(line.dirInside - gyro + 360, 125, 235) || insideAngle(line.dirInside - gyro + 360, 305, 55);
+			line.isOutside |= (line.dirInside - gyro).inside(125, 235)
+				|| (line.dirInside - gyro).inside(305, 55);
 			line.canPause = line.isHalfOut;
 		}else {
 			line.isOutside |= line.isHalfOut;

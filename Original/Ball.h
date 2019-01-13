@@ -3,6 +3,7 @@
 
 #include "Arduino.h"
 #include "AdvMath.h"
+#include "Angle.h"
 
 class Ball {
 	public:
