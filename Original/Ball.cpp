@@ -97,11 +97,11 @@ vectorRT_t Ball::get(bool hasFilter) {
 		vXY.y += value[numBall] * SIN_IR[numBall];
 		vRT.r += value[numBall];
 	}
-	vRT.t = simplifyDeg(toDegrees(atan2(vXY.y, vXY.x)));
+	vRT.t = toDegrees(atan2(vXY.y, vXY.x));
 	vRT.r /= 1.0 * QTY;
 	//ボールが遠すぎるか
 	if(canSeeBall) {
-		vRT.t = -1;
+		vRT.t = Angle(false);
 	}
 	return vRT;
 }
@@ -110,16 +110,15 @@ uint16_t Ball::getForward() {
 	return value[0];
 }
 
-double Ball::getDir(double theta, bool isClose) {
-	double dir = -1;
+Angle Ball::getDir(Angle theta, bool isClose) {
+	Angle dir = theta;
 	if(theta >= 0) {
-		dir = simplifyDeg(theta + 180) - 180;
 		uint8_t key = 0;
 		for(; key < QTY_SLOPE_DIR - 1; key ++) {
 			if(abs(dir) <= POINT_DIR[key][isClose]) { break; }
 		}
-		double plusDir = dir * SLOPE_DIR[key][isClose] + signum(dir) * INTERCEPT_DIR[key][isClose];
-		dir = simplifyDeg(dir + plusDir);
+		Angle plusDir = dir * SLOPE_DIR[key][isClose] + signum(dir) * INTERCEPT_DIR[key][isClose];
+		dir = dir + plusDir;
 	}
 
 	return dir;

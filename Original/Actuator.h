@@ -3,7 +3,6 @@
 
 #include "Arduino.h"
 #include "AdvMath.h"
-#include "Angle.h"
 
 class Actuator {
 	public:

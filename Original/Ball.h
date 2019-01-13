@@ -11,7 +11,7 @@ class Ball {
 			uint8_t, uint16_t, uint8_t);
 		vectorRT_t get(bool);
 		uint16_t getForward();
-		double getDir(double, bool);
+		Angle getDir(Angle, bool);
 		bool getCatching();
 		uint16_t *getValue();
 		uint8_t getQTY();
