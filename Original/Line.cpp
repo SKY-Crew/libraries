@@ -91,13 +91,8 @@ line_t Line::get(bool isFW, bool canUseGyro, Angle gyro) {
 				line.isHalfOut = true;
 			}
 			//平均値計算
-			if(!line.isWholeOut) {
-				if(absAngle(line.dirInside - prvDI) <= 180) {
-					line.dirInside = prvDI * MULTI_AVG + line.dirInside * (1 - MULTI_AVG);
-				}else {
-					line.dirInside = prvDI * MULTI_AVG + line.dirInside * (1 - MULTI_AVG)
-									+ 360 * (line.dirInside >= prvDI ? MULTI_AVG : 1 - MULTI_AVG);
-				}
+			if(!line.isWholeOut && bool(prvDI)) {
+				line.dirInside = avg(line.dirInside, prvDI, MULTI_AVG);
 			}
 		}
 
