@@ -11,8 +11,8 @@ Ball::Ball(uint8_t given_QTY, uint8_t *given_PORT, uint16_t *given_MAX_IR, uint1
 	COS_IR = new double[QTY];
 	SIN_IR = new double[QTY];
 	for(int i = 0; i < QTY; i ++) {
-		COS_IR[i] = cos(toRadians(i * 360.0 / 16.0));
-		SIN_IR[i] = sin(toRadians(i * 360.0 / 16.0));
+		COS_IR[i] = cos(toRadians(i * 360.0 / QTY));
+		SIN_IR[i] = sin(toRadians(i * 360.0 / QTY));
 	}
 
 	MAX_IR = new uint16_t[QTY];
@@ -81,10 +81,10 @@ vectorRT_t Ball::get(bool hasFilter) {
 		if(value[numBall] > 0) {
 			canSeeBall = false;
 			if(hasFilter) {
-				// value[numBall] = map(value[numBall], avg_AVG_IR, MAX_IR[numBall], avg_AVG_IR, avg_MAX_IR);
-				if(prv[numBall] != 0) {
-					value[numBall] = prv[numBall] * MULTI_AVG + value[numBall] * (1 - MULTI_AVG);
-				}
+				value[numBall] = map(value[numBall], avg_AVG_IR, MAX_IR[numBall], avg_AVG_IR, avg_MAX_IR);
+			}
+			if(prv[numBall] != 0) {
+				value[numBall] = prv[numBall] * MULTI_AVG + value[numBall] * (1 - MULTI_AVG);
 			}
 		}
 		prv[numBall] = value[numBall];

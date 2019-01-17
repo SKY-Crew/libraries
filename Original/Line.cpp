@@ -52,7 +52,7 @@ line_t Line::get(bool isFW, bool canUseGyro, Angle gyro) {
 		countIIA = 0;
 		line.isOutside = line.isHalfOut && bool(prvDI);
 		line.isWholeOut = line.isOutside;
-		line.dirInside = line.isOutside ? bool(prvDI) : Angle(false);
+		line.dirInside = line.isOutside ? prvDI : Angle(false);
 	}else {
 		//ライン上
 		countIIA = 0;
@@ -92,7 +92,7 @@ line_t Line::get(bool isFW, bool canUseGyro, Angle gyro) {
 			}
 			//平均値計算
 			if(!line.isWholeOut) {
-				if(abs(line.dirInside - prvDI) <= 180) {
+				if(absAngle(line.dirInside - prvDI) <= 180) {
 					line.dirInside = prvDI * MULTI_AVG + line.dirInside * (1 - MULTI_AVG);
 				}else {
 					line.dirInside = prvDI * MULTI_AVG + line.dirInside * (1 - MULTI_AVG)

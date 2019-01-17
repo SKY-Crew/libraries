@@ -39,7 +39,7 @@ float _gyro_calcYaw(uint8_t *fifoBuf) {
   return ypr[0];
 }
 
-int16_t getGyro() {
+Angle getGyro() {
   if(!digitalRead(GYRO_ONOFF_PIN)) {
     int fifoSize;
     const int packetSize = 42;
@@ -72,10 +72,10 @@ int16_t getGyro() {
 
     _gyro_oldPinState = newPinState;
 
-    return toSend;
+    return Angle(toSend);
   }else {
     delay(1);
-    return 0;
+    return Angle(false);
   }
 }
 

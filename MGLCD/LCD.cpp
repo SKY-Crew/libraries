@@ -43,25 +43,23 @@ void LCD::write(String data, uint8_t XCoord, uint8_t YCoord) {
 }
 
 void LCD::drawMeter(Angle theta, uint8_t XCoord, bool canDrawCircle) {
-	theta += 180;
-	if(theta.inside(90, 270)) {
-		lcd->Locate(3 + XCoord, 2);
-	}else {
-		lcd->Locate(3 + XCoord, 3);
-	}
+	Angle convertedTheta = theta + 180;
+	lcd->Locate((theta < 0 ? 2 : 3) + XCoord, convertedTheta.inside(90, 270) ? 2 : 3);
 	lcd->print(string(theta));
 	if(canDrawCircle) {
 		lcd->Circle(24 + XCoord * 6, 24, 23);
 	}
-	double lineX = sin(theta) * 23;
-	double lineY = -cos(theta) * 23;
-	double lineWeightX = -cos(theta) * 0.5;
-	double lineWeightY = -sin(theta) * 0.5;
-	for(int8_t numLine = -1; numLine <= 1; numLine ++) {
-		lcd->Line(	24 + lineWeightX * numLine + XCoord * 6,
-					24 + lineWeightY * numLine,
-					24 + lineWeightX * numLine + lineX + XCoord * 6,
-					24 + lineWeightY * numLine + lineY);
+	if(bool(theta)) {
+		double lineX = sin(convertedTheta) * 23;
+		double lineY = -cos(convertedTheta) * 23;
+		double lineWeightX = -cos(convertedTheta) * 0.5;
+		double lineWeightY = -sin(convertedTheta) * 0.5;
+		for(int8_t numLine = -1; numLine <= 1; numLine ++) {
+			lcd->Line(	24 + lineWeightX * numLine + XCoord * 6,
+						24 + lineWeightY * numLine,
+						24 + lineWeightX * numLine + lineX + XCoord * 6,
+						24 + lineWeightY * numLine + lineY);
+		}
 	}
 }
 
@@ -70,12 +68,16 @@ void LCD::drawAngelRing(uint8_t QTY_LINE, Color *stateLine, uint8_t XCoord) {
 		uint8_t XCoordLine = 24 + 20 * COS_LINE[numLine] + XCoord * 6;
 		uint8_t YCoordLine = 24 + 20 * SIN_LINE[numLine];
 
-		if(stateLine[numLine] == BLACK) {
-			lcd->FillCircle(XCoordLine, YCoordLine, 1);
-		}else if(stateLine[numLine] == WHITE) {
-			lcd->Circle(XCoordLine, YCoordLine, 2);
-		}else {
-			lcd->FillCircle(XCoordLine, YCoordLine, 2);
+		switch(stateLine[numLine]) {
+			case BLACK:
+				lcd->FillCircle(XCoordLine, YCoordLine, 1);
+				break;
+			case WHITE:
+				lcd->Circle(XCoordLine, YCoordLine, 2);
+				break;
+			case GREEN:
+				lcd->FillCircle(XCoordLine, YCoordLine, 2);
+				break;
 		}
 	}
 }

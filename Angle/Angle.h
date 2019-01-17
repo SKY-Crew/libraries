@@ -12,12 +12,12 @@ class Angle {
 		inline Angle(bool given_hasValue = false, double given_angle = 0) {
 			setAngle(given_hasValue, given_angle);
 		}
-		inline Angle(bool given_hasValue, int given_angle) {
+		inline Angle(bool given_hasValue, int16_t given_angle) {
 			setAngle(given_hasValue, (double)given_angle);
 		}
 		inline Angle(double given_angle) { setAngle(true, given_angle); }
 		inline Angle(int given_angle) { setAngle(true, (double)given_angle); }
-		inline void setAngle(bool given_hasValue = false, int given_angle = 0) {
+		inline void setAngle(bool given_hasValue = false, double given_angle = 0) {
 			hasValue = given_hasValue;
 			angle = hasValue ? simplifyDeg(given_angle) : 0;
 		}
@@ -51,7 +51,7 @@ class Angle {
 		bool inside(const Angle&, const Angle&) const;
 };
 
-inline String string(const Angle& a) { return (bool(a) ? String(double(a)) : "null"); }
+inline String string(const Angle& a) { return (bool(a) ? String((int)double(a)) : "null"); }
 
 inline const Angle operator+(const Angle& a, const Angle& b) { return Angle(a) += b; }
 inline const Angle operator-(const Angle& a, const Angle& b) { return Angle(a) -= b; }
@@ -83,7 +83,7 @@ inline int8_t signum(const Angle& a) {
 }
 
 inline double cos(const Angle& a) {
-	return bool(a) ? advRound(sin(toRadians(double(a))), 5) : 0;
+	return bool(a) ? advRound(cos(toRadians(double(a))), 5) : 0;
 }
 inline double sin(const Angle& a) {
 	return bool(a) ? advRound(sin(toRadians(double(a))), 5) : 0;
