@@ -91,7 +91,7 @@ vectorRT_t Ball::get(bool hasFilter) {
 	}
 	//•Ÿ•Ø•»•Î∫œ≥… æ‡Îx”ãÀ„
 	vectorXY_t vXY = {0, 0};
-	for(int8_t numBall = 0; numBall < QTY; numBall ++) {
+	for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
 		vXY.x += value[numBall] * COS_IR[numBall];
 		vXY.y += value[numBall] * SIN_IR[numBall];
 		vRT.r += value[numBall];

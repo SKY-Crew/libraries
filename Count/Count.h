@@ -6,26 +6,26 @@
 
 class Count {
 	private:
-		int MAX;
-		int MIN;
-		int count;
+		int16_t MAX;
+		int16_t MIN;
+		int16_t count;
 		bool COUNT_UP;
 	public:
-		inline Count(int given_MAX = 0, bool given_COUNT_UP = true, int given_MIN = 0) {
+		inline Count(int16_t given_MAX = 0, bool given_COUNT_UP = true, int16_t given_MIN = 0) {
 			set_MAX(given_MAX);
 			set_COUNT_UP(given_COUNT_UP);
 			set_MIN(given_MIN);
 			count = MIN;
 		}
 
-		inline operator int() const{ return count; }
+		inline operator int16_t() const{ return count; }
 		inline explicit operator bool() const{ return COUNT_UP ? count >= MAX : count > MIN; }
 
-		inline void set_MAX(int given_MAX) { MAX = given_MAX; }
-		inline void set_MIN(int given_MIN) { MIN = given_MIN; }
-		inline void set_COUNT_UP(int given_COUNT_UP) { COUNT_UP = given_COUNT_UP; }
+		inline void set_MAX(int16_t given_MAX) { MAX = given_MAX; }
+		inline void set_MIN(int16_t given_MIN) { MIN = given_MIN; }
+		inline void set_COUNT_UP(int16_t given_COUNT_UP) { COUNT_UP = given_COUNT_UP; }
 
-		inline void reset(int set_count = -1) {
+		inline void reset(int16_t set_count = -1) {
 			if(set_count == -1) {
 				set_count = COUNT_UP ? MIN : MAX;
 			}
