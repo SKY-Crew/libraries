@@ -89,15 +89,26 @@ vectorRT_t Ball::get(bool hasFilter) {
 		}
 		prv[numBall] = value[numBall];
 	}
+	//
+	uint8_t maxPos = 0;
+	uint16_t maxValue = 0;
+	for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
+		if(value[numBall] > maxValue) {
+			maxValue = value[numBall];
+			maxPos = numBall;
+		}
+	}
 	//ベクトル合成 距離計算
 	vectorXY_t vXY = {0, 0};
-	for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
-		vXY.x += value[numBall] * COS_IR[numBall];
-		vXY.y += value[numBall] * SIN_IR[numBall];
-		vRT.r += value[numBall];
+	for(int8_t numBall = -3; numBall <= 3; numBall ++) {
+		uint8_t useNum = (maxPos + numBall + QTY) % QTY;
+		vXY.x += value[useNum] * COS_IR[useNum];
+		vXY.y += value[useNum] * SIN_IR[useNum];
+		vRT.r += value[useNum];
 	}
 	vRT.t = toDegrees(atan2(vXY.y, vXY.x));
 	vRT.r /= 1.0 * QTY;
+
 	//ボールが遠すぎるか
 	if(canSeeBall) {
 		vRT.t = Angle(false);
