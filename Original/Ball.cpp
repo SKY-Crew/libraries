@@ -41,7 +41,6 @@ Ball::Ball(uint8_t given_QTY, uint8_t *given_PORT, uint16_t *given_MAX_IR, uint1
 
 	P_CATCH = given_P_CATCH;
 	BORDER_CATCH = given_BORDER_CATCH;
-	MAX_C_CATCH = given_MAX_C_CATCH;
 
 	for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
 		prv[numBall] = 0;
@@ -51,6 +50,8 @@ Ball::Ball(uint8_t given_QTY, uint8_t *given_PORT, uint16_t *given_MAX_IR, uint1
 	for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
 		pinMode(PORT[numBall], INPUT);
 	}
+
+	cCatch.set_MAX(given_MAX_C_CATCH);
 }
 
 
@@ -124,10 +125,14 @@ Angle Ball::getDir(Angle theta, bool isClose) {
 	return dir;
 }
 
-bool Ball::getCatching() {
+bool Ball::getCatch() {
 	valueCatch = analogRead(P_CATCH);
-	countCatch = valueCatch < BORDER_CATCH ? MAX_C_CATCH : max(0, countCatch - 1);
-	return countCatch > 0;
+	cCatch.increment(valueCatch >= BORDER_CATCH);
+	return bool(cCatch);
+}
+
+bool Ball::compareCatch(double rate) {
+	return cCatch.compare(rate);
 }
 
 uint16_t *Ball::getValue() {
@@ -143,12 +148,4 @@ uint8_t Ball::getQTY() {
 
 uint16_t Ball::getValueCatch() {
 	return valueCatch;
-}
-
-uint8_t Ball::getCountCatch() {
-	return countCatch;
-}
-
-uint8_t Ball::getMAX_C_CATCH() {
-	return MAX_C_CATCH;
 }

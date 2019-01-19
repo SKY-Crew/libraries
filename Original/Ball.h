@@ -4,6 +4,7 @@
 #include "Arduino.h"
 #include "AdvMath.h"
 #include "Angle.h"
+#include "Count.h"
 
 class Ball {
 	public:
@@ -13,12 +14,11 @@ class Ball {
 		vectorRT_t get(bool = true);
 		uint16_t getForward();
 		Angle getDir(Angle, bool);
-		bool getCatching();
+		bool getCatch();
+		bool compareCatch(double);
 		uint16_t *getValue();
 		uint8_t getQTY();
 		uint16_t getValueCatch();
-		uint8_t getCountCatch();
-		uint8_t getMAX_C_CATCH();
 	private:
 		uint8_t QTY;
 		uint8_t *PORT;
@@ -44,10 +44,9 @@ class Ball {
 
 		uint8_t P_CATCH;
 		uint16_t BORDER_CATCH;
-		uint8_t MAX_C_CATCH;
 
 		uint16_t valueCatch;
-		uint8_t countCatch;
+		Count cCatch;
 };
 
 #endif
