@@ -57,11 +57,11 @@ Ball::Ball(uint8_t given_QTY, uint8_t *given_PORT, uint16_t *given_MAX_IR, uint1
 vectorRT_t Ball::get(bool hasFilter) {
 	vectorRT_t vRT = {0, 0};
 	bool canSeeBall = true;
-	//åˆæœŸåŒ–
+	//³õÆÚ»¯
 	for(int numBall = 0; numBall < QTY; numBall ++) {
 		value[numBall] = 0;
 	}
-	//è¨ˆæ¸¬
+	//Ó‹œy
 	uint64_t time = micros();
 	uint16_t countMax = 0;
 	while(micros() - time < 1666) {
@@ -75,7 +75,7 @@ vectorRT_t Ball::get(bool hasFilter) {
 	// 	Serial.print("\t");
 	// }
 	// Serial.println();
-	// å¹³å‡å€¤è¨ˆç®—
+	// Æ½¾ù‚Ó‹Ëã
 	for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
 		value[numBall] *= 1000.0 / (double) countMax;
 		if(value[numBall] > 0) {
@@ -89,27 +89,17 @@ vectorRT_t Ball::get(bool hasFilter) {
 		}
 		prv[numBall] = value[numBall];
 	}
-	//
-	uint8_t maxPos = 0;
-	uint16_t maxValue = 0;
-	for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
-		if(value[numBall] > maxValue) {
-			maxValue = value[numBall];
-			maxPos = numBall;
-		}
-	}
-	//ãƒ™ã‚¯ãƒˆãƒ«åˆæˆ è·é›¢è¨ˆç®—
+	//¥Ù¥¯¥È¥ëºÏ³É ¾àëxÓ‹Ëã
 	vectorXY_t vXY = {0, 0};
-	for(int8_t numBall = -3; numBall <= 3; numBall ++) {
-		uint8_t useNum = (maxPos + numBall + QTY) % QTY;
-		vXY.x += value[useNum] * COS_IR[useNum];
-		vXY.y += value[useNum] * SIN_IR[useNum];
-		vRT.r += value[useNum];
+	for(int8_t numBall = 0; numBall < QTY; numBall ++) {
+		vXY.x += value[numBall] * COS_IR[numBall];
+		vXY.y += value[numBall] * SIN_IR[numBall];
+		vRT.r += value[numBall];
 	}
 	vRT.t = toDegrees(atan2(vXY.y, vXY.x));
 	vRT.r /= 1.0 * QTY;
 
-	//ãƒœãƒ¼ãƒ«ãŒé ã™ãã‚‹ã‹
+	//¥Ü©`¥ë¤¬ßh¤¹¤®¤ë¤«
 	if(canSeeBall) {
 		vRT.t = Angle(false);
 	}
