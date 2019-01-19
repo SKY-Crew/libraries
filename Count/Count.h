@@ -1,5 +1,5 @@
-#ifndef ANGLE_ORIG
-#define ANGLE_ORIG
+#ifndef COUNT_ORIG
+#define COUNT_ORIG
 
 #include "Arduino.h"
 #include "advMath.h"
@@ -19,7 +19,7 @@ class Count {
 		inline operator int() const{ return count; }
 		inline explicit operator bool() const{ return COUNT_UP ? count >= MAX : count > MIN; }
 
-		inline set(int given_MAX, bool given_COUNT_UP = true, int given_MIN = 0) {
+		inline void set(int given_MAX, bool given_COUNT_UP = true, int given_MIN = 0) {
 			MAX = given_MAX;
 			MIN = given_MIN;
 			COUNT_UP = given_COUNT_UP;
@@ -31,8 +31,8 @@ class Count {
 			}
 			count = constrain(set_count, MIN, MAX);
 		}
-		inline void increment() {
-			count = constrain(COUNT_UP ? ++ count : -- count, MIN, MAX);
+		inline void increment(bool canIncrement = true) {
+			count = canIncrement ? count : constrain(COUNT_UP ? ++ count : -- count, MIN, MAX);
 		}
 		inline bool compare(double rate) {
 			return rate < 0 ? true
