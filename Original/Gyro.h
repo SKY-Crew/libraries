@@ -75,7 +75,7 @@ Angle getGyro() {
     return Angle(toSend);
   }else {
     delay(1);
-    return Angle(false);
+    return false;
   }
 }
 

@@ -52,7 +52,7 @@ line_t Line::get(bool isFW, bool canUseGyro, Angle gyro) {
 		countIIA = 0;
 		line.isOutside = line.isHalfOut && bool(prvDI);
 		line.isWholeOut = line.isOutside;
-		line.dirInside = line.isOutside ? prvDI : Angle(false);
+		line.dirInside = line.isOutside ? prvDI : false;
 	}else {
 		//ライン上
 		countIIA = 0;

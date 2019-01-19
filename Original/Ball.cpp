@@ -102,7 +102,7 @@ vectorRT_t Ball::get(bool hasFilter) {
 
 	//¥Ü©`¥ë¤¬ßh¤¹¤®¤ë¤«
 	if(canSeeBall) {
-		vRT.t = Angle(false);
+		vRT.t = false;
 	}
 	return vRT;
 }
