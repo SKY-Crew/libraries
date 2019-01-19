@@ -32,7 +32,7 @@ class Count {
 			count = constrain(set_count, MIN, MAX);
 		}
 		inline void increment(bool canIncrement = true) {
-			count = canIncrement ? count : constrain(COUNT_UP ? ++ count : -- count, MIN, MAX);
+			count = canIncrement ? (COUNT_UP ? 0 : MAX) : constrain(COUNT_UP ? ++ count : -- count, MIN, MAX);
 		}
 		inline bool compare(double rate) {
 			return rate < 0 ? true
