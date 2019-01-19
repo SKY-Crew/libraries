@@ -11,15 +11,19 @@ class Count {
 		int count;
 		bool COUNT_UP;
 	public:
-		inline Count(int given_MAX, bool given_COUNT_UP = true, int given_MIN = 0) {
-			MAX = given_MAX;
-			MIN = given_MIN;
-			COUNT_UP = given_COUNT_UP;
+		inline Count(int given_MAX = 0, bool given_COUNT_UP = true, int given_MIN = 0) {
+			set(given_MAX, given_COUNT_UP, given_MIN);
 			count = MIN;
 		}
 
 		inline operator int() const{ return count; }
 		inline explicit operator bool() const{ return COUNT_UP ? count >= MAX : count > MIN; }
+
+		inline set(int given_MAX, bool given_COUNT_UP = true, int given_MIN = 0) {
+			MAX = given_MAX;
+			MIN = given_MIN;
+			COUNT_UP = given_COUNT_UP;
+		}
 
 		inline void reset(int set_count = -1) {
 			if(set_count == -1) {
