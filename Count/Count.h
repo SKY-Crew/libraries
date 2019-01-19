@@ -25,14 +25,14 @@ class Count {
 		inline void set_MIN(int16_t given_MIN) { MIN = given_MIN; }
 		inline void set_COUNT_UP(int16_t given_COUNT_UP) { COUNT_UP = given_COUNT_UP; }
 
-		inline void reset(int16_t set_count = -1) {
-			if(set_count == -1) {
-				set_count = COUNT_UP ? MIN : MAX;
+		inline void reset(int16_t given_count = -1) {
+			if(given_count == -1) {
+				given_count = COUNT_UP ? MIN : MAX;
 			}
-			count = constrain(set_count, MIN, MAX);
+			count = constrain(given_count, MIN, MAX);
 		}
 		inline void increment(bool canIncrement = true) {
-			count = canIncrement ? (COUNT_UP ? 0 : MAX) : constrain(COUNT_UP ? ++ count : -- count, MIN, MAX);
+			count = canIncrement ? (COUNT_UP ? MIN : MAX) : constrain(COUNT_UP ? ++ count : -- count, MIN, MAX);
 		}
 		inline bool compare(double rate) {
 			return rate < 0 ? true
