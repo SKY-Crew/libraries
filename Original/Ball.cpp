@@ -127,7 +127,7 @@ Angle Ball::getDir(Angle theta, bool isClose) {
 
 bool Ball::getCatch() {
 	valueCatch = analogRead(P_CATCH);
-	cCatch.increment(valueCatch >= BORDER_CATCH);
+	cCatch.increase(valueCatch < BORDER_CATCH);
 	return bool(cCatch);
 }
 
