@@ -10,10 +10,10 @@ PSD::PSD(uint8_t given_X, double given_MULTI_AVG, uint16_t given_BORDER_IS_CLOSE
 
 	MULTI_AVG = given_MULTI_AVG;
 	BORDER_IS_CLOSE = given_BORDER_IS_CLOSE;
-	MAX_CC = given_MAX_CC;
 
 	//init
 	WireX->begin();
+	cClose = Count(given_MAX_CC, false);
 }
 
 bool PSD::get() {
@@ -28,8 +28,8 @@ bool PSD::get() {
 	}
 	value = value * (1 - MULTI_AVG) + prv * MULTI_AVG;
 	prv = value;
-	countClose = value <= BORDER_IS_CLOSE ? MAX_CC : max(countClose - 1, 0);
-	return countClose > 0;
+	cClose.increase(value < BORDER_IS_CLOSE);
+	return bool(cClose);
 }
 
 double PSD::getValue() {

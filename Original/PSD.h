@@ -4,6 +4,7 @@
 #include "Arduino.h"
 #include "Wire.h"
 #include "AdvMath.h"
+#include "Count.h"
 
 class PSD {
 	public:
@@ -19,8 +20,7 @@ class PSD {
 		double value;
 		double prv = 0;
 
-		uint8_t MAX_CC;
-		uint8_t countClose = 0;
+		Count cClose = 0;
 };
 
 #endif
