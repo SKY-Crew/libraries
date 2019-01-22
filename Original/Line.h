@@ -44,6 +44,7 @@ class Line {
 		Color *state;
 		Color *crtState;
 		Angle prvDI = false;
+		Angle prvGyro = false;
 
 		uint8_t countIIA = 0;
 

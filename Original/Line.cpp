@@ -53,6 +53,9 @@ line_t Line::get(bool isFW, bool canUseGyro, Angle gyro) {
 		line.isOutside = line.isHalfOut && bool(prvDI);
 		line.isWholeOut = line.isOutside;
 		line.dirInside = line.isOutside ? prvDI : false;
+		if(bool(gyro) && bool(prvGyro) && bool(line.dirInside)) {
+			line.dirInside += gyro - prvGyro;
+		}
 	}else {
 		//ライン上
 		countIIA = 0;
@@ -114,6 +117,7 @@ line_t Line::get(bool isFW, bool canUseGyro, Angle gyro) {
 	}
 
 	prvDI = line.dirInside;
+	prvGyro = gyro;
 	return line;
 }
 
