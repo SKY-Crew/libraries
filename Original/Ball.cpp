@@ -65,7 +65,7 @@ vectorRT_t Ball::get(bool hasFilter) {
 	//Ó‹œy
 	uint64_t time = micros();
 	uint16_t countMax = 0;
-	while(micros() - time < 1666) {
+	while(micros() - time < 837 * 2) {
 		countMax ++;
 		for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
 			value[numBall] += !digitalRead(PORT[numBall]);
