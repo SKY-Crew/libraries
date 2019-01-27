@@ -1,6 +1,6 @@
 #include "Ball.h"
 
-Ball::Ball(uint8_t given_QTY, uint8_t *given_PORT, uint16_t *given_MAX_IR, uint16_t *given_AVG_IR, double given_MULTI_AVG,
+Ball::Ball(uint8_t given_QTY, uint8_t *given_PORT, uint16_t *given_MAX_IR, uint16_t *given_AVG_IR, uint8_t given_MEASURING_COUNT, double given_MULTI_AVG,
 	uint8_t given_SIZE_SLOPE_DIR, double (*given_SLOPE_DIR)[2], double (*given_INTERCEPT_DIR)[2], double (*given_POINT_DIR)[2],
 	uint8_t given_P_CATCH, uint16_t given_BORDER_CATCH, uint8_t given_MAX_C_CATCH) {
 	//copy
@@ -26,6 +26,7 @@ Ball::Ball(uint8_t given_QTY, uint8_t *given_PORT, uint16_t *given_MAX_IR, uint1
 	avg_MAX_IR /= QTY;
 	avg_AVG_IR /= QTY;
 
+	MEASURING_COUNT = given_MEASURING_COUNT;
 	MULTI_AVG = given_MULTI_AVG;
 	SIZE_SLOPE_DIR = given_SIZE_SLOPE_DIR;
 	SLOPE_DIR = new double[SIZE_SLOPE_DIR][2];
@@ -58,27 +59,30 @@ Ball::Ball(uint8_t given_QTY, uint8_t *given_PORT, uint16_t *given_MAX_IR, uint1
 vectorRT_t Ball::get(bool hasFilter) {
 	vectorRT_t vRT = {0, 0};
 	bool canSeeBall = true;
-	//≥ı∆⁄ªØ
+	//ÂàùÊúüÂåñ
 	for(int numBall = 0; numBall < QTY; numBall ++) {
 		value[numBall] = 0;
 	}
-	//”ãúy
+	//Ë®àÊ∏¨
 	uint64_t time = micros();
 	uint16_t countMax = 0;
-	while(micros() - time < 837 * 2) {
+	while(micros() - time < CYCLE * MEASURING_COUNT) {
 		countMax ++;
 		for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
 			value[numBall] += !digitalRead(PORT[numBall]);
 		}
+	}
+
+	for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
+		value[numBall] *= 1000.0 / (double) countMax;
 	}
 	// for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
 	// 	Serial.print(value[numBall]);
 	// 	Serial.print("\t");
 	// }
 	// Serial.println();
-	// ∆Ωæ˘Çé”ãÀ„
+	// Âπ≥ÂùáÂÄ§Ë®àÁÆó
 	for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
-		value[numBall] *= 1000.0 / (double) countMax;
 		if(value[numBall] > 0) {
 			canSeeBall = false;
 			if(hasFilter) {
@@ -90,7 +94,7 @@ vectorRT_t Ball::get(bool hasFilter) {
 		}
 		prv[numBall] = value[numBall];
 	}
-	//•Ÿ•Ø•»•Î∫œ≥… æ‡Îx”ãÀ„
+	//„Éô„ÇØ„Éà„É´ÂêàÊàê Ë∑ùÈõ¢Ë®àÁÆó
 	vectorXY_t vXY = {0, 0};
 	for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
 		vXY.x += value[numBall] * COS_IR[numBall];
@@ -100,7 +104,7 @@ vectorRT_t Ball::get(bool hasFilter) {
 	vRT.t = toDegrees(atan2(vXY.y, vXY.x));
 	vRT.r /= 1.0 * QTY;
 
-	//•‹©`•Î§¨ﬂh§π§Æ§Î§´
+	//„Éú„Éº„É´„ÅåÈÅ†„Åô„Åé„Çã„Åã
 	if(canSeeBall) {
 		vRT.t = false;
 	}
