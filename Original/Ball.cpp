@@ -1,6 +1,7 @@
 #include "Ball.h"
 
-Ball::Ball(uint8_t given_QTY, uint8_t *given_PORT, uint16_t *given_MAX_IR, uint16_t *given_AVG_IR, uint8_t given_MEASURING_COUNT, double given_MULTI_AVG,
+Ball::Ball(uint8_t given_QTY, uint8_t *given_PORT, uint16_t *given_MAX_IR,uint16_t *given_AVG_IR,
+	uint8_t given_MEASURING_COUNT, uint16_t given_BORDER_WEAK, double given_MULTI_AVG,
 	uint8_t given_SIZE_SLOPE_DIR, double (*given_SLOPE_DIR)[2], double (*given_INTERCEPT_DIR)[2], double (*given_POINT_DIR)[2],
 	uint8_t given_P_CATCH, uint16_t given_BORDER_CATCH, uint8_t given_MAX_C_CATCH) {
 	//copy
@@ -27,6 +28,7 @@ Ball::Ball(uint8_t given_QTY, uint8_t *given_PORT, uint16_t *given_MAX_IR, uint1
 	avg_AVG_IR /= QTY;
 
 	MEASURING_COUNT = given_MEASURING_COUNT;
+	BORDER_WEAK = given_BORDER_WEAK;
 	MULTI_AVG = given_MULTI_AVG;
 	SIZE_SLOPE_DIR = given_SIZE_SLOPE_DIR;
 	SLOPE_DIR = new double[SIZE_SLOPE_DIR][2];
@@ -58,7 +60,7 @@ Ball::Ball(uint8_t given_QTY, uint8_t *given_PORT, uint16_t *given_MAX_IR, uint1
 
 vectorRT_t Ball::get(bool hasFilter) {
 	vectorRT_t vRT = {0, 0};
-	bool canSeeBall = true;
+	bool findingBall = true;
 	//初期化
 	for(int numBall = 0; numBall < QTY; numBall ++) {
 		value[numBall] = 0;
@@ -73,39 +75,55 @@ vectorRT_t Ball::get(bool hasFilter) {
 		}
 	}
 
+	//比率化
 	for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
 		value[numBall] *= 1000.0 / (double) countMax;
 	}
-	// for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
-	// 	Serial.print(value[numBall]);
-	// 	Serial.print("\t");
-	// }
-	// Serial.println();
-	// 平均値計算
+	
 	for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
 		if(value[numBall] > 0) {
-			canSeeBall = false;
+			findingBall = false;
+			//フィルター
 			if(hasFilter) {
 				value[numBall] = map(value[numBall], avg_AVG_IR, MAX_IR[numBall], avg_AVG_IR, avg_MAX_IR);
 			}
-			if(prv[numBall] != 0) {
+			// 平均値計算
+			if(prv[numBall] > 0) {
 				value[numBall] = prv[numBall] * MULTI_AVG + value[numBall] * (1 - MULTI_AVG);
 			}
 		}
+		//平均値保存
 		prv[numBall] = value[numBall];
 	}
-	//ベクトル合成 距離計算
+
 	vectorXY_t vXY = {0, 0};
+	//距離計算
+	for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
+		vRT.r += value[numBall];
+	}
+	vRT.r /= (double) QTY;
+	//弱反応切り捨て
+	bool isAllWeak = true;
+	for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
+		if(value[numBall] > BORDER_WEAK) {
+			isAllWeak = false;
+			break;
+		}
+	}
+	if(!isAllWeak) {
+		for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
+			value[numBall] = max(value[numBall] - BORDER_WEAK, 0);
+		}
+	}
+	//ベクトル合成
 	for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
 		vXY.x += value[numBall] * COS_IR[numBall];
 		vXY.y += value[numBall] * SIN_IR[numBall];
-		vRT.r += value[numBall];
 	}
 	vRT.t = toDegrees(atan2(vXY.y, vXY.x));
-	vRT.r /= 1.0 * QTY;
 
-	//ボールが遠すぎるか
-	if(canSeeBall) {
+	//null判定
+	if(findingBall) {
 		vRT.t = false;
 	}
 	return vRT;

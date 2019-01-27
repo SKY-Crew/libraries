@@ -8,7 +8,8 @@
 
 class Ball {
 	public:
-		Ball(uint8_t, uint8_t*, uint16_t*, uint16_t*, uint8_t, double,
+		Ball(uint8_t, uint8_t*, uint16_t*, uint16_t*,
+			uint8_t, uint16_t, double,
 			uint8_t, double(*)[2], double(*)[2], double(*)[2],
 			uint8_t, uint16_t, uint8_t);
 		vectorRT_t get(bool = true);
@@ -33,6 +34,7 @@ class Ball {
 
 		const uint16_t CYCLE = 837;
 		uint8_t MEASURING_COUNT;
+		uint16_t BORDER_WEAK;
 		double MULTI_AVG;
 
 		uint8_t SIZE_SLOPE_DIR;
