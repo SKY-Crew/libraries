@@ -71,17 +71,13 @@ inline bool Angle::inside(const Angle& A_min, const Angle& A_max) const{
 	return bool(*this) && (*this - A_min - 180.) <= (A_max - A_min - 180.);
 }
 
-inline double diff(const Angle& a, const Angle& b) {
-	return max(double(a - b), double(b - a));
-}
-
 inline double absAngle(const Angle& a) {
 	return bool(a) ? abs(double(a)) : 0;
 }
 inline int8_t signum(const Angle& a) {
 	return bool(a) ? signum(double(a)) : 0;
 }
-inline Angle avg(const Angle& a, const Angle& avg, double MULTI_AVG) {
+inline Angle filter(const Angle& a, const Angle& avg, double MULTI_AVG) {
 	Angle ans;
 	if(abs(double(a) - double(avg)) <= 180) {
 		ans = avg * MULTI_AVG + a * (1 - MULTI_AVG);
@@ -90,6 +86,10 @@ inline Angle avg(const Angle& a, const Angle& avg, double MULTI_AVG) {
 						+ 360 * (a >= avg ? MULTI_AVG : 1 - MULTI_AVG);
 	}
 	return ans;
+}
+
+inline double diff(const Angle& a, const Angle& b) {
+	return absAngle(a - b);
 }
 
 inline double cos(const Angle& a) {
