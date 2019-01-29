@@ -39,6 +39,7 @@ Ball::Ball(uint8_t given_QTY, uint8_t *given_PORT, uint16_t *given_MAX_IR,uint16
 	copyArray(&POINT_DIR[0][0], &given_POINT_DIR[0][0], SIZE_SLOPE_DIR - 1, 2);
 
 	value = new uint16_t[QTY];
+	weak = new uint16_t[QTY];
 	prv = new uint16_t[QTY];
 	crt = new uint16_t[QTY];
 
@@ -110,15 +111,13 @@ vectorRT_t Ball::get(bool hasFilter) {
 			break;
 		}
 	}
-	if(!isAllWeak) {
-		for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
-			value[numBall] = max(value[numBall] - BORDER_WEAK, 0);
-		}
+	for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
+		weak[numBall] = isAllWeak ? value[numBall] : max(value[numBall] - BORDER_WEAK, 0);
 	}
 	//ベクトル合成
 	for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
-		vXY.x += value[numBall] * COS_IR[numBall];
-		vXY.y += value[numBall] * SIN_IR[numBall];
+		vXY.x += weak[numBall] * COS_IR[numBall];
+		vXY.y += weak[numBall] * SIN_IR[numBall];
 	}
 	vRT.t = toDegrees(atan2(vXY.y, vXY.x));
 

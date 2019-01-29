@@ -43,6 +43,7 @@ class Ball {
 		double (*POINT_DIR)[2];
 
 		uint16_t *value;
+		uint16_t *weak;
 		uint16_t *prv;
 		uint16_t *crt;
 
