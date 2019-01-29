@@ -1,7 +1,7 @@
 #ifndef CAM_ORIG
 #define CAM_ORIG
 
-#include "Arduino.h"
+#include <Arduino.h>
 #include "AdvMath.h"
 
 typedef struct {

@@ -1,7 +1,7 @@
 #ifndef COUNT_ORIG
 #define COUNT_ORIG
 
-#include "Arduino.h"
+#include <Arduino.h>
 #include "advMath.h"
 
 class Count {

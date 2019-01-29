@@ -1,7 +1,7 @@
 #ifndef COMC_ORIG
 #define COMC_ORIG
 
-#include "Arduino.h"
+#include <Arduino.h>
 #include "AdvMath.h"
 
 typedef struct {

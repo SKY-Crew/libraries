@@ -77,7 +77,7 @@ THE SOFTWARE.
     #if ARDUINO < 100
         #include "WProgram.h"
     #else
-        #include "Arduino.h"
+        #include <Arduino.h>
     #endif
     #if I2CDEV_IMPLEMENTATION == I2CDEV_ARDUINO_WIRE
         #include <Wire.h>

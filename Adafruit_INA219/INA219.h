@@ -1,7 +1,7 @@
 #ifndef INA219_ORIG
 #define INA219_ORIG
 
-#include "Arduino.h"
+#include <Arduino.h>
 #include "advMath.h"
 #include "Adafruit_INA219.h"
 

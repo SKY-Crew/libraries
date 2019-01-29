@@ -1,7 +1,7 @@
 #ifndef ADV_MATH_ORIG
 #define ADV_MATH_ORIG
 
-#include "Arduino.h"
+#include <Arduino.h>
 
 typedef struct {
 	double x;

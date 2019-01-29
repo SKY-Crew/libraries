@@ -1,7 +1,7 @@
 #ifndef LCD_ORIG
 #define LCD_ORIG
 
-#include "Arduino.h"
+#include <Arduino.h>
 #include "AdvMath.h"
 #include "Angle.h"
 #include "MGLCD.h"
