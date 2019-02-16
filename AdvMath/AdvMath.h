@@ -42,6 +42,11 @@ inline void copyArray(uint16_t *copiedArray, uint16_t *basisArray, uint8_t size)
 		copiedArray[num] = basisArray[num];
 	}
 }
+inline void copyArray(int16_t *copiedArray, int16_t *basisArray, uint8_t size) {
+	for(int num = 0; num < size; num ++) {
+		copiedArray[num] = basisArray[num];
+	}
+}
 inline void copyArray(double *copiedArray, double *basisArray, uint8_t size) {
 	for(int num = 0; num < size; num ++) {
 		copiedArray[num] = basisArray[num];

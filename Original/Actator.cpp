@@ -26,8 +26,12 @@ Actuator::Actuator(bool given_CAN_MOVE, uint8_t given_QTY, uint8_t *given_P_DIR,
 
 	for(uint8_t i = 0; i < QTY; i ++) {
 		ROT_MOTOR[i] = new Angle();
-		ROT_MOTOR[i] = firstRM * ((i % 2) == 0 ? 1 : -1)
-			+ 180 * ((i % 3) == 0 ? 0 : 1);
+		if(QTY == 4) {
+			ROT_MOTOR[i] = firstRM * ((i % 2) == 0 ? 1 : -1)
+				+ 180 * ((i % 3) == 0 ? 0 : 1);
+		}else {
+			ROT_MOTOR[i] = firstRM * (i + 0.5);
+		}
 		ROT_WHEEL[i] = new Angle();
 		ROT_WHEEL[i] = ROT_MOTOR[i] + 90;
 		COS_RW[i] = cos(ROT_WHEEL[i]);
@@ -38,7 +42,11 @@ Actuator::Actuator(bool given_CAN_MOVE, uint8_t given_QTY, uint8_t *given_P_DIR,
 	for(uint8_t i = 0; i < QTY; i ++) {
 		pinMode(P_DIR[i], OUTPUT);
 		pinMode(P_PWR[i], OUTPUT);
-		analogWriteFrequency(P_PWR[i], 250 * 1000);
+		if(QTY == 4) {
+			analogWriteFrequency(P_PWR[i], 250 * 1000);
+		}else {
+			// TCCR3B = (TCCR3B & 0b11111000) | 0x01;
+		}
 	}
 
 	pinMode(P_KICKER, OUTPUT);

@@ -38,6 +38,9 @@ THE SOFTWARE.
 #define _MPU6050_H_
 
 #include "I2Cdev.h"
+/////////////////////////////////////////////////////////
+#include "helper_3dmath.h"
+/////////////////////////////////////////////////////////
 
 // supporting link:  http://forum.arduino.cc/index.php?&topic=143444.msg1079517#msg1079517
 // also: http://forum.arduino.cc/index.php?&topic=141571.msg1062899#msg1062899s
@@ -822,7 +825,9 @@ class MPU6050 {
         void setDMPConfig2(uint8_t config);
 
         // special methods for MotionApps 2.0 implementation
-        #ifdef MPU6050_INCLUDE_DMP_MOTIONAPPS20
+/////////////////////////////////////////////////////////
+        // #ifdef MPU6050_INCLUDE_DMP_MOTIONAPPS20
+/////////////////////////////////////////////////////////
             uint8_t *dmpPacketBuffer;
             uint16_t dmpPacketSize;
 
@@ -920,7 +925,9 @@ class MPU6050 {
             uint32_t dmpGetAccelSumOfSquare();
             void dmpOverrideQuaternion(long *q);
             uint16_t dmpGetFIFOPacketSize();
-        #endif
+/////////////////////////////////////////////////////////
+        // #endif
+/////////////////////////////////////////////////////////
 
         // special methods for MotionApps 4.1 implementation
         #ifdef MPU6050_INCLUDE_DMP_MOTIONAPPS41

@@ -27,10 +27,14 @@ cam_t Cam::get() {
 	if(!digitalRead(P_ONOFF)) {
 		if(SerialX->available()) {
 			uint8_t value = SerialX->read();
-			if(extractBit(value, 6, 7) == 0b11) {
-				goal.isWide = extractBit(value, 5, 5) == 1;
-				goal.distFW = extractBit(value, 3, 4);
-				goal.rotOpp = CENTER_OPP_GOAL - extractBit(value, 0, 2);
+			if(extractBit(value, 7, 7) == 0b1) {
+				goal.isWide = extractBit(value, 6, 6) == 1;
+				goal.distFW = extractBit(value, 4, 5);
+				goal.rotOpp = CENTER_OPP_GOAL - extractBit(value, 0, 3);
+				// if(goal.rotOpp >= 0) {
+				// 	goal.rotOpp ++;
+				// }
+				// Serial.println(goal.rotOpp);
 			}else if(extractBit(value, 6, 7) == 0b00){
 				goal.isInCorner = extractBit(value, 5, 5) == 1;
 				goal.distGK = extractBit(value, 3, 4);
