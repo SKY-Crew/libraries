@@ -1,6 +1,6 @@
 #include "Ball.h"
 
-Ball::Ball(uint8_t given_QTY, uint8_t *given_PORT, uint16_t *given_MAX_IR,uint16_t *given_AVG_IR,
+Ball::Ball(uint8_t given_QTY, uint8_t *given_PORT,
 	uint8_t given_MEASURING_COUNT, uint16_t given_BORDER_WEAK, double given_MULTI_AVG,
 	uint8_t given_SIZE_SLOPE_DIR, double (*given_SLOPE_DIR)[2], double (*given_INTERCEPT_DIR)[2], double (*given_POINT_DIR)[2],
 	uint8_t given_P_CATCH, uint16_t given_BORDER_CATCH, uint8_t given_MAX_C_CATCH) {
@@ -15,17 +15,6 @@ Ball::Ball(uint8_t given_QTY, uint8_t *given_PORT, uint16_t *given_MAX_IR,uint16
 		COS_IR[i] = cos(toRadians(i * 360.0 / QTY));
 		SIN_IR[i] = sin(toRadians(i * 360.0 / QTY));
 	}
-
-	MAX_IR = new uint16_t[QTY];
-	copyArray(MAX_IR, given_MAX_IR, QTY);
-	AVG_IR = new uint16_t[QTY];
-	copyArray(AVG_IR, given_AVG_IR, QTY);
-	for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
-		avg_MAX_IR += MAX_IR[numBall];
-		avg_AVG_IR += AVG_IR[numBall];
-	}
-	avg_MAX_IR /= QTY;
-	avg_AVG_IR /= QTY;
 
 	MEASURING_COUNT = given_MEASURING_COUNT;
 	BORDER_WEAK = given_BORDER_WEAK;
@@ -80,14 +69,10 @@ vectorRT_t Ball::get(bool hasFilter) {
 	for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
 		value[numBall] *= 1000.0 / (double) countMax;
 	}
-	
+
 	for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
 		if(value[numBall] > 0) {
 			findingBall = false;
-			//フィルター
-			if(hasFilter) {
-				value[numBall] = map(value[numBall], avg_AVG_IR, MAX_IR[numBall], avg_AVG_IR, avg_MAX_IR);
-			}
 			// 平均値計算
 			if(prv[numBall] > 0) {
 				value[numBall] = prv[numBall] * MULTI_AVG + value[numBall] * (1 - MULTI_AVG);

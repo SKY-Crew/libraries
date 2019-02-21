@@ -8,11 +8,11 @@
 
 class Ball {
 	public:
-		Ball(uint8_t, uint8_t*, uint16_t*, uint16_t*,
+		Ball(uint8_t, uint8_t*,
 			uint8_t, uint16_t, double,
 			uint8_t, double(*)[2], double(*)[2], double(*)[2],
 			uint8_t, uint16_t, uint8_t);
-		vectorRT_t get(bool = true);
+		vectorRT_t get(bool = false);
 		uint16_t getForward();
 		Angle getDir(Angle, bool);
 		bool getCatch();
@@ -26,11 +26,6 @@ class Ball {
 
 		double *COS_IR;
 		double *SIN_IR;
-
-		uint16_t *MAX_IR;
-		uint16_t *AVG_IR;
-		uint16_t avg_MAX_IR = 0;
-		uint16_t avg_AVG_IR = 0;
 
 		const uint16_t CYCLE = 837;
 		uint8_t MEASURING_COUNT;
