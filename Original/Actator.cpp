@@ -102,16 +102,19 @@ void Actuator::setHaveRun(bool given_haveRun) {
 }
 
 void Actuator::kick(bool startKick) {
-	countKick = min(countKick + 1, max(MAX_CK, MAX_CKW));
-	if(kicking && countKick >= MAX_CK) {
-		digitalWrite(P_KICKER, LOW);
-		kicking = false;
-		countKick = 0;
-	}else if(startKick && !kicking && countKick >= MAX_CKW) {
-		digitalWrite(P_KICKER, digitalRead(P_ONOFF_KICKER));
-		kicking = true;
-		countKick = 0;
+	if(!haveCheckKick) {
+		countKick = min(countKick + 1, max(MAX_CK, MAX_CKW));
+		if(kicking && countKick >= MAX_CK) {
+			digitalWrite(P_KICKER, LOW);
+			kicking = false;
+			countKick = 0;
+		}else if(startKick && !kicking && countKick >= MAX_CKW) {
+			digitalWrite(P_KICKER, digitalRead(P_ONOFF_KICKER));
+			kicking = true;
+			countKick = 0;
+		}
 	}
+	haveCheckKick = true;
 }
 
 void Actuator::checkKick() {
@@ -131,4 +134,8 @@ bool Actuator::getCanUseKicker() {
 
 bool Actuator::getIsKicking() {
 	return digitalRead(P_ONOFF_KICKER) && kicking;
+}
+
+void Actuator::setHaveCheckKick(bool given_haveCheckKick) {
+	haveCheckKick = given_haveCheckKick;
 }

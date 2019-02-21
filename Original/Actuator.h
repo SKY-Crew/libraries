@@ -16,6 +16,7 @@ class Actuator {
 		void checkKick();
 		bool getCanUseKicker();
 		bool getIsKicking();
+		void setHaveCheckKick(bool);
 	private:
 		bool CAN_MOVE;
 		uint8_t QTY;
@@ -37,6 +38,7 @@ class Actuator {
 		uint16_t MAX_CKW;
 		uint8_t countKick = 0;
 		bool kicking = false;
+		bool haveCheckKick = false;
 };
 
 #endif
