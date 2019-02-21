@@ -12,11 +12,7 @@ void Gyro::_gyro_initialize() {
 Gyro::Gyro(uint8_t given_X, uint8_t given_PORT, uint8_t given_ONOFF_PIN, uint8_t given_RESET_PIN,
   uint8_t given_SIZE_SLOPE_RG, int16_t *given_SLOPE_RG, int16_t *given_POINT_RG) {
   //copy
-  switch(given_X) {
-    case 0: WireX = &Wire; break;
-    case 1: WireX = &Wire1; break;
-    case 2: WireX = &Wire2; break;
-  }
+  wGyro.set(given_X);
 
   _gyro_mpu = new MPU6050(given_PORT);
 
@@ -29,8 +25,8 @@ Gyro::Gyro(uint8_t given_X, uint8_t given_PORT, uint8_t given_ONOFF_PIN, uint8_t
   copyArray(POINT_RG, given_POINT_RG, SIZE_SLOPE_RG - 1);
   
   //init
-  WireX->begin();
-  WireX->setClock(400000);
+  wGyro.get()->begin();
+  wGyro.get()->setClock(400000);
 
   pinMode(MISO, OUTPUT);
 
@@ -69,7 +65,6 @@ Angle Gyro::get() {
     }
 
     if(fifoSize < 2 * packetSize) {// while(fifoSize < 2 * packetSize) {
-      delay(1);
       return toSend;//   fifoSize = _gyro_mpu->getFIFOCount();
     }
 
@@ -88,7 +83,6 @@ Angle Gyro::get() {
 
     return Angle(toSend);
   }else {
-    delay(1);
     return false;
   }
 }

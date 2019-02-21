@@ -42,11 +42,12 @@ Actuator::Actuator(bool given_CAN_MOVE, uint8_t given_QTY, uint8_t *given_P_DIR,
 	for(uint8_t i = 0; i < QTY; i ++) {
 		pinMode(P_DIR[i], OUTPUT);
 		pinMode(P_PWR[i], OUTPUT);
-		if(QTY == 4) {
+
+		#ifdef CORE_TEENSY
 			analogWriteFrequency(P_PWR[i], 250 * 1000);
-		}else {
-			// TCCR3B = (TCCR3B & 0b11111000) | 0x01;
-		}
+		#else
+			TCCR3B = (TCCR3B & 0b11111000) | 0x01;
+		#endif
 	}
 
 	pinMode(P_KICKER, OUTPUT);

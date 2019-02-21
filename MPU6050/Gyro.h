@@ -7,6 +7,7 @@
 #include "math.h"
 #include "AdvMath.h"
 #include "Angle.h"
+#include "AdvWire.h"
 
 class Gyro {
   public:
@@ -22,7 +23,7 @@ class Gyro {
     int _gyro_oldPinState;
     int16_t toSend;
 
-   TwoWire *WireX;
+    AdvWire wGyro;
 
     uint8_t ONOFF_PIN;
     uint8_t RESET_PIN;

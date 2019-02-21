@@ -23,7 +23,7 @@
  #include "WProgram.h"
 #endif
 
-#include <Wire.h>
+#include "AdvWire.h"
 
 /*=========================================================================
     I2C ADDRESS/BITS
@@ -112,8 +112,8 @@
 class Adafruit_INA219{
  public:
   Adafruit_INA219(uint8_t addr = INA219_ADDRESS);
-  void begin(uint8_t get_X);
-  void begin(uint8_t get_X, uint8_t addr);
+  void begin(uint8_t given_X);
+  void begin(uint8_t given_X, uint8_t addr);
   void setCalibration_32V_2A(void);
   void setCalibration_32V_1A(void);
   void setCalibration_16V_400mA(void);
@@ -122,7 +122,7 @@ class Adafruit_INA219{
   float getCurrent_mA(void);
 
  private:
-  TwoWire *WireX;
+  AdvWire w_ina219;
 
   uint8_t ina219_i2caddr;
   uint32_t ina219_calValue;

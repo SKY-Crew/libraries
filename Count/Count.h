@@ -2,7 +2,7 @@
 #define COUNT_ORIG
 
 #include <Arduino.h>
-#include "advMath.h"
+#include "AdvMath.h"
 
 class Count {
 	private:
@@ -18,7 +18,7 @@ class Count {
 			count = MIN;
 		}
 
-		inline operator int16_t() const{ return count; }
+		inline explicit operator int16_t() const{ return count; }
 		inline explicit operator bool() const{ return COUNT_UP ? count >= MAX : count > MIN; }
 
 		inline void set_MAX(int16_t given_MAX) { MAX = given_MAX; }

@@ -2,9 +2,9 @@
 #define PSD_ORIG
 
 #include <Arduino.h>
-#include "Wire.h"
 #include "AdvMath.h"
 #include "Count.h"
+#include "AdvWire.h"
 
 class PSD {
 	public:
@@ -12,7 +12,7 @@ class PSD {
 		bool get();
 		double getValue();
 	private:
-		TwoWire *WireX;
+		AdvWire wPSD;
 
 		double MULTI_AVG;
 		uint16_t BORDER_IS_CLOSE;

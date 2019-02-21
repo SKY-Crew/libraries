@@ -3,14 +3,7 @@
 Cam::Cam(uint8_t given_X, uint8_t given_P_ONOFF, uint8_t given_CENTER_OPP_GOAL, uint8_t given_CENTER_OWN_GOAL,
 	uint16_t given_SLOPE_RG, uint16_t given_INTERCEPT_RG) {
 	//copy
-	switch(given_X) {
-		case 1: SerialX = &Serial1; break;
-		case 2: SerialX = &Serial2; break;
-		case 3: SerialX = &Serial3; break;
-		case 4: SerialX = &Serial4; break;
-		case 5: SerialX = &Serial5; break;
-		case 6: SerialX = &Serial6; break;
-	}
+	sCam.set(given_X);
 	P_ONOFF = given_P_ONOFF;
 	CENTER_OPP_GOAL = given_CENTER_OPP_GOAL;
 	CENTER_OWN_GOAL = given_CENTER_OWN_GOAL;
@@ -18,15 +11,15 @@ Cam::Cam(uint8_t given_X, uint8_t given_P_ONOFF, uint8_t given_CENTER_OPP_GOAL, 
 	INTERCEPT_RG = given_INTERCEPT_RG;
 
 	//init
-	SerialX->begin(9600);
+	sCam.get()->begin(9600);
 
 	pinMode(P_ONOFF, INPUT);
 }
 
 cam_t Cam::get() {
 	if(!digitalRead(P_ONOFF)) {
-		if(SerialX->available()) {
-			uint8_t value = SerialX->read();
+		if(sCam.get()->available()) {
+			uint8_t value = sCam.get()->read();
 			if(extractBit(value, 7, 7) == 0b1) {
 				goal.isWide = extractBit(value, 6, 6) == 1;
 				goal.distFW = extractBit(value, 4, 5);

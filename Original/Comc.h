@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include "AdvMath.h"
+#include "AdvSerial.h"
 
 typedef struct {
 	bool exists;
@@ -18,7 +19,7 @@ class Comc {
 		void sndWireless(bool, bool);
 		bool rcvWireless();
 
-		HardwareSerial *SerialX;
+		AdvSerial sComc;
 
 		uint8_t P_ONOFF;
 		uint16_t MAX_C_SND;

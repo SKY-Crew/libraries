@@ -2,27 +2,23 @@
 
 PSD::PSD(uint8_t given_X, double given_MULTI_AVG, uint16_t given_BORDER_IS_CLOSE, uint8_t given_MAX_CC) {
 	//copy
-	switch(given_X) {
-		case 0: WireX = &Wire; break;
-		case 1: WireX = &Wire1; break;
-		case 2: WireX = &Wire2; break;
-	}
+	wPSD.set(given_X);
 
 	MULTI_AVG = given_MULTI_AVG;
 	BORDER_IS_CLOSE = given_BORDER_IS_CLOSE;
 
 	//init
-	WireX->begin();
+	wPSD.get()->begin();
 	cClose = Count(given_MAX_CC, false);
 }
 
 bool PSD::get() {
-	WireX->beginTransmission(0x40);
-	WireX->write(0x5E);
-	WireX->endTransmission();
+	wPSD.get()->beginTransmission(0x40);
+	wPSD.get()->write(0x5E);
+	wPSD.get()->endTransmission();
 
-	WireX->requestFrom(0x40, 2);
-	value = WireX->read() * 16 + WireX->read();
+	wPSD.get()->requestFrom(0x40, 2);
+	value = wPSD.get()->read() * 16 + wPSD.get()->read();
 	if(value <= 0) {
 		value = 4094;
 	}

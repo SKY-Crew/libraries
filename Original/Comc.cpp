@@ -2,20 +2,13 @@
 
 Comc::Comc(uint8_t given_X, uint8_t given_P_ONOFF, uint16_t given_MAX_C_SND, uint16_t given_MAX_C_NR) {
 	//copy
-	switch(given_X) {
-		case 1: SerialX = &Serial1; break;
-		case 2: SerialX = &Serial2; break;
-		case 3: SerialX = &Serial3; break;
-		case 4: SerialX = &Serial4; break;
-		case 5: SerialX = &Serial5; break;
-		case 6: SerialX = &Serial6; break;
-	}
+	sComc.set(given_X);
 	P_ONOFF = given_P_ONOFF;
 	MAX_C_SND = given_MAX_C_SND;
 	MAX_C_NR = given_MAX_C_NR;
 
 	//init
-	SerialX->begin(9600);
+	sComc.get()->begin(9600);
 	pinMode(P_ONOFF, INPUT);
 }
 
@@ -45,15 +38,15 @@ void Comc::sndWireless(bool canRun, bool isFW) {
 	uint8_t sndData;
 	if(digitalRead(P_ONOFF) && canRun) {
 		sndData = isFW ? 1 : 0;
-		SerialX->write(sndData);
+		sComc.get()->write(sndData);
 	}
 }
 
 bool Comc::rcvWireless() {
 	bool rcvData = prvFellow.isFW;
-	if(digitalRead(P_ONOFF) && SerialX->available()) {
-		while (SerialX->available()) {
-			rcvData = SerialX->read() == 1;
+	if(digitalRead(P_ONOFF) && sComc.get()->available()) {
+		while (sComc.get()->available()) {
+			rcvData = sComc.get()->read() == 1;
 		}
 		countNoRcv = 0;
 	}

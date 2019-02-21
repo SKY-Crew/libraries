@@ -35,17 +35,17 @@
 /**************************************************************************/
 void Adafruit_INA219::wireWriteRegister (uint8_t reg, uint16_t value)
 {
-  WireX->beginTransmission(ina219_i2caddr);
+  w_ina219.get()->beginTransmission(ina219_i2caddr);
   #if ARDUINO >= 100
-    WireX->write(reg);                       // Register
-    WireX->write((value >> 8) & 0xFF);       // Upper 8-bits
-    WireX->write(value & 0xFF);              // Lower 8-bits
+    w_ina219.get()->write(reg);                       // Register
+    w_ina219.get()->write((value >> 8) & 0xFF);       // Upper 8-bits
+    w_ina219.get()->write(value & 0xFF);              // Lower 8-bits
   #else
-    WireX->send(reg);                        // Register
-    WireX->send(value >> 8);                 // Upper 8-bits
-    WireX->send(value & 0xFF);               // Lower 8-bits
+    w_ina219.get()->send(reg);                        // Register
+    w_ina219.get()->send(value >> 8);                 // Upper 8-bits
+    w_ina219.get()->send(value & 0xFF);               // Lower 8-bits
   #endif
-  WireX->endTransmission();
+  w_ina219.get()->endTransmission();
 }
 
 /**************************************************************************/
@@ -56,23 +56,23 @@ void Adafruit_INA219::wireWriteRegister (uint8_t reg, uint16_t value)
 void Adafruit_INA219::wireReadRegister(uint8_t reg, uint16_t *value)
 {
 
-  WireX->beginTransmission(ina219_i2caddr);
+  w_ina219.get()->beginTransmission(ina219_i2caddr);
   #if ARDUINO >= 100
-    WireX->write(reg);                       // Register
+    w_ina219.get()->write(reg);                       // Register
   #else
-    WireX->send(reg);                        // Register
+    w_ina219.get()->send(reg);                        // Register
   #endif
-  WireX->endTransmission();
+  w_ina219.get()->endTransmission();
 
   //delay(1); // Max 12-bit conversion time is 586us per sample
 
-  WireX->requestFrom(ina219_i2caddr, (uint8_t)2);
+  w_ina219.get()->requestFrom(ina219_i2caddr, (uint8_t)2);
   #if ARDUINO >= 100
     // Shift values to create properly formed integer
-    *value = ((WireX->read() << 8) | WireX->read());
+    *value = ((w_ina219.get()->read() << 8) | w_ina219.get()->read());
   #else
     // Shift values to create properly formed integer
-    *value = ((WireX->receive() << 8) | WireX->receive());
+    *value = ((w_ina219.get()->receive() << 8) | w_ina219.get()->receive());
   #endif
 }
 
@@ -361,18 +361,14 @@ Adafruit_INA219::Adafruit_INA219(uint8_t addr) {
     @brief  Setups the HW (defaults to 32V and 2A for calibration values)
 */
 /**************************************************************************/
-void Adafruit_INA219::begin(uint8_t get_X, uint8_t addr) {
+void Adafruit_INA219::begin(uint8_t given_X, uint8_t addr) {
   ina219_i2caddr = addr;
-  begin(get_X);
+  begin(given_X);
 }
 
-void Adafruit_INA219::begin(uint8_t get_X) {
-  switch(get_X) {
-    case 0: WireX = &Wire; break;
-    case 1: WireX = &Wire1; break;
-    case 2: WireX = &Wire2; break;
-  }
-  WireX->begin();
+void Adafruit_INA219::begin(uint8_t given_X) {
+  w_ina219.set(given_X);
+  w_ina219.get()->begin();
   // Set chip to large range config values to start
   setCalibration_32V_2A();
 }

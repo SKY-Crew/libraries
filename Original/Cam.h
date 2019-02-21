@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include "AdvMath.h"
+#include "AdvSerial.h"
 
 typedef struct {
 	int8_t distGK;//0~2
@@ -21,6 +22,7 @@ class Cam {
 		bool getCanUse();
 	private:
 		HardwareSerial *SerialX;
+		AdvSerial sCam;
 
 		uint8_t P_ONOFF;
 
