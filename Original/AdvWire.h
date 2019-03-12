@@ -2,8 +2,8 @@
 #define WIRE_ORIG
 
 #include <Arduino.h>
+#include <Wire.h>
 #include "AdvMath.h"
-#include "Wire.h"
 
 class AdvWire {
 	private:

@@ -23,7 +23,7 @@ Motor::Motor(bool given_CAN_MOVE, uint8_t given_QTY, uint8_t *given_P_DIR, uint8
 			ROT_MOTOR[i] = firstRM * ((i % 2) == 0 ? 1 : -1)
 				+ 180 * ((i % 3) == 0 ? 0 : 1);
 		}else {
-			ROT_MOTOR[i] = firstRM * (i + 0.5);
+			ROT_MOTOR[i] = - firstRM * (i + 0.5);
 		}
 		ROT_WHEEL[i] = new Angle();
 		ROT_WHEEL[i] = ROT_MOTOR[i] + 90;
