@@ -2,7 +2,7 @@
 
 Ball::Ball(uint8_t given_QTY, uint8_t *given_PORT,
 	uint8_t given_MEASURING_COUNT, uint16_t given_BORDER_WEAK, double given_MULTI_AVG,
-	uint8_t given_SIZE_SLOPE_DIR, double (*given_SLOPE_DIR)[2], double (*given_INTERCEPT_DIR)[2], double (*given_POINT_DIR)[2],
+	uint16_t *given_BORDER_DIST, uint8_t given_SIZE_SLOPE_DIR, double (*given_SLOPE_DIR)[2], double (*given_INTERCEPT_DIR)[2], double (*given_POINT_DIR)[2],
 	uint8_t given_P_CATCH, uint16_t given_BORDER_CATCH, uint8_t given_MAX_C_CATCH) {
 	//copy
 	QTY = given_QTY;
@@ -19,6 +19,9 @@ Ball::Ball(uint8_t given_QTY, uint8_t *given_PORT,
 	MEASURING_COUNT = given_MEASURING_COUNT;
 	BORDER_WEAK = given_BORDER_WEAK;
 	MULTI_AVG = given_MULTI_AVG;
+
+	BORDER_DIST[0] = given_BORDER_DIST[0];
+	BORDER_DIST[1] = given_BORDER_DIST[1];
 	SIZE_SLOPE_DIR = given_SIZE_SLOPE_DIR;
 	SLOPE_DIR = new double[SIZE_SLOPE_DIR][2];
 	copyArray(&SLOPE_DIR[0][0], &given_SLOPE_DIR[0][0], SIZE_SLOPE_DIR, 2);
@@ -82,7 +85,6 @@ vectorRT_t Ball::get(bool hasFilter) {
 		prv[numBall] = value[numBall];
 	}
 
-	vectorXY_t vXY = {0, 0};
 	//距離計算
 	for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
 		vRT.r += value[numBall];
@@ -100,6 +102,7 @@ vectorRT_t Ball::get(bool hasFilter) {
 		weak[numBall] = isAllWeak ? value[numBall] : max(value[numBall] - BORDER_WEAK, 0);
 	}
 	//ベクトル合成
+	vectorXY_t vXY = {0, 0};
 	for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
 		vXY.x += weak[numBall] * COS_IR[numBall];
 		vXY.y += weak[numBall] * SIN_IR[numBall];
@@ -117,17 +120,19 @@ uint16_t Ball::getForward() {
 	return value[0];
 }
 
-Angle Ball::getDir(Angle theta, bool isClose) {
-	Angle dir = theta;
-	if(bool(theta)) {
-		uint8_t key = 0;
-		for(; key < SIZE_SLOPE_DIR - 1; key ++) {
-			if(absAngle(dir) <= POINT_DIR[key][isClose]) { break; }
+Angle Ball::getDir(vectorRT_t ball) {
+	Angle dir = ball.t;
+	if(bool(ball.t)) {
+		Angle plusDir[2];
+		for(bool isClose = true; isClose; isClose = !isClose) {
+			uint8_t key = 0;
+			for(; key < SIZE_SLOPE_DIR - 1; key ++) {
+				if(absAngle(dir) <= POINT_DIR[key][isClose]) { break; }
+			}
+			plusDir[isClose] = absAngle(dir) * SLOPE_DIR[key][isClose] + INTERCEPT_DIR[key][isClose];
 		}
-		Angle plusDir = dir * SLOPE_DIR[key][isClose] + signum(dir) * INTERCEPT_DIR[key][isClose];
-		dir = dir + plusDir;
+		dir += signum(dir) * max(0, map(ball.r, BORDER_DIST[0], BORDER_DIST[1], plusDir[0], plusDir[1]));
 	}
-
 	return dir;
 }
 
