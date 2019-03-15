@@ -3,7 +3,7 @@
 void LCD::run(Angle gyro, line_t line, bool canUseKicker, bool canUseCam, bool canUseGyro, bool isFW, bool canUseComc, comc_t fellow,
 		uint8_t QTY_LINE, uint16_t *valueLine, Color *stateLine, double valueIna219, cam_t goal,
 		vectorRT_t ball, uint8_t QTY_IR, uint16_t *valueIR,
-		uint16_t valueCatch, bool catchingBall, uint16_t valueBF, bool isBallForward, bool isBallClose,
+		uint16_t valueCatch, bool catchingBall, uint16_t valueBF, bool isBallForward, Dist distBall,
 		uint16_t valueFrontPSD, bool enemyStandsFront, uint16_t valueBackPSD, bool isGoalClosePSD) {
 	redraw();
 	countPrint ++;
@@ -44,7 +44,7 @@ void LCD::run(Angle gyro, line_t line, bool canUseKicker, bool canUseCam, bool c
 				write("frwdIR:"+String(valueBF), 0, 1);
 				write("T/F:"+String(isBallForward ? OOO : '-'), 11, 1);
 				write("Dis:"+String(round(ball.r)), 0, 2);
-				write("Close:"+String(isBallClose ? OOO : '-'), 11, 2);
+				write("Close:"+String(distBall == CLOSE ? 'C' : distBall == MIDDLE ? 'M' : 'F'), 11, 2);
 				write("Dis:", 0, 3);
 				for(int8_t i = -1; i <= 1; i ++) {
 					lcd->Line(30, 9 * 3 + i, 30 + ball.r * 0.15, 9 * 3 + i);

@@ -17,7 +17,7 @@ class LCD {
 		void run(Angle, line_t, bool, bool, bool, bool, bool, comc_t,
 			uint8_t, uint16_t*, Color*, double, cam_t,
 			vectorRT_t, uint8_t, uint16_t*,
-			uint16_t, bool, uint16_t, bool, bool,
+			uint16_t, bool, uint16_t, bool, Dist,
 			uint16_t, bool, uint16_t, bool);
 		void run4IR(uint8_t, uint16_t*, uint16_t*, double*);
 		void clear(bool);
