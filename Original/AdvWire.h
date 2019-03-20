@@ -10,15 +10,15 @@ class AdvWire {
 		TwoWire *WireX;
 	public:
 		inline AdvWire() {  }
-		inline AdvWire(uint8_t X) { set(X); }
+		inline AdvWire(uint8_t P_WIRE) { set(P_WIRE); }
 
-		inline void set(uint8_t X) {
-			switch(X) {
+		inline void set(uint8_t P_WIRE) {
+			switch(P_WIRE) {
 				#ifdef CORE_TEENSY
-				case 1: WireX = &Wire1; break;
-				case 2: WireX = &Wire2; break;
+					case 1: WireX = &Wire1; break;
+					case 2: WireX = &Wire2; break;
 				#endif
-				default: WireX = &Wire; break;
+					default: WireX = &Wire; break;
 			}
 		}
 		inline TwoWire* get() { return WireX; }

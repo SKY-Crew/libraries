@@ -1,8 +1,8 @@
 #include "PSD.h"
 
-PSD::PSD(uint8_t X, double MULTI_AVG, uint16_t BORDER_IS_CLOSE, uint8_t MAX_CC) {
+PSD::PSD(uint8_t P_WIRE, double MULTI_AVG, uint16_t BORDER_IS_CLOSE, uint8_t MAX_CC) {
 	//copy
-	wPSD.set(X);
+	wPSD.set(P_WIRE);
 
 	this->MULTI_AVG = MULTI_AVG;
 	this->BORDER_IS_CLOSE = BORDER_IS_CLOSE;

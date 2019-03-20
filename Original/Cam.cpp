@@ -1,9 +1,9 @@
 #include "Cam.h"
 
-Cam::Cam(uint8_t X, uint8_t P_ONOFF, uint8_t CENTER_OPP_GOAL, uint8_t CENTER_OWN_GOAL,
+Cam::Cam(uint8_t P_SERIAL, uint8_t P_ONOFF, uint8_t CENTER_OPP_GOAL, uint8_t CENTER_OWN_GOAL,
 	uint16_t SLOPE_RG, uint16_t INTERCEPT_RG) {
 	//copy
-	sCam.set(X);
+	sCam.set(P_SERIAL);
 	this->P_ONOFF = P_ONOFF;
 	this->CENTER_OPP_GOAL = CENTER_OPP_GOAL;
 	this->CENTER_OWN_GOAL = CENTER_OWN_GOAL;

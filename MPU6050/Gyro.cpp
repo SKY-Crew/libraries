@@ -9,10 +9,10 @@ void Gyro::_gyro_initialize() {
   _gyro_mpu->setDMPEnabled(true);
 }
 
-Gyro::Gyro(uint8_t X, uint8_t PORT, uint8_t ONOFF_PIN, uint8_t RESET_PIN,
+Gyro::Gyro(uint8_t P_WIRE, uint8_t PORT, uint8_t ONOFF_PIN, uint8_t RESET_PIN,
   uint8_t SIZE_SLOPE_RG, int16_t *SLOPE_RG, int16_t *POINT_RG) {
   //copy
-  wGyro.set(X);
+  wGyro.set(P_WIRE);
 
   _gyro_mpu = new MPU6050(PORT);
 
