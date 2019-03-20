@@ -9,10 +9,10 @@ class AdvSerial {
 		HardwareSerial *SerialX;
 	public:
 		inline AdvSerial() {  }
-		inline AdvSerial(uint8_t given_X) { set(given_X); }
+		inline AdvSerial(uint8_t X) { set(X); }
 
-		inline void set(uint8_t given_X) {
-			switch(given_X) {
+		inline void set(uint8_t X) {
+			switch(X) {
 				#ifdef CORE_TEENSY
 					case 1: SerialX = &Serial1; break;
 					case 2: SerialX = &Serial2; break;

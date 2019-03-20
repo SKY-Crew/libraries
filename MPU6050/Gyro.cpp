@@ -9,20 +9,20 @@ void Gyro::_gyro_initialize() {
   _gyro_mpu->setDMPEnabled(true);
 }
 
-Gyro::Gyro(uint8_t given_X, uint8_t given_PORT, uint8_t given_ONOFF_PIN, uint8_t given_RESET_PIN,
-  uint8_t given_SIZE_SLOPE_RG, int16_t *given_SLOPE_RG, int16_t *given_POINT_RG) {
+Gyro::Gyro(uint8_t X, uint8_t PORT, uint8_t ONOFF_PIN, uint8_t RESET_PIN,
+  uint8_t SIZE_SLOPE_RG, int16_t *SLOPE_RG, int16_t *POINT_RG) {
   //copy
-  wGyro.set(given_X);
+  wGyro.set(X);
 
-  _gyro_mpu = new MPU6050(given_PORT);
+  _gyro_mpu = new MPU6050(PORT);
 
-  ONOFF_PIN = given_ONOFF_PIN;
-  RESET_PIN = given_RESET_PIN;
-  SIZE_SLOPE_RG = given_SIZE_SLOPE_RG;
+  this->ONOFF_PIN = ONOFF_PIN;
+  this->RESET_PIN = RESET_PIN;
+  this->SIZE_SLOPE_RG = SIZE_SLOPE_RG;
   SLOPE_RG = new int16_t[SIZE_SLOPE_RG];
-  copyArray(SLOPE_RG, given_SLOPE_RG, SIZE_SLOPE_RG);
+  copyArray(SLOPE_RG, SLOPE_RG, SIZE_SLOPE_RG);
   POINT_RG = new int16_t[SIZE_SLOPE_RG - 1];
-  copyArray(POINT_RG, given_POINT_RG, SIZE_SLOPE_RG - 1);
+  copyArray(POINT_RG, POINT_RG, SIZE_SLOPE_RG - 1);
   
   //init
   wGyro.get()->begin();

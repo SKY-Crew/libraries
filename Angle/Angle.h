@@ -9,17 +9,17 @@ class Angle {
 		bool hasValue;
 		double angle;
 	public:
-		inline Angle(bool given_hasValue = false, double given_angle = 0) {
-			setAngle(given_hasValue, given_angle);
+		inline Angle(bool hasValue = false, double angle = 0) {
+			setAngle(hasValue, angle);
 		}
-		inline Angle(bool given_hasValue, int16_t given_angle) {
-			setAngle(given_hasValue, (double)given_angle);
+		inline Angle(bool hasValue, int16_t angle) {
+			setAngle(hasValue, (double)angle);
 		}
-		inline Angle(double given_angle) { setAngle(true, given_angle); }
-		inline Angle(int given_angle) { setAngle(true, (double)given_angle); }
-		inline void setAngle(bool given_hasValue = false, double given_angle = 0) {
-			hasValue = given_hasValue;
-			angle = hasValue ? simplifyDeg(given_angle) : 0;
+		inline Angle(double angle) { setAngle(true, angle); }
+		inline Angle(int angle) { setAngle(true, (double)angle); }
+		inline void setAngle(bool hasValue = false, double angle = 0) {
+			this->hasValue = hasValue;
+			this->angle = hasValue ? simplifyDeg(angle) : 0;
 		}
 
 		inline explicit operator bool() const{ return this->hasValue; }

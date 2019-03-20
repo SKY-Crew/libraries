@@ -11,25 +11,25 @@ class Count {
 		int16_t count;
 		bool COUNT_UP;
 	public:
-		inline Count(int16_t given_MAX = 0, bool given_COUNT_UP = true, int16_t given_MIN = 0) {
-			set_MAX(given_MAX);
-			set_COUNT_UP(given_COUNT_UP);
-			set_MIN(given_MIN);
+		inline Count(int16_t MAX = 0, bool COUNT_UP = true, int16_t MIN = 0) {
+			set_MAX(MAX);
+			set_COUNT_UP(COUNT_UP);
+			set_MIN(MIN);
 			count = MIN;
 		}
 
 		inline explicit operator int16_t() const{ return count; }
 		inline explicit operator bool() const{ return COUNT_UP ? count >= MAX : count > MIN; }
 
-		inline void set_MAX(int16_t given_MAX) { MAX = given_MAX; }
-		inline void set_MIN(int16_t given_MIN) { MIN = given_MIN; }
-		inline void set_COUNT_UP(int16_t given_COUNT_UP) { COUNT_UP = given_COUNT_UP; }
+		inline void set_MAX(int16_t MAX) { this->MAX = MAX; }
+		inline void set_MIN(int16_t MIN) { this->MIN = MIN; }
+		inline void set_COUNT_UP(int16_t COUNT_UP) { this->COUNT_UP = COUNT_UP; }
 
-		inline void reset(int16_t given_count = -1) {
-			if(given_count == -1) {
-				given_count = COUNT_UP ? MIN : MAX;
+		inline void reset(int16_t count = -1) {
+			if(count == -1) {
+				count = COUNT_UP ? MIN : MAX;
 			}
-			count = constrain(given_count, MIN, MAX);
+			this->count = constrain(count, MIN, MAX);
 		}
 		inline void increase(bool canIncrement = true) {
 			count = COUNT_UP ?

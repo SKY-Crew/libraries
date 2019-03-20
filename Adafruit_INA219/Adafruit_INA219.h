@@ -112,8 +112,8 @@
 class Adafruit_INA219{
  public:
   Adafruit_INA219(uint8_t addr = INA219_ADDRESS);
-  void begin(uint8_t given_X);
-  void begin(uint8_t given_X, uint8_t addr);
+  void begin(uint8_t);
+  void begin(uint8_t, uint8_t);
   void setCalibration_32V_2A(void);
   void setCalibration_32V_1A(void);
   void setCalibration_16V_400mA(void);
