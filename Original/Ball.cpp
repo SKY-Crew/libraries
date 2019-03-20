@@ -1,13 +1,13 @@
 #include "Ball.h"
 
-Ball::Ball(uint8_t given_QTY, uint8_t *given_PORT,
-	uint8_t given_MEASURING_COUNT, uint16_t given_BORDER_WEAK, double given_MULTI_AVG,
-	uint16_t *given_BORDER_DIST, uint8_t given_SIZE_SLOPE_DIR, double (*given_SLOPE_DIR)[2], double (*given_INTERCEPT_DIR)[2], double (*given_POINT_DIR)[2],
-	uint8_t given_P_CATCH, uint16_t given_BORDER_CATCH, uint8_t given_MAX_C_CATCH) {
+Ball::Ball(uint8_t QTY, uint8_t *PORT,
+	uint8_t MEASURING_COUNT, uint16_t BORDER_WEAK, double MULTI_AVG,
+	uint16_t *BORDER_DIST, uint8_t SIZE_SLOPE_DIR, double (*SLOPE_DIR)[2], double (*INTERCEPT_DIR)[2], double (*POINT_DIR)[2],
+	uint8_t P_CATCH, uint16_t BORDER_CATCH, uint8_t MAX_C_CATCH) {
 	//copy
-	QTY = given_QTY;
+	this->QTY = QTY;
 	PORT = new uint8_t[QTY];
-	copyArray(PORT, given_PORT, QTY);
+	copyArray(PORT, PORT, QTY);
 
 	COS_IR = new double[QTY];
 	SIN_IR = new double[QTY];
@@ -16,27 +16,27 @@ Ball::Ball(uint8_t given_QTY, uint8_t *given_PORT,
 		SIN_IR[i] = sin(toRadians(i * 360.0 / QTY));
 	}
 
-	MEASURING_COUNT = given_MEASURING_COUNT;
-	BORDER_WEAK = given_BORDER_WEAK;
-	MULTI_AVG = given_MULTI_AVG;
+	this->MEASURING_COUNT = MEASURING_COUNT;
+	this->BORDER_WEAK = BORDER_WEAK;
+	this->MULTI_AVG = MULTI_AVG;
 
-	BORDER_DIST[0] = given_BORDER_DIST[0];
-	BORDER_DIST[1] = given_BORDER_DIST[1];
-	SIZE_SLOPE_DIR = given_SIZE_SLOPE_DIR;
+	BORDER_DIST[0] = BORDER_DIST[0];
+	BORDER_DIST[1] = BORDER_DIST[1];
+	this->SIZE_SLOPE_DIR = SIZE_SLOPE_DIR;
 	SLOPE_DIR = new double[SIZE_SLOPE_DIR][2];
-	copyArray(&SLOPE_DIR[0][0], &given_SLOPE_DIR[0][0], SIZE_SLOPE_DIR, 2);
+	copyArray(&SLOPE_DIR[0][0], &SLOPE_DIR[0][0], SIZE_SLOPE_DIR, 2);
 	INTERCEPT_DIR = new double[SIZE_SLOPE_DIR][2];
-	copyArray(&INTERCEPT_DIR[0][0], &given_INTERCEPT_DIR[0][0], SIZE_SLOPE_DIR, 2);
+	copyArray(&INTERCEPT_DIR[0][0], &INTERCEPT_DIR[0][0], SIZE_SLOPE_DIR, 2);
 	POINT_DIR = new double[SIZE_SLOPE_DIR - 1][2];
-	copyArray(&POINT_DIR[0][0], &given_POINT_DIR[0][0], SIZE_SLOPE_DIR - 1, 2);
+	copyArray(&POINT_DIR[0][0], &POINT_DIR[0][0], SIZE_SLOPE_DIR - 1, 2);
 
 	value = new uint16_t[QTY];
 	weak = new uint16_t[QTY];
 	prv = new uint16_t[QTY];
 	crt = new uint16_t[QTY];
 
-	P_CATCH = given_P_CATCH;
-	BORDER_CATCH = given_BORDER_CATCH;
+	this->P_CATCH = P_CATCH;
+	this->BORDER_CATCH = BORDER_CATCH;
 
 	for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
 		prv[numBall] = 0;
@@ -47,7 +47,7 @@ Ball::Ball(uint8_t given_QTY, uint8_t *given_PORT,
 		pinMode(PORT[numBall], INPUT);
 	}
 
-	cCatch.set_MAX(given_MAX_C_CATCH);
+	cCatch.set_MAX(MAX_C_CATCH);
 }
 
 

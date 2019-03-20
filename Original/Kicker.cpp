@@ -1,13 +1,13 @@
 #include "Kicker.h"
 
-Kicker::Kicker(uint8_t given_P_KICKER, uint8_t given_P_ONOFF_KICKER, uint8_t given_P_RUN_KICKER,
-	uint16_t given_MAX_CK, uint16_t given_MAX_CKW) {
+Kicker::Kicker(uint8_t P_KICKER, uint8_t P_ONOFF_KICKER, uint8_t P_RUN_KICKER,
+	uint16_t MAX_CK, uint16_t MAX_CKW) {
 	//copy
-	P_KICKER = given_P_KICKER;
-	P_ONOFF_KICKER = given_P_ONOFF_KICKER;
-	P_RUN_KICKER = given_P_RUN_KICKER;
-	MAX_CK = given_MAX_CK;
-	MAX_CKW = given_MAX_CKW;
+	this->P_KICKER = P_KICKER;
+	this->P_ONOFF_KICKER = P_ONOFF_KICKER;
+	this->P_RUN_KICKER = P_RUN_KICKER;
+	this->MAX_CK = MAX_CK;
+	this->MAX_CKW = MAX_CKW;
 
 	//init
 	pinMode(P_KICKER, OUTPUT);
@@ -45,6 +45,6 @@ bool Kicker::getIsKicking() {
 	return digitalRead(P_ONOFF_KICKER) && kicking;
 }
 
-void Kicker::setHaveCheckKick(bool given_haveCheckKick) {
-	haveCheckKick = given_haveCheckKick;
+void Kicker::setHaveCheckKick(bool haveCheckKick) {
+	haveCheckKick = haveCheckKick;
 }

@@ -1,15 +1,15 @@
 #include "PSD.h"
 
-PSD::PSD(uint8_t given_X, double given_MULTI_AVG, uint16_t given_BORDER_IS_CLOSE, uint8_t given_MAX_CC) {
+PSD::PSD(uint8_t X, double MULTI_AVG, uint16_t BORDER_IS_CLOSE, uint8_t MAX_CC) {
 	//copy
-	wPSD.set(given_X);
+	wPSD.set(X);
 
-	MULTI_AVG = given_MULTI_AVG;
-	BORDER_IS_CLOSE = given_BORDER_IS_CLOSE;
+	this->MULTI_AVG = MULTI_AVG;
+	this->BORDER_IS_CLOSE = BORDER_IS_CLOSE;
 
 	//init
 	wPSD.get()->begin();
-	cClose = Count(given_MAX_CC, false);
+	cClose = Count(MAX_CC, false);
 }
 
 bool PSD::get() {

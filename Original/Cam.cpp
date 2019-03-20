@@ -1,14 +1,14 @@
 #include "Cam.h"
 
-Cam::Cam(uint8_t given_X, uint8_t given_P_ONOFF, uint8_t given_CENTER_OPP_GOAL, uint8_t given_CENTER_OWN_GOAL,
-	uint16_t given_SLOPE_RG, uint16_t given_INTERCEPT_RG) {
+Cam::Cam(uint8_t X, uint8_t P_ONOFF, uint8_t CENTER_OPP_GOAL, uint8_t CENTER_OWN_GOAL,
+	uint16_t SLOPE_RG, uint16_t INTERCEPT_RG) {
 	//copy
-	sCam.set(given_X);
-	P_ONOFF = given_P_ONOFF;
-	CENTER_OPP_GOAL = given_CENTER_OPP_GOAL;
-	CENTER_OWN_GOAL = given_CENTER_OWN_GOAL;
-	SLOPE_RG = given_SLOPE_RG;
-	INTERCEPT_RG = given_INTERCEPT_RG;
+	sCam.set(X);
+	this->P_ONOFF = P_ONOFF;
+	this->CENTER_OPP_GOAL = CENTER_OPP_GOAL;
+	this->CENTER_OWN_GOAL = CENTER_OWN_GOAL;
+	this->SLOPE_RG = SLOPE_RG;
+	this->INTERCEPT_RG = INTERCEPT_RG;
 
 	//init
 	sCam.get()->begin(9600);

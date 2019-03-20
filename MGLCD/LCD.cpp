@@ -1,13 +1,13 @@
 #include "LCD.h"
 
-LCD::LCD(uint8_t given_P_REDRAW, uint8_t given_P_SCK, uint8_t given_P_MOSI, uint8_t given_P_CS, uint8_t given_P_DI,
-	uint32_t given_WAIT, uint8_t given_MAX_CP, uint8_t given_QTY_LINE) {
+LCD::LCD(uint8_t P_REDRAW, uint8_t P_SCK, uint8_t P_MOSI, uint8_t P_CS, uint8_t P_DI,
+	uint32_t WAIT, uint8_t MAX_CP, uint8_t QTY_LINE) {
 	//copy
-	P_REDRAW = given_P_REDRAW;
-	MAX_CP = given_MAX_CP;
-	lcd = new MGLCD_AQM1248A_SoftwareSPI(MGLCD_SpiPin4(given_P_SCK, given_P_MOSI, given_P_CS, given_P_DI), given_WAIT);
+	this->P_REDRAW = P_REDRAW;
+	this->MAX_CP = MAX_CP;
+	lcd = new MGLCD_AQM1248A_SoftwareSPI(MGLCD_SpiPin4(P_SCK, P_MOSI, P_CS, P_DI), WAIT);
 
-	QTY_LINE = given_QTY_LINE;
+	this->QTY_LINE = QTY_LINE;
 	SIN_LINE = new double[QTY_LINE];
 	COS_LINE = new double[QTY_LINE];
 

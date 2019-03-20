@@ -1,20 +1,20 @@
 #include "Line.h"
 
-Line::Line(bool given_CAN_LEAVE_LINE, uint8_t given_QTY, uint8_t *given_PORT, uint8_t given_MAX_CIIA,
-	uint16_t given_BORDER_BLACK, uint16_t given_BORDER_WHITE, uint8_t given_BORDER_IS_IN_AIR, double given_MULTI_AVG) {
+Line::Line(bool CAN_LEAVE_LINE, uint8_t QTY, uint8_t *PORT, uint8_t MAX_CIIA,
+	uint16_t BORDER_BLACK, uint16_t BORDER_WHITE, uint8_t BORDER_IS_IN_AIR, double MULTI_AVG) {
 	//copy
-	CAN_LEAVE_LINE = given_CAN_LEAVE_LINE;
+	this->CAN_LEAVE_LINE = CAN_LEAVE_LINE;
 
-	QTY = given_QTY;
+	this->QTY = QTY;
 	PORT = new uint8_t[QTY];
-	copyArray(PORT, given_PORT, QTY);
+	copyArray(PORT, PORT, QTY);
 
-	MAX_CIIA = given_MAX_CIIA;
-	BORDER_BLACK = given_BORDER_BLACK;
-	BORDER_WHITE = given_BORDER_WHITE;
-	BORDER_IS_IN_AIR = given_BORDER_IS_IN_AIR;
+	this->MAX_CIIA = MAX_CIIA;
+	this->BORDER_BLACK = BORDER_BLACK;
+	this->BORDER_WHITE = BORDER_WHITE;
+	this->BORDER_IS_IN_AIR = BORDER_IS_IN_AIR;
 
-	MULTI_AVG = given_MULTI_AVG;
+	this->MULTI_AVG = MULTI_AVG;
 
 	value = new uint16_t[QTY];
 	crt = new uint16_t[QTY];

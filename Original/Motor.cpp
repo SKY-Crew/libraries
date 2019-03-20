@@ -1,21 +1,21 @@
 #include "Motor.h"
 
-Motor::Motor(bool given_CAN_MOVE, uint8_t given_QTY, uint8_t *given_P_DIR, uint8_t *given_P_PWR,
-	int16_t firstRM, double given_SLOPE_POWER, double given_INTERCEPT_POWER) {
+Motor::Motor(bool CAN_MOVE, uint8_t QTY, uint8_t *P_DIR, uint8_t *P_PWR,
+	int16_t firstRM, double SLOPE_POWER, double INTERCEPT_POWER) {
 	//copy
-	CAN_MOVE = given_CAN_MOVE;
-	QTY = given_QTY;
+	this->CAN_MOVE = CAN_MOVE;
+	this->QTY = QTY;
 	P_DIR = new uint8_t[QTY];
-	copyArray(P_DIR, given_P_DIR, QTY);
+	copyArray(P_DIR, P_DIR, QTY);
 	P_PWR = new uint8_t[QTY];
-	copyArray(P_PWR, given_P_PWR, QTY);
+	copyArray(P_PWR, P_PWR, QTY);
 	ROT_MOTOR = new Angle[QTY];
 	ROT_WHEEL = new Angle[QTY];
 	SIN_RW = new double[QTY];
 	COS_RW = new double[QTY];
 	MAX_DVP = abs(cos(toRadians(firstRM)) * QTY);
-	SLOPE_POWER = given_SLOPE_POWER;
-	INTERCEPT_POWER = given_INTERCEPT_POWER;
+	this->SLOPE_POWER = SLOPE_POWER;
+	this->INTERCEPT_POWER = INTERCEPT_POWER;
 
 	for(uint8_t i = 0; i < QTY; i ++) {
 		ROT_MOTOR[i] = new Angle();
@@ -86,6 +86,6 @@ void Motor::spin(uint8_t port, int16_t power) {
 	}
 }
 
-void Motor::setHaveRun(bool given_haveRun) {
-	haveRun = given_haveRun;
+void Motor::setHaveRun(bool haveRun) {
+	haveRun = haveRun;
 }

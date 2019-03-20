@@ -1,11 +1,11 @@
 #include "Comc.h"
 
-Comc::Comc(uint8_t given_X, uint8_t given_P_ONOFF, uint16_t given_MAX_C_SND, uint16_t given_MAX_C_NR) {
+Comc::Comc(uint8_t X, uint8_t P_ONOFF, uint16_t MAX_C_SND, uint16_t MAX_C_NR) {
 	//copy
-	sComc.set(given_X);
-	P_ONOFF = given_P_ONOFF;
-	MAX_C_SND = given_MAX_C_SND;
-	MAX_C_NR = given_MAX_C_NR;
+	sComc.set(X);
+	this->P_ONOFF = P_ONOFF;
+	this->MAX_C_SND = MAX_C_SND;
+	this->MAX_C_NR = MAX_C_NR;
 
 	//init
 	sComc.get()->begin(9600);
