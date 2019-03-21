@@ -1,7 +1,7 @@
 #include "Line.h"
 
 Line::Line(bool CAN_LEAVE_LINE, uint8_t QTY, uint8_t *PORT, uint8_t MAX_CIIA,
-	uint16_t BORDER_BLACK, uint16_t BORDER_WHITE, uint8_t BORDER_IS_IN_AIR, double MULTI_AVG) {
+	uint16_t THRE_BLACK, uint16_t THRE_WHITE, uint8_t THRE_IS_IN_AIR, double MULTI_AVG) {
 	//copy
 	this->CAN_LEAVE_LINE = CAN_LEAVE_LINE;
 
@@ -10,9 +10,9 @@ Line::Line(bool CAN_LEAVE_LINE, uint8_t QTY, uint8_t *PORT, uint8_t MAX_CIIA,
 	copyArray(PORT, PORT, QTY);
 
 	this->MAX_CIIA = MAX_CIIA;
-	this->BORDER_BLACK = BORDER_BLACK;
-	this->BORDER_WHITE = BORDER_WHITE;
-	this->BORDER_IS_IN_AIR = BORDER_IS_IN_AIR;
+	this->THRE_BLACK = THRE_BLACK;
+	this->THRE_WHITE = THRE_WHITE;
+	this->THRE_IS_IN_AIR = THRE_IS_IN_AIR;
 
 	this->MULTI_AVG = MULTI_AVG;
 
@@ -28,8 +28,8 @@ line_t Line::get(bool isFW, bool canUseGyro, Angle gyro) {
 	for(int numLine = 0; numLine < QTY; numLine ++) {
 		//ライン読み取り
 		value[numLine] = analogRead(PORT[numLine]);
-		state[numLine] = value[numLine] <= BORDER_BLACK ? BLACK
-			: value[numLine] >= BORDER_WHITE ? WHITE : GREEN;
+		state[numLine] = value[numLine] <= THRE_BLACK ? BLACK
+			: value[numLine] >= THRE_WHITE ? WHITE : GREEN;
 		switch(state[numLine]) {
 			case BLACK: qtyILB ++; break;
 			case WHITE: qtyILW ++; break;
@@ -40,7 +40,7 @@ line_t Line::get(bool isFW, bool canUseGyro, Angle gyro) {
 	if(!CAN_LEAVE_LINE) {
 		//ライン無効
 		line = {false, false, false, false, false, false};
-	}else if(qtyILB >= BORDER_IS_IN_AIR) {
+	}else if(qtyILB >= THRE_IS_IN_AIR) {
 		//持ち上げられている
 		countIIA ++;
 		if(countIIA >= MAX_CIIA) {

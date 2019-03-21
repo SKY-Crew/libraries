@@ -1,9 +1,9 @@
 #include "Ball.h"
 
 Ball::Ball(uint8_t QTY, uint8_t *PORT,
-	uint8_t MEASURING_COUNT, uint16_t BORDER_WEAK, double MULTI_AVG,
-	uint16_t *BORDER_DIST, uint8_t SIZE_SLOPE_DIR, double (*SLOPE_DIR)[2], double (*INTERCEPT_DIR)[2], double (*POINT_DIR)[2],
-	uint8_t P_CATCH, uint16_t BORDER_CATCH, uint8_t MAX_C_CATCH) {
+	uint8_t MEASURING_COUNT, uint16_t THRE_WEAK, double MULTI_AVG,
+	uint16_t *THRE_DIST, uint8_t SIZE_SLOPE_DIR, double (*SLOPE_DIR)[2], double (*INTERCEPT_DIR)[2], double (*POINT_DIR)[2],
+	uint8_t P_CATCH, uint16_t THRE_CATCH, uint8_t MAX_C_CATCH) {
 	//copy
 	this->QTY = QTY;
 	PORT = new uint8_t[QTY];
@@ -17,11 +17,11 @@ Ball::Ball(uint8_t QTY, uint8_t *PORT,
 	}
 
 	this->MEASURING_COUNT = MEASURING_COUNT;
-	this->BORDER_WEAK = BORDER_WEAK;
+	this->THRE_WEAK = THRE_WEAK;
 	this->MULTI_AVG = MULTI_AVG;
 
-	BORDER_DIST[0] = BORDER_DIST[0];
-	BORDER_DIST[1] = BORDER_DIST[1];
+	THRE_DIST[0] = THRE_DIST[0];
+	THRE_DIST[1] = THRE_DIST[1];
 	this->SIZE_SLOPE_DIR = SIZE_SLOPE_DIR;
 	SLOPE_DIR = new double[SIZE_SLOPE_DIR][2];
 	copyArray(&SLOPE_DIR[0][0], &SLOPE_DIR[0][0], SIZE_SLOPE_DIR, 2);
@@ -36,7 +36,7 @@ Ball::Ball(uint8_t QTY, uint8_t *PORT,
 	crt = new uint16_t[QTY];
 
 	this->P_CATCH = P_CATCH;
-	this->BORDER_CATCH = BORDER_CATCH;
+	this->THRE_CATCH = THRE_CATCH;
 
 	for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
 		prv[numBall] = 0;
@@ -93,13 +93,13 @@ vectorRT_t Ball::get(bool hasFilter) {
 	//弱反応切り捨て
 	bool isAllWeak = true;
 	for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
-		if(value[numBall] > BORDER_WEAK) {
+		if(value[numBall] > THRE_WEAK) {
 			isAllWeak = false;
 			break;
 		}
 	}
 	for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
-		weak[numBall] = isAllWeak ? value[numBall] : max(value[numBall] - BORDER_WEAK, 0);
+		weak[numBall] = isAllWeak ? value[numBall] : max(value[numBall] - THRE_WEAK, 0);
 	}
 	//ベクトル合成
 	vectorXY_t vXY = {0, 0};
@@ -131,14 +131,14 @@ Angle Ball::getDir(vectorRT_t ball) {
 			}
 			plusDir[isClose] = absAngle(dir) * SLOPE_DIR[key][isClose] + INTERCEPT_DIR[key][isClose];
 		}
-		dir += signum(dir) * max(0, map(ball.r, BORDER_DIST[0], BORDER_DIST[1], plusDir[0], plusDir[1]));
+		dir += signum(dir) * max(0, map(ball.r, THRE_DIST[0], THRE_DIST[1], plusDir[0], plusDir[1]));
 	}
 	return dir;
 }
 
 bool Ball::getCatch() {
 	valueCatch = analogRead(P_CATCH);
-	cCatch.increase(valueCatch < BORDER_CATCH);
+	cCatch.increase(valueCatch < THRE_CATCH);
 	return bool(cCatch);
 }
 

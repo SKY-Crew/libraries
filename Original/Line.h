@@ -33,9 +33,9 @@ class Line {
 		uint8_t *PORT;
 
 		uint8_t MAX_CIIA;
-		uint16_t BORDER_BLACK;
-		uint16_t BORDER_WHITE;
-		uint8_t BORDER_IS_IN_AIR;
+		uint16_t THRE_BLACK;
+		uint16_t THRE_WHITE;
+		uint8_t THRE_IS_IN_AIR;
 
 		double MULTI_AVG;
 

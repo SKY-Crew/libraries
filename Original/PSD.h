@@ -15,7 +15,7 @@ class PSD {
 		AdvWire wPSD;
 
 		double MULTI_AVG;
-		uint16_t BORDER_IS_CLOSE;
+		uint16_t THRE_IS_CLOSE;
 
 		double value;
 		double prv = 0;

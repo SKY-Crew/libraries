@@ -1,11 +1,11 @@
 #include "PSD.h"
 
-PSD::PSD(uint8_t P_WIRE, double MULTI_AVG, uint16_t BORDER_IS_CLOSE, uint8_t MAX_CC) {
+PSD::PSD(uint8_t P_WIRE, double MULTI_AVG, uint16_t THRE_IS_CLOSE, uint8_t MAX_CC) {
 	//copy
 	wPSD.set(P_WIRE);
 
 	this->MULTI_AVG = MULTI_AVG;
-	this->BORDER_IS_CLOSE = BORDER_IS_CLOSE;
+	this->THRE_IS_CLOSE = THRE_IS_CLOSE;
 
 	//init
 	wPSD.get()->begin();
@@ -24,7 +24,7 @@ bool PSD::get() {
 	}
 	value = value * (1 - MULTI_AVG) + prv * MULTI_AVG;
 	prv = value;
-	cClose.increase(value < BORDER_IS_CLOSE);
+	cClose.increase(value < THRE_IS_CLOSE);
 	return bool(cClose);
 }
 
