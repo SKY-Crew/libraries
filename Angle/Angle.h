@@ -77,15 +77,9 @@ inline double absAngle(const Angle& a) {
 inline int8_t signum(const Angle& a) {
 	return bool(a) ? signum(double(a)) : 0;
 }
-inline Angle filter(const Angle& a, const Angle& avg, double MULTI_AVG) {
-	Angle ans;
-	if(abs(double(a) - double(avg)) <= 180) {
-		ans = avg * MULTI_AVG + a * (1 - MULTI_AVG);
-	}else {
-		ans = avg * MULTI_AVG + a * (1 - MULTI_AVG)
-						+ 360 * (a >= avg ? MULTI_AVG : 1 - MULTI_AVG);
-	}
-	return ans;
+inline Angle filterAngle(const Angle& a, const Angle& avg, double MULTI_AVG) {
+	return filter(avg, a, MULTI_AVG)
+	 + (abs(double(a) - double(avg)) > 180 ? 360 * (a >= avg ? MULTI_AVG : 1 - MULTI_AVG) : 0);
 }
 
 inline double diff(const Angle& a, const Angle& b) {

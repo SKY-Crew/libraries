@@ -31,6 +31,10 @@ inline double simplifyDeg(double deg) {
 	return fmod(fmod(deg, 360) + 360 + 180, 360) - 180;
 }
 
+inline double filter(double value, double prv, double MULTI_AVG) {
+	return prv * MULTI_AVG + value * (1 - MULTI_AVG);
+}
+
 inline uint8_t createBinOnes(uint8_t length) { return (1 << length) - 1; }
 inline uint8_t extractBit(uint8_t byte, uint8_t firstDigit, uint8_t lastDigit) {
 	return (byte & createBinOnes(lastDigit + 1)) >> firstDigit;
