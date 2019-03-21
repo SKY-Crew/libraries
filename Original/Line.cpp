@@ -22,7 +22,7 @@ Line::Line(bool CAN_LEAVE_LINE, uint8_t QTY, uint8_t *PORT, uint8_t MAX_CIIA,
 	crtState = new Color[QTY];
 }
 
-line_t Line::get(bool isFW, Angle gyro) {
+line_t Line::get(bool isFW, Angle gyro, Angle diffGyro) {
 	int qtyILW = 0;
 	int qtyILB = 0;
 	for(int numLine = 0; numLine < QTY; numLine ++) {
@@ -53,8 +53,8 @@ line_t Line::get(bool isFW, Angle gyro) {
 		line.isOutside = line.isHalfOut && bool(prvDI);
 		line.isWholeOut = line.isOutside;
 		line.dirInside = line.isOutside ? prvDI : false;
-		if(bool(gyro) && bool(prvGyro) && bool(line.dirInside)) {
-			line.dirInside += gyro - prvGyro;
+		if(bool(gyro) && bool(line.dirInside)) {
+			line.dirInside += diffGyro;
 		}
 	}else {
 		//ライン上
@@ -117,7 +117,6 @@ line_t Line::get(bool isFW, Angle gyro) {
 	}
 
 	prvDI = line.dirInside;
-	prvGyro = gyro;
 	return line;
 }
 
