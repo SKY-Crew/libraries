@@ -22,7 +22,7 @@ class Kicker {
 		uint8_t countKick = 0;
 		bool kicking = false;
 		bool haveCheckKick = false;
-		bool prvRK = false;
+		bool prvStartKick = false;
 };
 
 #endif

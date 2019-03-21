@@ -33,8 +33,8 @@ void Kicker::kick(bool startKick) {
 }
 
 void Kicker::checkKick() {
-	kick(digitalRead(P_RUN_KICKER) && !prvRK);
-	prvRK = digitalRead(P_RUN_KICKER);
+	kick(digitalRead(P_RUN_KICKER) && !prvStartKick);
+	prvStartKick = digitalRead(P_RUN_KICKER);
 }
 
 bool Kicker::getCanUseKicker() {
