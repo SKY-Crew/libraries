@@ -4,6 +4,7 @@
 #include <Arduino.h>
 #include "AdvMath.h"
 #include "Angle.h"
+#include "Count.h"
 
 class Kicker {
 	public:
@@ -17,9 +18,12 @@ class Kicker {
 		uint8_t P_KICKER;
 		uint8_t P_ONOFF_KICKER;
 		uint8_t P_RUN_KICKER;
+
 		uint16_t MAX_CK;
+		Count cKicking;
 		uint16_t MAX_CKW;
-		uint8_t countKick = 0;
+		Count cWait;
+
 		bool kicking = false;
 		bool haveChecked = false;
 		bool prvStart = false;

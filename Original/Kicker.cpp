@@ -13,20 +13,23 @@ Kicker::Kicker(uint8_t P_KICKER, uint8_t P_ONOFF_KICKER, uint8_t P_RUN_KICKER,
 	pinMode(P_KICKER, OUTPUT);
 	pinMode(P_ONOFF_KICKER, INPUT);
 	pinMode(P_RUN_KICKER, INPUT);
+
+	cKicking.set_MAX(MAX_CK);
+	cWait.set_MAX(MAX_CKW);
 }
 
 
 void Kicker::kick(bool start) {
 	if(!haveChecked) {
-		countKick = min(countKick + 1, max(MAX_CK, MAX_CKW));
-		if(kicking && countKick >= MAX_CK) {
+		cKicking.increase(kicking);
+		if(bool(cKicking)) {
 			digitalWrite(P_KICKER, LOW);
 			kicking = false;
-			countKick = 0;
-		}else if(start && !kicking && countKick >= MAX_CKW) {
+		}
+		cWait.increase(!kicking);
+		if(start && bool(cWait)) {
 			digitalWrite(P_KICKER, digitalRead(P_ONOFF_KICKER));
 			kicking = true;
-			countKick = 0;
 		}
 	}
 	haveChecked = true;
