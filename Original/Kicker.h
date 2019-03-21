@@ -9,10 +9,10 @@ class Kicker {
 	public:
 		Kicker(uint8_t, uint8_t, uint8_t, uint16_t, uint16_t);
 		void kick(bool);
-		void checkKick();
-		bool getCanUseKicker();
+		void check();
+		bool getCanUse();
 		bool getIsKicking();
-		void setHaveCheckKick(bool);
+		void setHaveChecked(bool);
 	private:
 		uint8_t P_KICKER;
 		uint8_t P_ONOFF_KICKER;
@@ -21,8 +21,8 @@ class Kicker {
 		uint16_t MAX_CKW;
 		uint8_t countKick = 0;
 		bool kicking = false;
-		bool haveCheckKick = false;
-		bool prvStartKick = false;
+		bool haveChecked = false;
+		bool prvStart = false;
 };
 
 #endif

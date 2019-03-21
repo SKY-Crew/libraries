@@ -16,28 +16,28 @@ Kicker::Kicker(uint8_t P_KICKER, uint8_t P_ONOFF_KICKER, uint8_t P_RUN_KICKER,
 }
 
 
-void Kicker::kick(bool startKick) {
-	if(!haveCheckKick) {
+void Kicker::kick(bool start) {
+	if(!haveChecked) {
 		countKick = min(countKick + 1, max(MAX_CK, MAX_CKW));
 		if(kicking && countKick >= MAX_CK) {
 			digitalWrite(P_KICKER, LOW);
 			kicking = false;
 			countKick = 0;
-		}else if(startKick && !kicking && countKick >= MAX_CKW) {
+		}else if(start && !kicking && countKick >= MAX_CKW) {
 			digitalWrite(P_KICKER, digitalRead(P_ONOFF_KICKER));
 			kicking = true;
 			countKick = 0;
 		}
 	}
-	haveCheckKick = true;
+	haveChecked = true;
 }
 
-void Kicker::checkKick() {
-	kick(digitalRead(P_RUN_KICKER) && !prvStartKick);
-	prvStartKick = digitalRead(P_RUN_KICKER);
+void Kicker::check() {
+	kick(digitalRead(P_RUN_KICKER) && !prvStart);
+	prvStart = digitalRead(P_RUN_KICKER);
 }
 
-bool Kicker::getCanUseKicker() {
+bool Kicker::getCanUse() {
 	return digitalRead(P_ONOFF_KICKER);
 }
 
@@ -45,6 +45,6 @@ bool Kicker::getIsKicking() {
 	return digitalRead(P_ONOFF_KICKER) && kicking;
 }
 
-void Kicker::setHaveCheckKick(bool haveCheckKick) {
-	haveCheckKick = haveCheckKick;
+void Kicker::setHaveChecked(bool haveChecked) {
+	haveChecked = haveChecked;
 }
