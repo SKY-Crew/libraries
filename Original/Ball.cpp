@@ -2,7 +2,7 @@
 
 Ball::Ball(uint8_t QTY, uint8_t *PORT,
 	uint8_t MEASURING_COUNT, uint16_t THRE_WEAK, double CHANGE_RATE,
-	uint16_t *THRE_DIST, uint8_t SIZE_SLOPE_DIR, double (*SLOPE_DIR)[2], double (*INTERCEPT_DIR)[2], double (*POINT_DIR)[2],
+	uint16_t *THRE_DIST, uint8_t SIZE_POINT_DIR, double (*POINT_DIR)[2], double (*PLUS_DIR)[2],
 	uint8_t P_CATCH, uint16_t THRE_CATCH, uint8_t MAX_C_CATCH) {
 	//copy
 	this->QTY = QTY;
@@ -22,13 +22,11 @@ Ball::Ball(uint8_t QTY, uint8_t *PORT,
 
 	THRE_DIST[0] = THRE_DIST[0];
 	THRE_DIST[1] = THRE_DIST[1];
-	this->SIZE_SLOPE_DIR = SIZE_SLOPE_DIR;
-	SLOPE_DIR = new double[SIZE_SLOPE_DIR][2];
-	copyArray(&SLOPE_DIR[0][0], &SLOPE_DIR[0][0], SIZE_SLOPE_DIR, 2);
-	INTERCEPT_DIR = new double[SIZE_SLOPE_DIR][2];
-	copyArray(&INTERCEPT_DIR[0][0], &INTERCEPT_DIR[0][0], SIZE_SLOPE_DIR, 2);
-	POINT_DIR = new double[SIZE_SLOPE_DIR - 1][2];
-	copyArray(&POINT_DIR[0][0], &POINT_DIR[0][0], SIZE_SLOPE_DIR - 1, 2);
+	this->SIZE_POINT_DIR = SIZE_POINT_DIR;
+	POINT_DIR = new double[SIZE_POINT_DIR][2];
+	copyArray(&POINT_DIR[0][0], &POINT_DIR[0][0], SIZE_POINT_DIR, 2);
+	PLUS_DIR = new double[SIZE_POINT_DIR][2];
+	copyArray(&PLUS_DIR[0][0], &PLUS_DIR[0][0], SIZE_POINT_DIR, 2);
 
 	value = new uint16_t[QTY];
 	weak = new uint16_t[QTY];
@@ -126,10 +124,16 @@ Angle Ball::getDir(vectorRT_t ball) {
 		Angle plusDir[2];
 		for(bool isClose = true; isClose; isClose = !isClose) {
 			uint8_t key = 0;
-			for(; key < SIZE_SLOPE_DIR - 1; key ++) {
-				if(absAngle(dir) <= POINT_DIR[key][isClose]) { break; }
+			for(; key < SIZE_POINT_DIR; key ++) {
+				if(POINT_DIR[key][isClose] > absAngle(dir)) { break; }
 			}
-			plusDir[isClose] = absAngle(dir) * SLOPE_DIR[key][isClose] + INTERCEPT_DIR[key][isClose];
+			if(key == SIZE_POINT_DIR) {
+				plusDir[isClose] = PLUS_DIR[key - 1][isClose];
+			}else {
+				plusDir[isClose] = map(absAngle(dir),
+					POINT_DIR[key - 1][isClose], POINT_DIR[key][isClose],
+					PLUS_DIR[key - 1][isClose], PLUS_DIR[key][isClose]);
+			}
 		}
 		dir += signum(dir) * max(0, map(ball.r, THRE_DIST[0], THRE_DIST[1], plusDir[0], plusDir[1]));
 	}

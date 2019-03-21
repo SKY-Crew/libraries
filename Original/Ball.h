@@ -10,7 +10,7 @@ class Ball {
 	public:
 		Ball(uint8_t, uint8_t*,
 			uint8_t, uint16_t, double,
-			uint16_t*, uint8_t, double(*)[2], double(*)[2], double(*)[2],
+			uint16_t*, uint8_t, double(*)[2], double(*)[2],
 			uint8_t, uint16_t, uint8_t);
 		vectorRT_t get(bool = false);
 		uint16_t getForward();
@@ -33,10 +33,9 @@ class Ball {
 		double CHANGE_RATE;
 
 		uint16_t THRE_DIST[2];
-		uint8_t SIZE_SLOPE_DIR;
-		double (*SLOPE_DIR)[2];
-		double (*INTERCEPT_DIR)[2];
+		uint8_t SIZE_POINT_DIR;
 		double (*POINT_DIR)[2];
+		double (*PLUS_DIR)[2];
 
 		uint16_t *value;
 		uint16_t *weak;
