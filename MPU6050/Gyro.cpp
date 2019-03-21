@@ -50,6 +50,7 @@ float Gyro::_gyro_calcYaw(uint8_t *fifoBuf) {
 }
 
 Angle Gyro::get() {
+  prv = crt;
   if(!digitalRead(ONOFF_PIN)) {
     int fifoSize;
     const int packetSize = 42;
@@ -81,10 +82,16 @@ Angle Gyro::get() {
 
     _gyro_oldPinState = newPinState;
 
-    return Angle(toSend);
+    crt = toSend;
+    return crt;
   }else {
+    crt = false;
     return false;
   }
+}
+
+Angle Gyro::getDiff() {
+  return crt - prv;
 }
 
 int16_t Gyro::multiRot(Angle rotGyro) {

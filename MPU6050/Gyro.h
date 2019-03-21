@@ -13,6 +13,7 @@ class Gyro {
   public:
     Gyro(uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, int16_t*, int16_t*);
     Angle get();
+    Angle getDiff();
     int16_t multiRot(Angle);
     bool getCanUse();
   private:
@@ -24,6 +25,9 @@ class Gyro {
     int16_t toSend;
 
     AdvWire wGyro;
+
+    Angle crt;
+    Angle prv;
 
     uint8_t ONOFF_PIN;
     uint8_t RESET_PIN;
