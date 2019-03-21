@@ -31,8 +31,8 @@ inline double simplifyDeg(double deg) {
 	return fmod(fmod(deg, 360) + 360 + 180, 360) - 180;
 }
 
-inline double filter(double value, double prv, double CHANGE_RATE) {
-	return prv * (1 - CHANGE_RATE) + value * CHANGE_RATE;
+inline double filter(double val, double prv, double CHANGE_RATE) {
+	return map(CHANGE_RATE, 0, 1, prv, val);
 }
 
 inline uint8_t createBinOnes(uint8_t length) { return (1 << length) - 1; }
