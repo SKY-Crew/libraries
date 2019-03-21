@@ -39,7 +39,7 @@ class Count {
 		inline bool compare(double rate) {
 			return rate < 0 ? true
 				: rate == 0 ? count > MIN
-				: rate <= 1 ? count >= MAX * rate + MIN * (1 - rate)
+				: rate <= 1 ? count >= map(rate, 0, 1, MIN, MAX)
 				: false;
 		}
 };
