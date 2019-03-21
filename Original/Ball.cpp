@@ -78,8 +78,8 @@ vectorRT_t Ball::get(bool hasFilter) {
 			findingBall = false;
 			// 平均値計算
 			if(prv[numBall] > 0) {
-				value[numBall] = prv[numBall] * MULTI_AVG + value[numBall] * (1 - MULTI_AVG);
-			}
+				value[numBall] = filter(value[numBall], prv[numBall], MULTI_AVG);
+				}
 		}
 		//平均値保存
 		prv[numBall] = value[numBall];

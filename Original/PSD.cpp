@@ -22,7 +22,7 @@ bool PSD::get() {
 	if(value <= 0) {
 		value = 4094;
 	}
-	value = value * (1 - MULTI_AVG) + prv * MULTI_AVG;
+	value = filter(value, prv, MULTI_AVG);
 	prv = value;
 	cClose.increase(value < THRE_IS_CLOSE);
 	return bool(cClose);
