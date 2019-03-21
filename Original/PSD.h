@@ -14,7 +14,7 @@ class PSD {
 	private:
 		AdvWire wPSD;
 
-		double MULTI_AVG;
+		double CHANGE_RATE;
 		uint16_t THRE_IS_CLOSE;
 
 		double value;

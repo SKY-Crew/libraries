@@ -30,7 +30,7 @@ class Ball {
 		const uint16_t CYCLE = 837;
 		uint8_t MEASURING_COUNT;
 		uint16_t THRE_WEAK;
-		double MULTI_AVG;
+		double CHANGE_RATE;
 
 		uint16_t THRE_DIST[2];
 		uint8_t SIZE_SLOPE_DIR;

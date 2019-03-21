@@ -1,7 +1,7 @@
 #include "Line.h"
 
 Line::Line(bool CAN_LEAVE_LINE, uint8_t QTY, uint8_t *PORT, uint8_t MAX_CIIA,
-	uint16_t THRE_BLACK, uint16_t THRE_WHITE, uint8_t THRE_IS_IN_AIR, double MULTI_AVG) {
+	uint16_t THRE_BLACK, uint16_t THRE_WHITE, uint8_t THRE_IS_IN_AIR, double CHANGE_RATE) {
 	//copy
 	this->CAN_LEAVE_LINE = CAN_LEAVE_LINE;
 
@@ -14,7 +14,7 @@ Line::Line(bool CAN_LEAVE_LINE, uint8_t QTY, uint8_t *PORT, uint8_t MAX_CIIA,
 	this->THRE_WHITE = THRE_WHITE;
 	this->THRE_IS_IN_AIR = THRE_IS_IN_AIR;
 
-	this->MULTI_AVG = MULTI_AVG;
+	this->CHANGE_RATE = CHANGE_RATE;
 
 	value = new uint16_t[QTY];
 	crt = new uint16_t[QTY];
@@ -95,7 +95,7 @@ line_t Line::get(bool isFW, bool canUseGyro, Angle gyro) {
 			}
 			//平均値計算
 			if(!line.isWholeOut && bool(prvDI)) {
-				line.dirInside = filterAngle(line.dirInside, prvDI, MULTI_AVG);
+				line.dirInside = filterAngle(line.dirInside, prvDI, CHANGE_RATE);
 			}
 		}
 

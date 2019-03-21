@@ -1,10 +1,10 @@
 #include "PSD.h"
 
-PSD::PSD(uint8_t P_WIRE, double MULTI_AVG, uint16_t THRE_IS_CLOSE, uint8_t MAX_CC) {
+PSD::PSD(uint8_t P_WIRE, double CHANGE_RATE, uint16_t THRE_IS_CLOSE, uint8_t MAX_CC) {
 	//copy
 	wPSD.set(P_WIRE);
 
-	this->MULTI_AVG = MULTI_AVG;
+	this->CHANGE_RATE = CHANGE_RATE;
 	this->THRE_IS_CLOSE = THRE_IS_CLOSE;
 
 	//init
@@ -22,7 +22,7 @@ bool PSD::get() {
 	if(value <= 0) {
 		value = 4094;
 	}
-	value = filter(value, prv, MULTI_AVG);
+	value = filter(value, prv, CHANGE_RATE);
 	prv = value;
 	cClose.increase(value < THRE_IS_CLOSE);
 	return bool(cClose);
