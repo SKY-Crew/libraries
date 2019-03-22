@@ -49,5 +49,5 @@ bool Kicker::getIsKicking() {
 }
 
 void Kicker::setHaveChecked(bool haveChecked) {
-	haveChecked = haveChecked;
+	this->haveChecked = haveChecked;
 }
