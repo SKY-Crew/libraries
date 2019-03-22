@@ -9,7 +9,7 @@ typedef struct {
 } vectorXY_t;
 
 enum Dist {
-	CLOSE, MIDDLE, FAR
+	CLOSE, PROPER, FAR, TOO_FAR
 };
 
 inline int8_t signum(double x) {
