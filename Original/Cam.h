@@ -6,7 +6,7 @@
 #include "AdvSerial.h"
 
 typedef struct {
-	int8_t distGK;//0~2
+	Dist distGK;//0~2
 	int8_t rot;//-3~3(0~6)
 	int8_t distFW;//0~2
 	int8_t rotOpp;//-3~4(0~7)

@@ -30,12 +30,13 @@ cam_t Cam::get() {
 				// Serial.println(goal.rotOpp);
 			}else if(extractBit(value, 6, 7) == 0b00){
 				goal.isInCorner = extractBit(value, 5, 5) == 1;
-				goal.distGK = extractBit(value, 3, 4);
+				uint8_t intDistGK = extractBit(value, 3, 4);
+				goal.distGK = intDistGK == 0 ? PROPER : intDistGK == 1 ? FAR : TOO_FAR;
 				goal.rot = CENTER_OWN_GOAL - extractBit(value, 0, 2);
 			}
 		}
 	}else {
-		goal = {0, 0, 2, 0, true, false};
+		goal = {PROPER, 0, 2, 0, true, false};
 	}
 	return goal;
 }
