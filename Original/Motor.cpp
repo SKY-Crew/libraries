@@ -87,5 +87,5 @@ void Motor::spin(uint8_t port, int16_t power) {
 }
 
 void Motor::setHaveRun(bool haveRun) {
-	haveRun = haveRun;
+	this->haveRun = haveRun;
 }
