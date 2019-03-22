@@ -20,8 +20,8 @@ Ball::Ball(uint8_t QTY, uint8_t *PORT,
 	this->THRE_WEAK = THRE_WEAK;
 	this->CHANGE_RATE = CHANGE_RATE;
 
-	THRE_DIST[0] = THRE_DIST[0];
-	THRE_DIST[1] = THRE_DIST[1];
+	this->THRE_DIST[0] = THRE_DIST[0];
+	this->THRE_DIST[1] = THRE_DIST[1];
 	this->SIZE_POINT_DIR = SIZE_POINT_DIR;
 	this->POINT_DIR = new double[SIZE_POINT_DIR][2];
 	copyArray(&(this->POINT_DIR[0][0]), &POINT_DIR[0][0], SIZE_POINT_DIR, 2);
@@ -122,7 +122,8 @@ Angle Ball::getDir(vectorRT_t ball) {
 	Angle dir = ball.t;
 	if(bool(ball.t)) {
 		Angle plusDir[2];
-		for(bool isClose = true; isClose; isClose = !isClose) {
+		bool isClose = true;
+		do {
 			uint8_t index = 0;
 			for(; index < SIZE_POINT_DIR; index ++) {
 				if(POINT_DIR[index][isClose] > absAngle(dir)) { break; }
@@ -134,7 +135,8 @@ Angle Ball::getDir(vectorRT_t ball) {
 					POINT_DIR[index - 1][isClose], POINT_DIR[index][isClose],
 					PLUS_DIR[index - 1][isClose], PLUS_DIR[index][isClose]);
 			}
-		}
+			isClose = !isClose;
+		}while(!isClose);
 		dir += signum(dir) * max(0, map(ball.r, THRE_DIST[0], THRE_DIST[1], plusDir[0], plusDir[1]));
 	}
 	return dir;
