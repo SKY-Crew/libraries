@@ -6,8 +6,8 @@ Ball::Ball(uint8_t QTY, uint8_t *PORT,
 	uint8_t P_CATCH, uint16_t THRE_CATCH, uint8_t MAX_C_CATCH) {
 	//copy
 	this->QTY = QTY;
-	PORT = new uint8_t[QTY];
-	copyArray(PORT, PORT, QTY);
+	this->PORT = new uint8_t[QTY];
+	copyArray(this->PORT, PORT, QTY);
 
 	COS_IR = new double[QTY];
 	SIN_IR = new double[QTY];
@@ -23,10 +23,10 @@ Ball::Ball(uint8_t QTY, uint8_t *PORT,
 	THRE_DIST[0] = THRE_DIST[0];
 	THRE_DIST[1] = THRE_DIST[1];
 	this->SIZE_POINT_DIR = SIZE_POINT_DIR;
-	POINT_DIR = new double[SIZE_POINT_DIR][2];
-	copyArray(&POINT_DIR[0][0], &POINT_DIR[0][0], SIZE_POINT_DIR, 2);
-	PLUS_DIR = new double[SIZE_POINT_DIR][2];
-	copyArray(&PLUS_DIR[0][0], &PLUS_DIR[0][0], SIZE_POINT_DIR, 2);
+	this->POINT_DIR = new double[SIZE_POINT_DIR][2];
+	copyArray(&(this->POINT_DIR[0][0]), &POINT_DIR[0][0], SIZE_POINT_DIR, 2);
+	this->PLUS_DIR = new double[SIZE_POINT_DIR][2];
+	copyArray(&(this->PLUS_DIR[0][0]), &PLUS_DIR[0][0], SIZE_POINT_DIR, 2);
 
 	value = new uint16_t[QTY];
 	weak = new uint16_t[QTY];

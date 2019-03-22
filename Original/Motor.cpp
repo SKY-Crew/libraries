@@ -5,10 +5,10 @@ Motor::Motor(bool CAN_MOVE, uint8_t QTY, uint8_t *P_DIR, uint8_t *P_PWR,
 	//copy
 	this->CAN_MOVE = CAN_MOVE;
 	this->QTY = QTY;
-	P_DIR = new uint8_t[QTY];
-	copyArray(P_DIR, P_DIR, QTY);
-	P_PWR = new uint8_t[QTY];
-	copyArray(P_PWR, P_PWR, QTY);
+	this->P_DIR = new uint8_t[QTY];
+	copyArray(this->P_DIR, P_DIR, QTY);
+	this->P_PWR = new uint8_t[QTY];
+	copyArray(this->P_PWR, P_PWR, QTY);
 	ROT_MOTOR = new Angle[QTY];
 	ROT_WHEEL = new Angle[QTY];
 	SIN_RW = new double[QTY];

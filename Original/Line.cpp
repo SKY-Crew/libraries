@@ -6,8 +6,8 @@ Line::Line(bool CAN_LEAVE_LINE, uint8_t QTY, uint8_t *PORT, uint8_t MAX_CIIA,
 	this->CAN_LEAVE_LINE = CAN_LEAVE_LINE;
 
 	this->QTY = QTY;
-	PORT = new uint8_t[QTY];
-	copyArray(PORT, PORT, QTY);
+	this->PORT = new uint8_t[QTY];
+	copyArray(this->PORT, PORT, QTY);
 
 	this->MAX_CIIA = MAX_CIIA;
 	this->THRE_BLACK = THRE_BLACK;

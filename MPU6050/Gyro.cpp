@@ -19,10 +19,10 @@ Gyro::Gyro(uint8_t P_WIRE, uint8_t PORT, uint8_t ONOFF_PIN, uint8_t RESET_PIN,
   this->ONOFF_PIN = ONOFF_PIN;
   this->RESET_PIN = RESET_PIN;
   this->SIZE_SLOPE_RG = SIZE_SLOPE_RG;
-  SLOPE_RG = new int16_t[SIZE_SLOPE_RG];
-  copyArray(SLOPE_RG, SLOPE_RG, SIZE_SLOPE_RG);
-  POINT_RG = new int16_t[SIZE_SLOPE_RG - 1];
-  copyArray(POINT_RG, POINT_RG, SIZE_SLOPE_RG - 1);
+  this->SLOPE_RG = new int16_t[SIZE_SLOPE_RG];
+  copyArray(this->SLOPE_RG, SLOPE_RG, SIZE_SLOPE_RG);
+  this->POINT_RG = new int16_t[SIZE_SLOPE_RG - 1];
+  copyArray(this->POINT_RG, POINT_RG, SIZE_SLOPE_RG - 1);
   
   //init
   wGyro.get()->begin();
