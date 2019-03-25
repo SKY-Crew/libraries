@@ -36,7 +36,7 @@ Motor::Motor(bool CAN_MOVE, uint8_t QTY, uint8_t *P_DIR, uint8_t *P_PWR,
 		pinMode(P_DIR[i], OUTPUT);
 		pinMode(P_PWR[i], OUTPUT);
 		#ifdef CORE_TEENSY
-			analogWriteFrequency(P_PWR[i], 250 * 1000);
+			analogWriteFrequency(P_PWR[i], 70 * 1000);
 		#else
 			TCCR3B = (TCCR3B & 0b11111000) | 0x01;
 		#endif
