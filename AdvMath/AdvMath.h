@@ -8,10 +8,6 @@ typedef struct {
 	double y;
 } vectorXY_t;
 
-enum Dist {
-	CLOSE, PROPER, FAR, TOO_FAR
-};
-
 inline int8_t signum(double x) {
 	return x > 0 ? 1
 		: x < 0 ? -1
