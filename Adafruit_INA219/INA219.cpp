@@ -1,6 +1,6 @@
 #include "INA219.h"
 
-INA219::INA219(uint8_t X, double LOW_VOLT, double HIGH_VOLT, uint8_t MAX_CR, uint8_t MAX_CVL) {
+INA219::INA219(uint8_t P_WIRE, double LOW_VOLT, double HIGH_VOLT, uint8_t MAX_CR, uint8_t MAX_CVL) {
 	//copy
 	this->LOW_VOLT = LOW_VOLT;
 	this->HIGH_VOLT = HIGH_VOLT;
@@ -8,7 +8,7 @@ INA219::INA219(uint8_t X, double LOW_VOLT, double HIGH_VOLT, uint8_t MAX_CR, uin
 	this->MAX_CVL = MAX_CVL;
 
 	//init
-	ina219.begin(X, 0x41);
+	ina219.begin(P_WIRE, 0x41);
 }
 
 bool INA219::checkVolt() {
