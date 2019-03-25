@@ -51,7 +51,7 @@ class Angle {
 		bool inside(const Angle&, const Angle&) const;
 };
 
-inline String string(const Angle& a) { return (bool(a) ? String((int)double(a)) : "null"); }
+inline String toString(const Angle& a) { return (bool(a) ? String((int)double(a)) : "null"); }
 
 inline const Angle operator+(const Angle& a, const Angle& b) { return Angle(a) += b; }
 inline const Angle operator-(const Angle& a, const Angle& b) { return Angle(a) -= b; }
