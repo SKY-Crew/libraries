@@ -17,7 +17,7 @@ Cam::Cam(uint8_t P_SERIAL, uint8_t P_ONOFF, uint8_t CENTER_OPP_GOAL, uint8_t CEN
 }
 
 cam_t Cam::get() {
-	if(!digitalRead(P_ONOFF)) {
+	if(digitalRead(P_ONOFF)) {
 		if(sCam.get()->available()) {
 			uint8_t value = sCam.get()->read();
 			if(extractBit(value, 7, 7) == 0b1) {
@@ -46,5 +46,5 @@ int16_t Cam::multiRotGoal(int16_t rotGoal) {
 }
 
 bool Cam::getCanUse() {
-	return !digitalRead(P_ONOFF);
+	return digitalRead(P_ONOFF);
 }
