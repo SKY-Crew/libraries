@@ -22,7 +22,7 @@ cam_t Cam::get() {
 			uint8_t value = sCam.get()->read();
 			if(extractBit(value, 7, 7) == 0b1) {
 				goal.isWide = extractBit(value, 6, 6) == 1;
-				goal.distFW = extractBit(value, 4, 5);
+				goal.distFW = Dist(extractBit(value, 4, 5) + TOO_CLOSE);
 				goal.rotOpp = CENTER_OPP_GOAL - extractBit(value, 0, 3);
 				// if(goal.rotOpp >= 0) {
 				// 	goal.rotOpp ++;
@@ -30,13 +30,12 @@ cam_t Cam::get() {
 				// Serial.println(goal.rotOpp);
 			}else if(extractBit(value, 6, 7) == 0b00){
 				goal.isInCorner = extractBit(value, 5, 5) == 1;
-				uint8_t intDistGK = extractBit(value, 3, 4);
-				goal.distGK = intDistGK == 0 ? PROPER : intDistGK == 1 ? FAR : TOO_FAR;
+				goal.distGK = Dist(extractBit(value, 3, 4) + PROPER);
 				goal.rot = CENTER_OWN_GOAL - extractBit(value, 0, 2);
 			}
 		}
 	}else {
-		goal = {PROPER, 0, 2, 0, true, false};
+		goal = {PROPER, 0, PROPER, 0, true, false};
 	}
 	return goal;
 }

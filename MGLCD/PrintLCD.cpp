@@ -27,7 +27,7 @@ void LCD::run(Angle gyro, line_t line, bool canUseCam, bool canUseGyro, bool isF
 				}
 				write("Volt:"+String(valueIna219), 11, 3);
 				write("OWN Rot"+String(goal.rot), 0, 4);
-				write("Dis"+String(goal.distGK)+","+String(goal.distFW), 10, 4);
+				write("Dis"+String(toChar(goal.distGK))+","+String(toChar(goal.distFW)), 10, 4);
 				write("Crn"+String(goal.isInCorner ? OOO : '-'), 17, 4);
 				write("OPP Rot:"+String(goal.rotOpp), 0, 5);
 				write("Wide:"+String(goal.isWide ? OOO : '-'), 11, 5);
@@ -44,7 +44,7 @@ void LCD::run(Angle gyro, line_t line, bool canUseCam, bool canUseGyro, bool isF
 				write("frwdIR:"+String(valueBF), 0, 1);
 				write("T/F:"+String(isBallForward ? OOO : '-'), 11, 1);
 				write("Dis:"+String(round(ball.r)), 0, 2);
-				write("Close:"+String(distBall == CLOSE ? 'C' : distBall == PROPER ? 'M' : 'F'), 11, 2);
+				write(toString(distBall), 11, 2);
 				write("Dis:", 0, 3);
 				for(int8_t i = -1; i <= 1; i ++) {
 					lcd->Line(30, 9 * 3 + i, 30 + ball.r * 0.15, 9 * 3 + i);
@@ -52,7 +52,7 @@ void LCD::run(Angle gyro, line_t line, bool canUseCam, bool canUseGyro, bool isF
 				write("F_PSD:"+String(valueFrontPSD), 0, 4);
 				write("C/F:"+String(enemyStandsFront ? OOO : '-'), 11, 4);
 				write("B_PSD:"+String(valueBackPSD), 0, 5);
-				write("C/F:"+String(distBall == CLOSE ? 'C' : distBall == PROPER ? 'M' : 'F'), 11, 5);
+				write(toString(distGoalPSD), 11, 5);
 				break;
 		}
 		MAX_PAGE = 4;

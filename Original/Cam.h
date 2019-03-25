@@ -4,11 +4,12 @@
 #include <Arduino.h>
 #include "AdvMath.h"
 #include "AdvSerial.h"
+#include "Dist.h"
 
 typedef struct {
 	Dist distGK;//0~2
 	int8_t rot;//-3~3(0~6)
-	int8_t distFW;//0~2
+	Dist distFW;//0~2
 	int8_t rotOpp;//-3~4(0~7)
 	bool isWide;//0~1
 	uint8_t isInCorner;//0~1
