@@ -12,7 +12,7 @@ PSD::PSD(uint8_t P_WIRE, double CHANGE_RATE, uint16_t THRE_IS_CLOSE, uint8_t MAX
 	cClose = Count(MAX_CC, false);
 }
 
-bool PSD::get() {
+void PSD::get() {
 	wPSD.get()->beginTransmission(0x40);
 	wPSD.get()->write(0x5E);
 	wPSD.get()->endTransmission();
@@ -24,10 +24,15 @@ bool PSD::get() {
 	}
 	value = filter(value, prv, CHANGE_RATE);
 	prv = value;
+}
+
+bool PSD::getBool() {
+	get();
 	cClose.increase(value < THRE_IS_CLOSE);
 	return bool(cClose);
 }
 
 double PSD::getValue() {
+	get();
 	return value;
 }

@@ -9,7 +9,8 @@
 class PSD {
 	public:
 		PSD(uint8_t, double, uint16_t, uint8_t);
-		bool get();
+		void get();
+		bool getBool();
 		double getValue();
 	private:
 		AdvWire wPSD;
