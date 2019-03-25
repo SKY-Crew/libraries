@@ -14,7 +14,7 @@
 class LCD {
 	public:
 		LCD(uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint32_t, uint8_t, uint8_t);
-		void run(Angle, line_t, bool, bool, bool, bool, bool, comc_t,
+		void run(Angle, line_t, bool, bool, bool, bool, comc_t,
 			uint8_t, uint16_t*, Color*, double, cam_t,
 			vectorRT_t, uint8_t, uint16_t*,
 			uint16_t, bool, uint16_t, bool, Dist,

@@ -1,6 +1,6 @@
 #include "LCD.h"
 
-void LCD::run(Angle gyro, line_t line, bool canUseKicker, bool canUseCam, bool canUseGyro, bool isFW, bool canUseComc, comc_t fellow,
+void LCD::run(Angle gyro, line_t line, bool canUseCam, bool canUseGyro, bool isFW, bool canUseComc, comc_t fellow,
 		uint8_t QTY_LINE, uint16_t *valueLine, Color *stateLine, double valueIna219, cam_t goal,
 		vectorRT_t ball, uint8_t QTY_IR, uint16_t *valueIR,
 		uint16_t valueCatch, bool catchingBall, uint16_t valueBF, bool isBallForward, Dist distBall,
@@ -14,7 +14,7 @@ void LCD::run(Angle gyro, line_t line, bool canUseKicker, bool canUseCam, bool c
 				drawMeter(gyro, 0, true);
 				drawMeter(line.dirInside, 8, false);
 				drawAngelRing(QTY_LINE, stateLine, 8);
-				write(canUseKicker ? "kON" : "kOFF", 17, 0);
+				write("", 17, 0);
 				write(canUseCam ? "cON" : "cOFF", 17, 1);
 				write(canUseGyro ? "gON" : "gOFF", 17, 2);
 				write(canUseComc ? "mON" : "mOFF", 17, 3);
