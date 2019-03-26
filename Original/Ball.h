@@ -56,7 +56,7 @@ class Ball {
 		uint16_t THRE_UP;
 
 		uint16_t valueUp;
-		uint16_t upRate;
+		uint16_t upDiff;
 };
 
 #endif

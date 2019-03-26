@@ -97,27 +97,11 @@ Angle Gyro::getDiff() {
 }
 
 int16_t Gyro::multiRot(Angle origin) {
-  int16_t rot = 0;
   double error[] = {0, 0};//P, D
-  error[0] = signum(crt) * (max(1.5, abs((double)(crt - origin))) - 1.5);
+  error[0] = absMinus((double)(crt - origin), 1.5);
   error[1] = digitalRead(RESET_PIN) ? 0 : filter((double)getDiff() * 10, error[1], 0.6);
-  error[1] = signum(error[1]) * (max(1, abs(error[1])) - 1);
-
-  uint8_t index = 0;
-  for(; index < SIZE_POINT; index ++) {
-    if(POINT[index] > absAngle(error[0])) { break; }
-  }
-  if(index == SIZE_POINT) {
-    rot = ROT[index - 1];
-  }else {
-    rot = map(absAngle(error[0]),
-      POINT[index - 1], POINT[index],
-      ROT[index - 1], ROT[index]);
-  }
-  rot *= signum(error[0]);
-
-  rot += error[1] * Kd;
-  return rot;
+  error[1] = absMinus(error[1], 1);
+  return polyLine(error[0], POINT, ROT, SIZE_POINT) + error[1] * Kd;
 }
 
 bool Gyro::getCanUse() {
