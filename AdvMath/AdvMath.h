@@ -41,7 +41,8 @@ inline double polyLine(double val, double *X, double* Y, uint8_t SIZE) {
 	for(; index < SIZE; index ++) {
 		if(X[index] > abs(val)) { break; }
 	}
-	ans = index == SIZE ? Y[index - 1]
+	ans = index == 0 ? Y[index]
+		: index == SIZE ? Y[index - 1]
 		: map(abs(val), X[index - 1], X[index], Y[index - 1], Y[index]);
 	ans *= signum(val);
 	return ans;
@@ -72,11 +73,9 @@ inline void copyArray(double *copiedArray, double *basisArray, uint8_t size) {
 		copiedArray[num] = basisArray[num];
 	}
 }
-inline void copyArray(double *copiedArray, double *basisArray, uint8_t size, uint8_t size2) {
+inline void copyArray(double **copiedArray, double **basisArray, uint8_t size) {
 	for(int num = 0; num < size; num ++) {
-		for(int num2 = 0; num2 < size2; num2 ++) {
-			*(copiedArray + num * size2 + num2) = *(basisArray + num * size2 + num2);
-		}
+		copiedArray[num] = basisArray[num];
 	}
 }
 
