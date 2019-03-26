@@ -49,6 +49,10 @@ class Angle {
 		}
 
 		bool inside(const Angle&, const Angle&) const;
+		bool isUp(const Angle&) const;
+		bool isRight(const Angle&) const;
+		bool isDown(const Angle&) const;
+		bool isLeft(const Angle&) const;
 };
 
 inline String toString(const Angle& a) { return (bool(a) ? String((int)double(a)) : "null"); }
@@ -68,7 +72,19 @@ inline bool operator>=(const Angle& a, const Angle& b) { return a > b || a == b;
 inline bool operator<=(const Angle& a, const Angle& b) { return b >= a; }
 
 inline bool Angle::inside(const Angle& A_min, const Angle& A_max) const{
-	return bool(*this) && (*this - A_min - 180.) <= (A_max - A_min - 180.);
+	return bool(*this) && (*this - A_min - 180) <= (A_max - A_min - 180);
+}
+inline bool Angle::isUp(const Angle& A_diff) const{
+	return this->inside(0 - A_diff, 0 + A_diff);
+}
+inline bool Angle::isRight(const Angle& A_diff) const{
+	return this->inside(90 - A_diff, 90 + A_diff);
+}
+inline bool Angle::isDown(const Angle& A_diff) const{
+	return this->inside(180 - A_diff, 180 + A_diff);
+}
+inline bool Angle::isLeft(const Angle& A_diff) const{
+	return this->inside(270 - A_diff, 270 + A_diff);
 }
 
 inline double absAngle(const Angle& a) {
