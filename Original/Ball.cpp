@@ -2,7 +2,7 @@
 
 Ball::Ball(uint8_t QTY, uint8_t *PORT,
 	uint8_t MEASURING_COUNT, uint16_t THRE_WEAK, double CHANGE_RATE,
-	uint16_t *THRE_DIST, uint8_t SIZE_POINT_DIR, double (*POINT_DIR)[2], double (*PLUS_DIR)[2],
+	uint8_t SIZE_THRE_DIST, double *THRE_DIST, uint8_t SIZE_DIR, double **DIR, double **PLUS_DIR,
 	uint8_t P_CATCH, uint16_t THRE_CATCH, uint8_t MAX_C_CATCH,
 	uint8_t P_UP, uint16_t THRE_UP) {
 	//copy
@@ -21,13 +21,13 @@ Ball::Ball(uint8_t QTY, uint8_t *PORT,
 	this->THRE_WEAK = THRE_WEAK;
 	this->CHANGE_RATE = CHANGE_RATE;
 
-	this->THRE_DIST[0] = THRE_DIST[0];
-	this->THRE_DIST[1] = THRE_DIST[1];
-	this->SIZE_POINT_DIR = SIZE_POINT_DIR;
-	this->POINT_DIR = new double[SIZE_POINT_DIR][2];
-	copyArray(&(this->POINT_DIR[0][0]), &POINT_DIR[0][0], SIZE_POINT_DIR, 2);
-	this->PLUS_DIR = new double[SIZE_POINT_DIR][2];
-	copyArray(&(this->PLUS_DIR[0][0]), &PLUS_DIR[0][0], SIZE_POINT_DIR, 2);
+	this->SIZE_THRE_DIST = SIZE_THRE_DIST;
+	this->THRE_DIST = new double[SIZE_THRE_DIST];
+	this->SIZE_DIR = SIZE_DIR;
+	this->DIR = new double*[SIZE_THRE_DIST];
+	copyArray(this->DIR, DIR, SIZE_THRE_DIST);
+	this->PLUS_DIR = new double*[SIZE_THRE_DIST];
+	copyArray(this->PLUS_DIR, PLUS_DIR, SIZE_THRE_DIST);
 
 	value = new uint16_t[QTY];
 	weak = new uint16_t[QTY];
