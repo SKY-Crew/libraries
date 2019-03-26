@@ -141,23 +141,11 @@ uint16_t Ball::getForward() {
 Angle Ball::getDir(vectorRT_t ball) {
 	Angle dir = ball.t;
 	if(bool(ball.t)) {
-		Angle plusDir[2];
-		bool isClose = true;
-		do {
-			uint8_t index = 0;
-			for(; index < SIZE_POINT_DIR; index ++) {
-				if(POINT_DIR[index][isClose] > absAngle(dir)) { break; }
-			}
-			if(index == SIZE_POINT_DIR) {
-				plusDir[isClose] = PLUS_DIR[index - 1][isClose];
-			}else {
-				plusDir[isClose] = map(absAngle(dir),
-					POINT_DIR[index - 1][isClose], POINT_DIR[index][isClose],
-					PLUS_DIR[index - 1][isClose], PLUS_DIR[index][isClose]);
-			}
-			isClose = !isClose;
-		}while(!isClose);
-		dir += signum(dir) * max(0, map(ball.r, THRE_DIST[0], THRE_DIST[1], plusDir[0], plusDir[1]));
+		double plusDir[SIZE_THRE_DIST];
+		for(uint8_t distIndex = 0; distIndex < SIZE_THRE_DIST; distIndex ++) {
+			plusDir[distIndex] = polyLine((double)dir, DIR[distIndex], PLUS_DIR[distIndex], SIZE_DIR);
+		}
+		dir += polyLine(ball.r, THRE_DIST, plusDir, SIZE_THRE_DIST);
 	}
 	return dir;
 }
