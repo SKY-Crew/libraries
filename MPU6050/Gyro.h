@@ -11,7 +11,7 @@
 
 class Gyro {
   public:
-    Gyro(uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, int16_t*, int16_t*);
+    Gyro(uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, double*, double*, double);
     Angle get();
     Angle getDiff();
     int16_t multiRot(Angle);
@@ -31,9 +31,11 @@ class Gyro {
 
     uint8_t ONOFF_PIN;
     uint8_t RESET_PIN;
-    uint8_t SIZE_SLOPE_RG;
-    int16_t *SLOPE_RG;
-    int16_t *POINT_RG;
+    uint8_t SIZE_POINT;
+    double *POINT;
+    double *ROT;
+
+    double Kd;
 };
 
 #endif
