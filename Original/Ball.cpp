@@ -59,7 +59,7 @@ Ball::Ball(uint8_t QTY, uint8_t *PORT,
 }
 
 
-vectorRT_t Ball::get(bool hasFilter) {
+vectorRT_t Ball::get() {
 	vectorRT_t vRT = {0, 0};
 	bool findingBall = true;
 	//初期化
@@ -93,7 +93,7 @@ vectorRT_t Ball::get(bool hasFilter) {
 			// 平均値計算
 			if(prv[numBall] > 0) {
 				value[numBall] = filter(value[numBall], prv[numBall], CHANGE_RATE);
-				}
+			}
 		}
 		//平均値保存
 		prv[numBall] = value[numBall];
