@@ -143,7 +143,7 @@ Angle Ball::getDir(vectorRT_t ball) {
 	if(bool(ball.t)) {
 		double plusDir[SIZE_THRE_DIST];
 		for(uint8_t distIndex = 0; distIndex < SIZE_THRE_DIST; distIndex ++) {
-			plusDir[distIndex] = polyLine((double)dir, DIR[distIndex], PLUS_DIR[distIndex], SIZE_DIR);
+			plusDir[distIndex] = polyLine(double(dir), DIR[distIndex], PLUS_DIR[distIndex], SIZE_DIR);
 		}
 		dir += polyLine(ball.r, THRE_DIST, plusDir, SIZE_THRE_DIST);
 	}
