@@ -8,12 +8,7 @@ typedef struct {
 	double y;
 } vectorXY_t;
 
-inline int8_t signum(double x) {
-	return x > 0 ? 1
-		: x < 0 ? -1
-		: 0;
-}
-
+inline int8_t signum(double x) { return x > 0 ? 1 : x < 0 ? -1 : 0; }
 inline double absConstrain(double x, double a) { return constrain(x, -abs(a), abs(a)); }
 inline double toDegrees(double theta) { return theta * 180.0 / M_PI; }
 inline double toRadians(double deg) { return deg * M_PI / 180.0; }
@@ -23,17 +18,11 @@ inline double advRound(double val, uint16_t index) {
 	return round(val * pow10) / pow10;
 }
 
-inline double simplifyDeg(double deg) {
-	return fmod(fmod(deg, 360) + 360 + 180, 360) - 180;
-}
+inline double simplifyDeg(double deg) { return fmod(fmod(deg, 360) + 360 + 180, 360) - 180; }
 
-inline double absMinus(double val, double minus) {
-	return val - absConstrain(signum(val) * minus, val);
-}
+inline double absMinus(double val, double minus) { return val - absConstrain(signum(val) * minus, val); }
 
-inline double filter(double val, double prv, double CHANGE_RATE) {
-	return map(CHANGE_RATE, 0, 1, prv, val);
-}
+inline double filter(double val, double prv, double CHANGE_RATE) { return map(CHANGE_RATE, 0, 1, prv, val); }
 
 inline double polyLine(double val, double *X, double* Y, uint8_t SIZE) {
 	double ans = 0;
@@ -54,29 +43,19 @@ inline uint8_t extractBit(uint8_t byte, uint8_t firstDigit, uint8_t lastDigit) {
 }
 
 inline void copyArray(uint8_t *copiedArray, uint8_t *basisArray, uint8_t size) {
-	for(int num = 0; num < size; num ++) {
-		copiedArray[num] = basisArray[num];
-	}
+	for(int num = 0; num < size; num ++) { copiedArray[num] = basisArray[num]; }
 }
 inline void copyArray(uint16_t *copiedArray, uint16_t *basisArray, uint8_t size) {
-	for(int num = 0; num < size; num ++) {
-		copiedArray[num] = basisArray[num];
-	}
+	for(int num = 0; num < size; num ++) { copiedArray[num] = basisArray[num]; }
 }
 inline void copyArray(int16_t *copiedArray, int16_t *basisArray, uint8_t size) {
-	for(int num = 0; num < size; num ++) {
-		copiedArray[num] = basisArray[num];
-	}
+	for(int num = 0; num < size; num ++) { copiedArray[num] = basisArray[num]; }
 }
 inline void copyArray(double *copiedArray, double *basisArray, uint8_t size) {
-	for(int num = 0; num < size; num ++) {
-		copiedArray[num] = basisArray[num];
-	}
+	for(int num = 0; num < size; num ++) { copiedArray[num] = basisArray[num]; }
 }
 inline void copyArray(double **copiedArray, double **basisArray, uint8_t size) {
-	for(int num = 0; num < size; num ++) {
-		copiedArray[num] = basisArray[num];
-	}
+	for(int num = 0; num < size; num ++) { copiedArray[num] = basisArray[num]; }
 }
 
 #endif

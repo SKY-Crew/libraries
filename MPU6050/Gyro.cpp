@@ -97,7 +97,7 @@ Angle Gyro::getDiff() {
 }
 
 int16_t Gyro::multiRot(Angle origin) {
-  double error[] = {0, 0};// P, D
+  double error[] = {0, 0}; // P, D
   error[0] = absMinus(double(crt - origin), 1.5);
   error[1] = digitalRead(RESET_PIN) ? 0 : filter(double(getDiff()) * 10, error[1], 0.6);
   error[1] = absMinus(error[1], 1);
