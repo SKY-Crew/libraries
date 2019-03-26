@@ -3,7 +3,8 @@
 Ball::Ball(uint8_t QTY, uint8_t *PORT,
 	uint8_t MEASURING_COUNT, uint16_t THRE_WEAK, double CHANGE_RATE,
 	uint16_t *THRE_DIST, uint8_t SIZE_POINT_DIR, double (*POINT_DIR)[2], double (*PLUS_DIR)[2],
-	uint8_t P_CATCH, uint16_t THRE_CATCH, uint8_t MAX_C_CATCH) {
+	uint8_t P_CATCH, uint16_t THRE_CATCH, uint8_t MAX_C_CATCH,
+	uint8_t P_UP, uint16_t THRE_UP) {
 	//copy
 	this->QTY = QTY;
 	this->PORT = new uint8_t[QTY];
@@ -33,8 +34,14 @@ Ball::Ball(uint8_t QTY, uint8_t *PORT,
 	prv = new uint16_t[QTY];
 	crt = new uint16_t[QTY];
 
+
 	this->P_CATCH = P_CATCH;
 	this->THRE_CATCH = THRE_CATCH;
+
+
+	this->P_UP = P_UP;
+	this->THRE_UP = THRE_UP;
+
 
 	for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
 		prv[numBall] = 0;
@@ -46,6 +53,9 @@ Ball::Ball(uint8_t QTY, uint8_t *PORT,
 	}
 
 	cCatch.set_MAX(MAX_C_CATCH);
+
+
+	pinMode(P_UP, INPUT);
 }
 
 
@@ -56,13 +66,18 @@ vectorRT_t Ball::get(bool hasFilter) {
 	for(int numBall = 0; numBall < QTY; numBall ++) {
 		value[numBall] = 0;
 	}
+	valueUp = 0;
 	//計測
 	uint64_t time = micros();
 	uint16_t countMax = 0;
 	while(micros() - time < CYCLE * MEASURING_COUNT) {
 		countMax ++;
-		for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
-			value[numBall] += !digitalRead(PORT[numBall]);
+		for(uint8_t numBall = 0; numBall <= QTY; numBall ++) {
+			if(numBall == QTY) {
+				valueUp += !digitalRead(P_UP);
+			}else {
+				value[numBall] += !digitalRead(PORT[numBall]);
+			}
 		}
 	}
 
@@ -70,6 +85,7 @@ vectorRT_t Ball::get(bool hasFilter) {
 	for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
 		value[numBall] *= 1000.0 / (double) countMax;
 	}
+	valueUp *= 1000.0 / (double) countMax;
 
 	for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
 		if(value[numBall] > 0) {
@@ -111,6 +127,10 @@ vectorRT_t Ball::get(bool hasFilter) {
 	if(findingBall) {
 		vRT.t = false;
 	}
+
+	//upDiff計算
+	upDiff = valueUp - vRT.r;
+
 	return vRT;
 }
 
@@ -165,4 +185,8 @@ uint8_t Ball::getQTY() {
 
 uint16_t Ball::getValueCatch() {
 	return valueCatch;
+}
+
+bool Ball::isUp() {
+	return upDiff >= THRE_UP;
 }
