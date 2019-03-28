@@ -135,9 +135,22 @@ vectorRT_t Ball::get() {
 	return vRT;
 }
 
+uint16_t *Ball::getValue() {
+	for(int numBall = 0; numBall < QTY; numBall ++) {
+		crt[numBall] = value[numBall];
+	}
+	return crt;
+}
+
+uint8_t Ball::getQTY() {
+	return QTY;
+}
+
+
 uint16_t Ball::getForward() {
 	return value[0];
 }
+
 
 Angle Ball::getDir(vectorRT_t ball) {
 	Angle dir = ball.t;
@@ -151,6 +164,7 @@ Angle Ball::getDir(vectorRT_t ball) {
 	return dir;
 }
 
+
 bool Ball::getCatch() {
 	valueCatch = analogRead(P_CATCH);
 	cCatch.increase(valueCatch < THRE_CATCH);
@@ -161,21 +175,15 @@ bool Ball::compareCatch(double rate) {
 	return cCatch.compare(rate);
 }
 
-uint16_t *Ball::getValue() {
-	for(int numBall = 0; numBall < QTY; numBall ++) {
-		crt[numBall] = value[numBall];
-	}
-	return crt;
-}
-
-uint8_t Ball::getQTY() {
-	return QTY;
-}
-
 uint16_t Ball::getValueCatch() {
 	return valueCatch;
 }
 
-bool Ball::isInAir() {
+
+bool Ball::getIsInAir() {
 	return diffInAir >= THRE_IN_AIR;
+}
+
+uint16_t Ball::getValueInAir() {
+	return valueInAir;
 }

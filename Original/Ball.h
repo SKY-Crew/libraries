@@ -14,14 +14,19 @@ class Ball {
 			uint8_t, uint16_t, uint8_t,
 			uint8_t, uint16_t);
 		vectorRT_t get();
-		uint16_t getForward();
-		Angle getDir(vectorRT_t);
-		bool getCatch();
-		bool compareCatch(double);
 		uint16_t *getValue();
 		uint8_t getQTY();
+
+		uint16_t getForward();
+
+		Angle getDir(vectorRT_t);
+
+		bool getCatch();
+		bool compareCatch(double);
 		uint16_t getValueCatch();
-		bool isInAir();
+
+		bool getIsInAir();
+		uint16_t getValueInAir();
 	private:
 		uint8_t QTY;
 		uint8_t *PORT;
