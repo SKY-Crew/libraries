@@ -23,6 +23,7 @@ Ball::Ball(uint8_t QTY, uint8_t *PORT,
 
 	this->SIZE_THRE_DIST = SIZE_THRE_DIST;
 	this->THRE_DIST = new double[SIZE_THRE_DIST];
+	copyArray(this->THRE_DIST, THRE_DIST, SIZE_THRE_DIST);
 	this->SIZE_DIR = SIZE_DIR;
 	this->DIR = new double*[SIZE_THRE_DIST];
 	copyArray(this->DIR, DIR, SIZE_THRE_DIST);
