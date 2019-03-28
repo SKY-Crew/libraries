@@ -21,7 +21,7 @@ class Ball {
 		uint16_t *getValue();
 		uint8_t getQTY();
 		uint16_t getValueCatch();
-		bool isUp();
+		bool isInAir();
 	private:
 		uint8_t QTY;
 		uint8_t *PORT;
@@ -53,11 +53,11 @@ class Ball {
 		Count cCatch;
 
 
-		uint8_t P_UP;
-		uint16_t THRE_UP;
+		uint8_t P_IN_AIR;
+		uint16_t THRE_IN_AIR;
 
-		uint16_t valueUp;
-		uint16_t upDiff;
+		uint16_t valueInAir;
+		uint16_t diffInAir;
 };
 
 #endif

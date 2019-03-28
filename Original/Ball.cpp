@@ -4,7 +4,7 @@ Ball::Ball(uint8_t QTY, uint8_t *PORT,
 	uint8_t MEASURING_COUNT, uint16_t THRE_WEAK, double CHANGE_RATE,
 	uint8_t SIZE_THRE_DIST, double *THRE_DIST, uint8_t SIZE_DIR, double **DIR, double **PLUS_DIR,
 	uint8_t P_CATCH, uint16_t THRE_CATCH, uint8_t MAX_C_CATCH,
-	uint8_t P_UP, uint16_t THRE_UP) {
+	uint8_t P_IN_AIR, uint16_t THRE_IN_AIR) {
 	//copy
 	this->QTY = QTY;
 	this->PORT = new uint8_t[QTY];
@@ -40,8 +40,8 @@ Ball::Ball(uint8_t QTY, uint8_t *PORT,
 	this->THRE_CATCH = THRE_CATCH;
 
 
-	this->P_UP = P_UP;
-	this->THRE_UP = THRE_UP;
+	this->P_IN_AIR = P_IN_AIR;
+	this->THRE_IN_AIR = THRE_IN_AIR;
 
 
 	for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
@@ -56,7 +56,7 @@ Ball::Ball(uint8_t QTY, uint8_t *PORT,
 	cCatch.set_MAX(MAX_C_CATCH);
 
 
-	pinMode(P_UP, INPUT);
+	pinMode(P_IN_AIR, INPUT);
 }
 
 
@@ -67,7 +67,7 @@ vectorRT_t Ball::get() {
 	for(int numBall = 0; numBall < QTY; numBall ++) {
 		value[numBall] = 0;
 	}
-	valueUp = 0;
+	valueInAir = 0;
 	//計測
 	uint64_t time = micros();
 	uint16_t countMax = 0;
@@ -75,7 +75,7 @@ vectorRT_t Ball::get() {
 		countMax ++;
 		for(uint8_t numBall = 0; numBall <= QTY; numBall ++) {
 			if(numBall == QTY) {
-				valueUp += !digitalRead(P_UP);
+				valueInAir += !digitalRead(P_IN_AIR);
 			}else {
 				value[numBall] += !digitalRead(PORT[numBall]);
 			}
@@ -86,7 +86,7 @@ vectorRT_t Ball::get() {
 	for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
 		value[numBall] *= 1000.0 / (double) countMax;
 	}
-	valueUp *= 1000.0 / (double) countMax;
+	valueInAir *= 1000.0 / (double) countMax;
 
 	for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
 		if(value[numBall] > 0) {
@@ -129,8 +129,8 @@ vectorRT_t Ball::get() {
 		vRT.t = false;
 	}
 
-	//upDiff計算
-	upDiff = valueUp - vRT.r;
+	//diffInAir計算
+	diffInAir = valueInAir - vRT.r;
 
 	return vRT;
 }
@@ -176,6 +176,6 @@ uint16_t Ball::getValueCatch() {
 	return valueCatch;
 }
 
-bool Ball::isUp() {
-	return upDiff >= THRE_UP;
+bool Ball::isInAir() {
+	return diffInAir >= THRE_IN_AIR;
 }
