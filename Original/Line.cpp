@@ -103,9 +103,9 @@ line_t Line::get(bool isFW, Angle gyro, Angle diffGyro) {
 		line.isWholeOut = false;
 
 		//後ろのライン・前方の角にいるか
+		isLineFront = (line.dirInside - gyro).isDown(55);
 		if(bool(gyro)) {
-			line.isOutside |= (line.dirInside - gyro).isDown(55)
-				|| (line.dirInside - gyro).isUp(55);
+			line.isOutside |= (line.dirInside - gyro).isUp(55) || isLineFront;
 			line.canPause = line.isHalfOut;
 		}else {
 			line.isOutside |= line.isHalfOut;
@@ -118,6 +118,10 @@ line_t Line::get(bool isFW, Angle gyro, Angle diffGyro) {
 
 	prvDI = line.dirInside;
 	return line;
+}
+
+bool Line::getIsLineFront() {
+	return isLineFront;
 }
 
 uint16_t *Line::getValue() {
