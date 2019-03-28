@@ -12,7 +12,7 @@ const String DIST_NAME[] = {"TOO_CLOSE", "CLOSE", "PROPER", "FAR", "TOO_FAR"};
 const char DIST_CHAR[] = {'|', '!', '+', '*', '#'};
 const uint8_t DIST_TYPE = 5;
 
-inline String toString(const Dist& d) {
+inline String str(const Dist& d) {
 	return DIST_NAME[d];
 }
 inline char toChar(const Dist& d) {

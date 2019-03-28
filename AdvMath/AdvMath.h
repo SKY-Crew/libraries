@@ -58,4 +58,16 @@ inline void copyArray(double **copiedArray, double **basisArray, uint8_t size) {
 	for(int num = 0; num < size; num ++) { copiedArray[num] = basisArray[num]; }
 }
 
+inline String str(int16_t a) { return String(a); }
+inline String str(uint16_t a) { return String(a); }
+inline String str(int8_t a) { return String(a); }
+inline String str(uint8_t a) { return String(a); }
+inline String str(long a) { return String(a); }
+inline String str(int a) { return String(a); }
+inline String str(double a) { return String(a); }
+inline String str(float a) { return String(a); }
+inline String str(char a) { return String(a); }
+inline String str(char* a) { return String(a); }
+inline String str(bool a) { return a ? "true" : "false"; }
+
 #endif

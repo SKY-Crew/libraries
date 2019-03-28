@@ -45,7 +45,7 @@ void LCD::write(String data, uint8_t XCoord, uint8_t YCoord) {
 void LCD::drawMeter(Angle theta, uint8_t XCoord, bool canDrawCircle) {
 	Angle convertedTheta = theta + 180;
 	lcd->Locate((theta < 0 ? 2 : 3) + XCoord, convertedTheta.isDown(90) ? 2 : 3);
-	lcd->print(toString(theta));
+	lcd->print(str(theta));
 	if(canDrawCircle) {
 		lcd->Circle(24 + XCoord * 6, 24, 23);
 	}

@@ -9,7 +9,8 @@
 #include "Comc.h"
 #include "Cam.h"
 
-#define OOO char(160)
+#define OOO str(char(160))
+#define XXX str("-")
 
 class LCD {
 	public:

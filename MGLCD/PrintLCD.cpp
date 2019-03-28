@@ -18,19 +18,19 @@ void LCD::run(Angle gyro, line_t line, bool canUseCam, bool canUseGyro, bool isF
 				write(canUseCam ? "cON" : "cOFF", 17, 1);
 				write(canUseGyro ? "gON" : "gOFF", 17, 2);
 				write(canUseComc ? "mON" : "mOFF", 17, 3);
-				write(fellow.exists ? fellow.isFW ? String(OOO)+"FW" : String(OOO)+"GK" : "---", 17, 4);
+				write(fellow.exists ? fellow.isFW ? OOO+"FW" : OOO+"GK" : XXX+XXX+XXX, 17, 4);
 				write(isFW ? "FW" : "GK", 17, 5);
 				break;
 			case 1:
 				for(uint8_t numLine = 0; numLine < QTY_LINE; numLine ++) {
 					write(valueLine[numLine], (numLine % 5) * 4, floor(numLine / 5.0));
 				}
-				write("Volt:"+String(valueIna219), 11, 3);
-				write("OWN Rot"+String(goal.rot), 0, 4);
-				write("Dis"+String(toChar(goal.distGK))+","+String(toChar(goal.distFW)), 10, 4);
-				write("Crn"+String(goal.isInCorner ? OOO : '-'), 17, 4);
-				write("OPP Rot:"+String(goal.rotOpp), 0, 5);
-				write("Wide:"+String(goal.isWide ? OOO : '-'), 11, 5);
+				write("Volt:"+str(valueIna219), 11, 3);
+				write("OWN Rot"+str(goal.rot), 0, 4);
+				write("Dis"+str(toChar(goal.distGK))+","+str(toChar(goal.distFW)), 10, 4);
+				write("Crn"+(goal.isInCorner ? OOO : XXX), 17, 4);
+				write("OPP Rot:"+str(goal.rotOpp), 0, 5);
+				write("Wide:"+(goal.isWide ? OOO : XXX), 11, 5);
 				break;
 			case 2:
 				drawMeter(ball.t, 0, true);
@@ -39,20 +39,20 @@ void LCD::run(Angle gyro, line_t line, bool canUseCam, bool canUseGyro, bool isF
 				}
 				break;
 			case 3:
-				write("Catch:"+String(valueCatch), 0, 0);
-				write("T/F:"+String(catchingBall ? OOO : '-'), 11, 0);
-				write("frwdIR:"+String(valueBF), 0, 1);
-				write("T/F:"+String(isBallForward ? OOO : '-'), 11, 1);
-				write("Dis:"+String(round(ball.r)), 0, 2);
-				write(toString(distBall), 11, 2);
+				write("Catch:"+str(valueCatch), 0, 0);
+				write("T/F:"+(catchingBall ? OOO : XXX), 11, 0);
+				write("frwdIR:"+str(valueBF), 0, 1);
+				write("T/F:"+(isBallForward ? OOO : XXX), 11, 1);
+				write("Dis:"+str(round(ball.r)), 0, 2);
+				write(str(distBall), 11, 2);
 				write("Dis:", 0, 3);
 				for(int8_t i = -1; i <= 1; i ++) {
 					lcd->Line(30, 9 * 3 + i, 30 + ball.r * 0.15, 9 * 3 + i);
 				}
-				write("F_PSD:"+String(valueFrontPSD), 0, 4);
-				write("C/F:"+String(enemyStandsFront ? OOO : '-'), 11, 4);
-				write("B_PSD:"+String(valueBackPSD), 0, 5);
-				write(toString(distGoalPSD), 11, 5);
+				write("F_PSD:"+str(valueFrontPSD), 0, 4);
+				write("C/F:"+(enemyStands[0] ? OOO : XXX), 11, 4);
+				write("B_PSD:"+str(valueBackPSD), 0, 5);
+				write("C/F:"+(enemyStands[1] ? OOO : XXX), 11, 5);
 				break;
 		}
 		MAX_PAGE = 4;
