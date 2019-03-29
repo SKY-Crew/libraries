@@ -26,13 +26,17 @@ void PSD::get() {
 	prv = value;
 }
 
-bool PSD::getBool() {
-	get();
+bool PSD::getBool(bool haveGot) {
+	if(!haveGot) {
+		get();
+	}
 	cClose.increase(value < THRE_IS_CLOSE);
 	return bool(cClose);
 }
 
-double PSD::getValue() {
-	get();
+double PSD::getValue(bool haveGot) {
+	if(!haveGot) {
+		get();
+	}
 	return value;
 }
