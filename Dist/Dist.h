@@ -9,7 +9,7 @@ enum Dist {
 };
 
 const String DIST_NAME[] = {"TOO_CLOSE", "CLOSE", "PROPER", "FAR", "TOO_FAR"};
-const char DIST_CHAR[] = {'|', '!', '+', '*', '#'};
+const char DIST_CHAR[] = {'-', '|', '=', '#', char(160)};
 const uint8_t DIST_TYPE = 5;
 
 inline String str(const Dist& d) {

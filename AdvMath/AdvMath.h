@@ -67,7 +67,12 @@ inline String str(int a) { return String(a); }
 inline String str(double a) { return String(a); }
 inline String str(float a) { return String(a); }
 inline String str(char a) { return String(a); }
-inline String str(char* a) { return String(a); }
+inline String str(const char* a) { return String(a); }
 inline String str(bool a) { return a ? "true" : "false"; }
+inline String str(double a, int16_t index) {
+	char c[16];
+	dtostrf(a, -1, index, c);
+	return str(c);
+}
 
 #endif
