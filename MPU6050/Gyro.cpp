@@ -4,9 +4,6 @@ void Gyro::_gyro_initialize() {
   _gyro_mpu->initialize();
   _gyro_mpu->dmpInitialize();
   _gyro_mpu->setDMPEnabled(true);
-  _gyro_mpu->initialize();
-  _gyro_mpu->dmpInitialize();
-  _gyro_mpu->setDMPEnabled(true);
 }
 
 Gyro::Gyro(uint8_t P_WIRE, uint8_t PORT, uint8_t ONOFF_PIN, uint8_t RESET_PIN,
