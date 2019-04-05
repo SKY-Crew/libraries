@@ -87,13 +87,11 @@ inline bool Angle::isLeft(const Angle& A_diff) const{
 	return this->inside(270 - A_diff, 270 + A_diff);
 }
 
-inline double absAngle(const Angle& a) { return bool(a) ? abs(double(a)) : 0; }
 inline int8_t signum(const Angle& a) { return bool(a) ? signum(double(a)) : 0; }
-inline double diff(const Angle& a, const Angle& b) { return absAngle(a - b); }
 inline Angle constrainAngle(const Angle& a, const Angle& A_min, const Angle& A_max) {
 	if(!bool(a)) { return false; }
 	if(a.inside(A_min, A_max)) { return a; }
-	return diff(a, A_min) <= diff(a, A_max) ? A_min : A_max;
+	return abs(a - A_min) <= abs(a - A_max) ? A_min : A_max;
 }
 inline Angle filterAngle(const Angle& a, const Angle& avg, double CHANGE_RATE) {
 	return filter(double(avg), double(a), CHANGE_RATE)
