@@ -7,7 +7,8 @@ void Gyro::_gyro_initialize() {
 }
 
 Gyro::Gyro(uint8_t P_WIRE, uint8_t PORT, uint8_t ONOFF_PIN, uint8_t RESET_PIN,
-  uint8_t SIZE_POINT, double *POINT, double *ROT, double Kd) {
+  uint8_t SIZE_POINT, double *POINT, double *ROT, double Kd,
+  uint8_t BROKEN_THRE, uint8_t STOP_FRAMES, uint8_t STAY_THRE) {
   //copy
   wGyro.set(P_WIRE);
 
@@ -22,7 +23,9 @@ Gyro::Gyro(uint8_t P_WIRE, uint8_t PORT, uint8_t ONOFF_PIN, uint8_t RESET_PIN,
   copyArray(this->ROT, ROT, SIZE_POINT);
 
   this->Kd = Kd;
-  
+
+  this->BROKEN_THRE = BROKEN_THRE;
+
   //init
   wGyro.get()->begin();
   wGyro.get()->setClock(400000);
@@ -35,6 +38,10 @@ Gyro::Gyro(uint8_t P_WIRE, uint8_t PORT, uint8_t ONOFF_PIN, uint8_t RESET_PIN,
   _gyro_oldPinState = digitalRead(RESET_PIN);
 
   pinMode(ONOFF_PIN, INPUT);
+
+  stayCounter.set_MAX(STAY_THRE);
+  brokenCounter.set_MAX(STOP_FRAMES);
+  brokenCounter.set_COUNT_UP(false);
 }
 
 float Gyro::_gyro_calcYaw(uint8_t *fifoBuf) {
@@ -50,7 +57,7 @@ float Gyro::_gyro_calcYaw(uint8_t *fifoBuf) {
 
 Angle Gyro::get() {
   prv = crt;
-  if(!digitalRead(ONOFF_PIN)) {
+  if(!bool(brokenCounter) && !digitalRead(ONOFF_PIN)) {
     int fifoSize;
     const int packetSize = 42;
     uint8_t fifoBuf[64];
@@ -82,10 +89,15 @@ Angle Gyro::get() {
     _gyro_oldPinState = newPinState;
 
     crt = toSend;
+    brokenCounter.increase(abs(crt - prv) > BROKEN_THRE);
+    stayCounter.increase(prv == crt);
+    if (bool(stayCounter)) {
+      _gyro_mpu->resetFIFO();
+    }
     return crt;
   }else {
-    crt = false;
-    return false;
+    brokenCounter.increase(false);
+    return crt = false;
   }
 }
 

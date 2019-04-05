@@ -8,10 +8,11 @@
 #include "AdvMath.h"
 #include "Angle.h"
 #include "AdvWire.h"
+#include "Count.h"
 
 class Gyro {
   public:
-    Gyro(uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, double*, double*, double);
+    Gyro(uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, double*, double*, double, uint8_t, uint8_t, uint8_t);
     Angle get();
     Angle getDiff();
     int16_t multiRot(Angle);
@@ -36,6 +37,10 @@ class Gyro {
     double *ROT;
 
     double Kd;
+
+    Count stayCounter;
+    Count brokenCounter;
+    uint8_t BROKEN_THRE;
 };
 
 #endif
