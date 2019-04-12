@@ -83,7 +83,7 @@ Angle Gyro::get() {
     }
     if(fifoSize < 2 * packetSize) {// while(fifoSize < 2 * packetSize) {
       // Serial.println("no data");
-      return toSend;//   fifoSize = _gyro_mpu->getFIFOCount();
+      return crt;//   fifoSize = _gyro_mpu->getFIFOCount();
     }
 
     _gyro_mpu->getFIFOBytes(fifoBuf, packetSize);
