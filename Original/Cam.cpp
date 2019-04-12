@@ -49,5 +49,5 @@ bool Cam::getCanUse() {
 }
 
 void Cam::send(double gyro) {
-	sCam.get()->write((int8_t) map(gyro, -180, 180, 0, 256));
+	sCam.get()->write((uint8_t) map(gyro, -180, 180, 0, 256));
 }
