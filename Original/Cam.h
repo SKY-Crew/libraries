@@ -21,6 +21,7 @@ class Cam {
 		cam_t get();
 		int16_t multiRotGoal(int16_t);
 		bool getCanUse();
+		void send(double);
 	private:
 		HardwareSerial *SerialX;
 		AdvSerial sCam;

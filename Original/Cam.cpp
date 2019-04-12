@@ -47,3 +47,7 @@ int16_t Cam::multiRotGoal(int16_t rotGoal) {
 bool Cam::getCanUse() {
 	return !digitalRead(P_ONOFF);
 }
+
+void Cam::send(double gyro) {
+	sCam.get()->write((int8_t) map(gyro, -180, 180, 0, 256));
+}
