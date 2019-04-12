@@ -111,7 +111,7 @@ Angle Gyro::get() {
         && abs(crt - prv) > BROKEN_THRE) {
       // Serial.println("######## broken moving ########");
       _gyro_mpu->resetFIFO();
-      return false;
+      return crt = prv;
     }
     stayCounter.increase(prv == crt);
     if (bool(stayCounter)) {
