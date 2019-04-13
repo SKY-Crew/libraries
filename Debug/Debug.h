@@ -1,3 +1,6 @@
+#ifndef DEBUG
+#define DEBUG
+
 #define trace(xx) if(trace_break(xx))
 //#define trace(xx) if(false)
 
@@ -99,3 +102,5 @@ inline int trace_break(int dno){
 	trace_setting[dno] &= 0x07;
 	return (bkf & 0x0c);
 }
+
+#endif
