@@ -132,6 +132,16 @@ vectorRT_t Ball::get() {
 	//diffInAir計算
 	diffInAir = valueInAir - vRT.r;
 
+	trace(2) {
+		Serial.print(str("Ball:[ "));
+		for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
+			Serial.print(str(value[numBall])+" ");
+		}
+		Serial.println(str("]"));
+	}
+
+	trace(3) { Serial.println("Ball(InAir):"+str(valueInAir)); }
+
 	return vRT;
 }
 

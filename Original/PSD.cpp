@@ -24,6 +24,8 @@ void PSD::get() {
 	}
 	value = filter(value, prv, CHANGE_RATE);
 	prv = value;
+
+	trace(6) { Serial.println("PSD:"+str(value)); }
 }
 
 bool PSD::getBool(bool haveGot) {

@@ -107,6 +107,8 @@ Angle Gyro::get() {
     // brokenCounter.increase(bool(crt) && bool(prv) && (!baseChanged)
     //                        && abs(crt - prv) > BROKEN_THRE);
 
+    trace(5) { Serial.println("Gyro:"+str(crt)); }
+
     if (bool(crt) && bool(prv) && (!baseChanged)
         && abs(crt - prv) > BROKEN_THRE) {
       // Serial.println("######## broken moving ########");

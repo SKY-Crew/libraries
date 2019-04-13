@@ -45,6 +45,7 @@ Motor::Motor(bool CAN_MOVE, uint8_t QTY, uint8_t *P_DIR, uint8_t *P_PWR,
 
 void Motor::run(Angle moveAngle, int16_t rotPower, uint16_t maxPower) {
 	if(!haveRun) {
+		trace(1) { Serial.println("Motor:"+str(moveAngle)); }
 		int16_t power[QTY];
 		//モーターパワー計算
 		if(!bool(moveAngle)) {

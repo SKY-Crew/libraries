@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include "AdvMath.h"
+#include "Debug.h"
 #include "Count.h"
 #include "AdvWire.h"
 
