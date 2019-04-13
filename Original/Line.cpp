@@ -16,7 +16,7 @@ Line::Line(bool CAN_LEAVE_LINE, uint8_t QTY, uint8_t *PORT, uint8_t MAX_CIIA,
 
 	this->CHANGE_RATE = CHANGE_RATE;
 
-	value = new uint16_t[QTY];
+	val = new uint16_t[QTY];
 	crt = new uint16_t[QTY];
 	state = new Color[QTY];
 	crtState = new Color[QTY];
@@ -27,9 +27,9 @@ line_t Line::get(bool isFW, Angle gyro, Angle diffGyro) {
 	int qtyILB = 0;
 	for(int numLine = 0; numLine < QTY; numLine ++) {
 		//ライン読み取り
-		value[numLine] = analogRead(PORT[numLine]);
-		state[numLine] = value[numLine] <= THRE_BLACK ? BLACK
-			: value[numLine] >= THRE_WHITE ? WHITE : GREEN;
+		val[numLine] = analogRead(PORT[numLine]);
+		state[numLine] = val[numLine] <= THRE_BLACK ? BLACK
+			: val[numLine] >= THRE_WHITE ? WHITE : GREEN;
 		switch(state[numLine]) {
 			case BLACK: qtyILB ++; break;
 			case WHITE: qtyILW ++; break;
@@ -121,7 +121,7 @@ line_t Line::get(bool isFW, Angle gyro, Angle diffGyro) {
 	trace(4) {
 		Serial.print(str("Line:[ "));
 		for(uint8_t numLine = 0; numLine < QTY; numLine ++) {
-			Serial.print(str(value[numLine])+" ");
+			Serial.print(str(val[numLine])+" ");
 		}
 		Serial.println(str("]"));
 	}
@@ -133,9 +133,9 @@ bool Line::getIsLineFront() {
 	return isLineFront;
 }
 
-uint16_t *Line::getValue() {
+uint16_t *Line::getVal() {
 	for(int numLine = 0; numLine < QTY; numLine ++) {
-		crt[numLine] = value[numLine];
+		crt[numLine] = val[numLine];
 	}
 	return crt;
 }

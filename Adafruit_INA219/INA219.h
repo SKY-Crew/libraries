@@ -9,7 +9,7 @@ class INA219 {
 	public:
 		INA219(uint8_t, double, double, uint8_t, uint8_t);
 		bool checkVolt();
-		double getValue();
+		double getVal();
 	private:
 		double LOW_VOLT;
 		double HIGH_VOLT;
@@ -18,7 +18,7 @@ class INA219 {
 		uint8_t countRead = 0;
 
 		Adafruit_INA219 ina219;
-		double value;
+		double val;
 
 		uint8_t MAX_CVL;
 		uint8_t countVoltLow = 0;

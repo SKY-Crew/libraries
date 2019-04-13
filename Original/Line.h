@@ -25,7 +25,7 @@ class Line {
 			uint16_t, uint16_t, uint8_t, double);
 		line_t get(bool, Angle, Angle);
 		bool getIsLineFront();
-		uint16_t *getValue();
+		uint16_t *getVal();
 		Color *getState();
 		uint8_t getQTY();
 	private:
@@ -41,7 +41,7 @@ class Line {
 
 		double CHANGE_RATE;
 
-		uint16_t *value;
+		uint16_t *val;
 		uint16_t *crt;
 		Color *state;
 		Color *crtState;

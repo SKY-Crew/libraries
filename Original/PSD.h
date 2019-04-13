@@ -12,14 +12,14 @@ class PSD {
 		PSD(uint8_t, double, uint16_t, uint8_t);
 		void get();
 		bool getBool(bool = true);
-		double getValue(bool = true);
+		double getVal(bool = true);
 	private:
 		AdvWire wPSD;
 
 		double CHANGE_RATE;
 		uint16_t THRE_IS_CLOSE;
 
-		double value;
+		double val;
 		double prv = 0;
 
 		Count cClose = 0;

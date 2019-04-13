@@ -14,18 +14,18 @@ INA219::INA219(uint8_t P_WIRE, double LOW_VOLT, double HIGH_VOLT, uint8_t MAX_CR
 bool INA219::checkVolt() {
 	countRead ++;
 	if(countRead >= MAX_CR) {
-		value = ina219.getBusVoltage_V();
+		val = ina219.getBusVoltage_V();
 		if(countVoltLow >= MAX_CVL) {
-			countVoltLow = value > HIGH_VOLT ? 0 : MAX_CVL;
+			countVoltLow = val > HIGH_VOLT ? 0 : MAX_CVL;
 			return true;
 		}else {
-			countVoltLow = value < LOW_VOLT ? (countVoltLow + 1) : 0;
+			countVoltLow = val < LOW_VOLT ? (countVoltLow + 1) : 0;
 		}
 	countRead = 0;
 	}
 	return false;
 }
 
-double INA219::getValue() {
-	return value;
+double INA219::getVal() {
+	return val;
 }

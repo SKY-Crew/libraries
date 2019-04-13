@@ -30,7 +30,7 @@ Ball::Ball(uint8_t QTY, uint8_t *PORT,
 	this->PLUS_DIR = new double*[SIZE_THRE_DIST];
 	copyArray(this->PLUS_DIR, PLUS_DIR, SIZE_THRE_DIST);
 
-	value = new uint16_t[QTY];
+	val = new uint16_t[QTY];
 	weak = new uint16_t[QTY];
 	prv = new uint16_t[QTY];
 	crt = new uint16_t[QTY];
@@ -65,9 +65,9 @@ vectorRT_t Ball::get() {
 	bool findingBall = true;
 	//初期化
 	for(int numBall = 0; numBall < QTY; numBall ++) {
-		value[numBall] = 0;
+		val[numBall] = 0;
 	}
-	valueInAir = 0;
+	valInAir = 0;
 	//計測
 	uint64_t time = micros();
 	uint16_t countMax = 0;
@@ -75,46 +75,46 @@ vectorRT_t Ball::get() {
 		countMax ++;
 		for(uint8_t numBall = 0; numBall <= QTY; numBall ++) {
 			if(numBall == QTY) {
-				valueInAir += !digitalRead(P_IN_AIR);
+				valInAir += !digitalRead(P_IN_AIR);
 			}else {
-				value[numBall] += !digitalRead(PORT[numBall]);
+				val[numBall] += !digitalRead(PORT[numBall]);
 			}
 		}
 	}
 
 	//比率化
 	for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
-		value[numBall] *= 1000.0 / (double) countMax;
+		val[numBall] *= 1000.0 / (double) countMax;
 	}
-	valueInAir *= 1000.0 / (double) countMax;
+	valInAir *= 1000.0 / (double) countMax;
 
 	for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
-		if(value[numBall] > 0) {
+		if(val[numBall] > 0) {
 			findingBall = false;
 			// 平均値計算
 			if(prv[numBall] > 0) {
-				value[numBall] = filter(value[numBall], prv[numBall], CHANGE_RATE);
+				val[numBall] = filter(val[numBall], prv[numBall], CHANGE_RATE);
 			}
 		}
 		//平均値保存
-		prv[numBall] = value[numBall];
+		prv[numBall] = val[numBall];
 	}
 
 	//距離計算
 	for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
-		vRT.r += value[numBall];
+		vRT.r += val[numBall];
 	}
 	vRT.r /= (double) QTY;
 	//弱反応切り捨て
 	bool isAllWeak = true;
 	for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
-		if(value[numBall] > THRE_WEAK) {
+		if(val[numBall] > THRE_WEAK) {
 			isAllWeak = false;
 			break;
 		}
 	}
 	for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
-		weak[numBall] = isAllWeak ? value[numBall] : max(value[numBall] - THRE_WEAK, 0);
+		weak[numBall] = isAllWeak ? val[numBall] : max(val[numBall] - THRE_WEAK, 0);
 	}
 	//ベクトル合成
 	vectorXY_t vXY = {0, 0};
@@ -130,24 +130,24 @@ vectorRT_t Ball::get() {
 	}
 
 	//diffInAir計算
-	diffInAir = valueInAir - vRT.r;
+	diffInAir = valInAir - vRT.r;
 
 	trace(2) {
 		Serial.print(str("Ball:[ "));
 		for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
-			Serial.print(str(value[numBall])+" ");
+			Serial.print(str(val[numBall])+" ");
 		}
 		Serial.println(str("]"));
 	}
 
-	trace(3) { Serial.println("Ball(InAir):"+str(valueInAir)); }
+	trace(3) { Serial.println("Ball(InAir):"+str(valInAir)); }
 
 	return vRT;
 }
 
-uint16_t *Ball::getValue() {
+uint16_t *Ball::getVal() {
 	for(int numBall = 0; numBall < QTY; numBall ++) {
-		crt[numBall] = value[numBall];
+		crt[numBall] = val[numBall];
 	}
 	return crt;
 }
@@ -158,7 +158,7 @@ uint8_t Ball::getQTY() {
 
 
 uint16_t Ball::getForward() {
-	return value[0];
+	return val[0];
 }
 
 
@@ -176,8 +176,8 @@ Angle Ball::getDir(vectorRT_t ball) {
 
 
 bool Ball::getCatch() {
-	valueCatch = analogRead(P_CATCH);
-	cCatch.increase(valueCatch < THRE_CATCH);
+	valCatch = analogRead(P_CATCH);
+	cCatch.increase(valCatch < THRE_CATCH);
 	return bool(cCatch);
 }
 
@@ -185,8 +185,8 @@ bool Ball::compareCatch(double rate) {
 	return cCatch.compare(rate);
 }
 
-uint16_t Ball::getValueCatch() {
-	return valueCatch;
+uint16_t Ball::getValCatch() {
+	return valCatch;
 }
 
 
@@ -194,6 +194,6 @@ bool Ball::getIsInAir() {
 	return diffInAir >= THRE_IN_AIR;
 }
 
-uint16_t Ball::getValueInAir() {
-	return valueInAir;
+uint16_t Ball::getValInAir() {
+	return valInAir;
 }

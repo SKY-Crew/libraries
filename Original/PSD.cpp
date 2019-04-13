@@ -18,27 +18,27 @@ void PSD::get() {
 	wPSD.get()->endTransmission();
 
 	wPSD.get()->requestFrom(0x40, 2);
-	value = wPSD.get()->read() * 16 + wPSD.get()->read();
-	if(value <= 0) {
-		value = 4094;
+	val = wPSD.get()->read() * 16 + wPSD.get()->read();
+	if(val <= 0) {
+		val = 4094;
 	}
-	value = filter(value, prv, CHANGE_RATE);
-	prv = value;
+	val = filter(val, prv, CHANGE_RATE);
+	prv = val;
 
-	trace(6) { Serial.println("PSD:"+str(value)); }
+	trace(6) { Serial.println("PSD:"+str(val)); }
 }
 
 bool PSD::getBool(bool haveGot) {
 	if(!haveGot) {
 		get();
 	}
-	cClose.increase(value < THRE_IS_CLOSE);
+	cClose.increase(val < THRE_IS_CLOSE);
 	return bool(cClose);
 }
 
-double PSD::getValue(bool haveGot) {
+double PSD::getVal(bool haveGot) {
 	if(!haveGot) {
 		get();
 	}
-	return value;
+	return val;
 }
