@@ -1,9 +1,6 @@
 #ifndef DEBUG
 #define DEBUG
 
-#define trace(xx) if(trace_break(xx))
-//#define trace(xx) if(false)
-
 #define trace_MAX 32
 uint8_t trace_setting[trace_MAX] = {0};
 char trace_cmdbf[16];
