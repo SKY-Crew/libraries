@@ -67,27 +67,27 @@ Angle Gyro::get() {
 
     fifoSize = _gyro_mpu->getFIFOCount();
     while(fifoSize > 768) {
-      // Serial.println("too much data");
+      trace(10) Serial.println("too much data");
       _gyro_mpu->resetFIFO();
       fifoSize = _gyro_mpu->getFIFOCount();
     }
-    // Serial.println("fifosize: " + str(fifoSize));
+    trace(10) Serial.println("fifosize: " + str(fifoSize));
 
     while (fifoSize % 42 != 0) {
-      // Serial.println("data uncompleted ///// reset ////");
-      // long from = micros();
+      trace(10) Serial.println("data uncompleted ///// reset ////");
+      int64_t from = micros();
       _gyro_mpu->resetFIFO();
-      // long to = micros();
-      // Serial.println("reset finished. took " + str(to - from) + "ms");
+      int64_t to = micros();
+      trace(10) Serial.println("reset finished. took " + str(to - from) + "μs");
       fifoSize = _gyro_mpu->getFIFOCount();
     }
     if(fifoSize < 2 * packetSize) {// while(fifoSize < 2 * packetSize) {
-      // Serial.println("no data");
+      trace(10) Serial.println("no data");
       return crt;//   fifoSize = _gyro_mpu->getFIFOCount();
     }
 
     _gyro_mpu->getFIFOBytes(fifoBuf, packetSize);
-    // Serial.println("fifosize AFTER: " + str(_gyro_mpu->getFIFOCount()));
+    trace(10) Serial.println("fifosize AFTER: " + str(_gyro_mpu->getFIFOCount()));
 
     yaw = _gyro_calcYaw(fifoBuf) * M_PI * -18.2369953125F;
     newPinState = digitalRead(RESET_PIN);
@@ -111,13 +111,13 @@ Angle Gyro::get() {
 
     if (bool(crt) && bool(prv) && (!baseChanged)
         && abs(crt - prv) > BROKEN_THRE) {
-      // Serial.println("######## broken moving ########");
+      trace(10) Serial.println("######## broken moving ########");
       _gyro_mpu->resetFIFO();
       return crt = prv;
     }
     stayCounter.increase(prv == crt);
     if (bool(stayCounter)) {
-      // Serial.println("-------- reset FIFO --------");
+      trace(10) Serial.println("-------- reset FIFO --------");
       _gyro_mpu->resetFIFO();
       stayCounter.reset();
     }
