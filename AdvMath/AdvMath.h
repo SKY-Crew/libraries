@@ -58,18 +58,22 @@ inline void copyArray(double **copiedArray, double **basisArray, uint8_t size) {
 	for(int num = 0; num < size; num ++) { copiedArray[num] = basisArray[num]; }
 }
 
+inline String str() { return ""; }
+inline String str(int64_t a) { return String(a); }
+inline String str(uint64_t a) { return String(a); }
+inline String str(int32_t a) { return String(a); }
+inline String str(uint32_t a) { return String(a); }
 inline String str(int16_t a) { return String(a); }
 inline String str(uint16_t a) { return String(a); }
 inline String str(int8_t a) { return String(a); }
 inline String str(uint8_t a) { return String(a); }
-inline String str(long a) { return String(a); }
 inline String str(int a) { return String(a); }
 inline String str(double a) { return String(a); }
 inline String str(float a) { return String(a); }
 inline String str(char a) { return String(a); }
 inline String str(const char* a) { return String(a); }
 inline String str(bool a) { return a ? "true" : "false"; }
-inline String str(double a, int16_t index) {
+inline String str(double a, uint16_t index) {
 	char c[16];
 	dtostrf(a, -1, index, c);
 	return str(c);
