@@ -40,8 +40,8 @@ Gyro::Gyro(uint8_t P_WIRE, uint8_t PORT, uint8_t ONOFF_PIN, uint8_t RESET_PIN,
   pinMode(ONOFF_PIN, INPUT);
 
   stayCounter.set_MAX(STAY_THRE);
-  brokenCounter.set_MAX(STOP_FRAMES);
-  brokenCounter.set_COUNT_UP(false);
+  // brokenCounter.set_MAX(STOP_FRAMES);
+  // brokenCounter.set_COUNT_UP(false);
 }
 
 float Gyro::_gyro_calcYaw(uint8_t *fifoBuf) {
@@ -57,7 +57,7 @@ float Gyro::_gyro_calcYaw(uint8_t *fifoBuf) {
 
 Angle Gyro::get() {
   prv = crt;
-  if(!bool(brokenCounter) && !digitalRead(ONOFF_PIN)) {
+  if(/*!bool(brokenCounter) && */!digitalRead(ONOFF_PIN)) {
     int fifoSize;
     const int packetSize = 42;
     uint8_t fifoBuf[64];
@@ -123,7 +123,7 @@ Angle Gyro::get() {
     }
     return crt;
   }else {
-    brokenCounter.increase(false);
+    // brokenCounter.increase(false);
     return crt = false;
   }
 }

@@ -40,7 +40,7 @@ class Gyro {
     double Kd;
 
     Count stayCounter;
-    Count brokenCounter;
+    // Count brokenCounter;
     uint8_t BROKEN_THRE;
 };
 
