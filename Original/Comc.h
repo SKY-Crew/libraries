@@ -4,6 +4,7 @@
 #include <Arduino.h>
 #include "AdvMath.h"
 #include "Angle.h"
+#include "Debug.h"
 #include "AdvSerial.h"
 
 typedef struct {

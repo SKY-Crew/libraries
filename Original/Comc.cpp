@@ -31,6 +31,9 @@ comc_t Comc::communicate(bool canRun, bool isFW, double ball_r) {
 	}
 
 	prvFellow = fellow;
+
+	trace(7) { Serial.println("Fellow:"+str(fellow.exists)+" "+str(fellow.isFW)+" "+str(fellow.ball_r)); }
+
 	return fellow;
 }
 
