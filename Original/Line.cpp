@@ -56,6 +56,7 @@ line_t Line::get(bool isFW, Angle gyro, Angle diffGyro, bool isInCorner) {
 		if(bool(gyro) && bool(line.dirInside)) {
 			line.dirInside += diffGyro;
 		}
+		line.isInAir = false;
 	}else {
 		//ライン上
 		countIIA = 0;
@@ -101,6 +102,7 @@ line_t Line::get(bool isFW, Angle gyro, Angle diffGyro, bool isInCorner) {
 
 		line.isOutside = false;
 		line.isWholeOut = false;
+		line.isInAir = false;
 
 		//後ろのライン・前方の角にいるか
 		line.isFront = (line.dirInside - gyro).isDown(55);
