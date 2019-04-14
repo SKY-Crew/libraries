@@ -25,7 +25,7 @@ void LCD::run(Angle gyro, line_t line, bool canUseCam, bool canUseGyro, bool isF
 				for(uint8_t numLine = 0; numLine < QTY_LINE; numLine ++) {
 					write(valLine[numLine], (numLine % 5) * 4, floor(numLine / 5.0));
 				}
-				write("OWN Rot"+str(goal.rot), 0, 4);
+				write("OWN Pos"+str(goal.posOwn), 0, 4);
 				write("Dis"+str(toChar(goal.distGK))+","+str(toChar(goal.distFW)), 10, 4);
 				write("Crn"+(goal.isInCorner ? OOO : XXX), 17, 4);
 				write("OPP Rot:"+str(goal.rotOpp), 0, 5);
