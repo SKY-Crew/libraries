@@ -19,9 +19,10 @@ inline char toChar(const Dist& d) {
 	return DIST_CHAR[d];
 }
 
-inline Dist compare(uint16_t val, const uint16_t* THRE, uint16_t SIZE, bool proportional, Dist MIN) {
+inline Dist compare(uint16_t val, const uint16_t* THRE, uint16_t TYPE, Dist MIN) {
 	uint16_t index = 0;
-	for (; index < SIZE - 1; index ++) {
+	bool proportional = THRE[0] < THRE[TYPE - 1];
+	for (; index < TYPE - 1; index ++) {
 		if(proportional) {
 			if(val <= THRE[index]) { break; }
 		}else {
