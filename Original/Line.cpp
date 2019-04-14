@@ -29,7 +29,7 @@ line_t Line::get(bool isFW, Angle gyro, Angle diffGyro) {
 		//ライン読み取り
 		val[numLine] = analogRead(PORT[numLine]);
 		state[numLine] = val[numLine] <= THRE_BLACK ? BLACK
-			: val[numLine] >= THRE_WHITE ? WHITE : GREEN;
+				: val[numLine] >= THRE_WHITE ? WHITE : GREEN;
 		switch(state[numLine]) {
 			case BLACK: qtyILB ++; break;
 			case WHITE: qtyILW ++; break;

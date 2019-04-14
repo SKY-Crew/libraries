@@ -32,15 +32,15 @@ class Count {
 			this->count = constrain(count, MIN, MAX);
 		}
 		inline void increase(bool canIncrement = true) {
-			count = COUNT_UP ?
-				(canIncrement ? constrain(++ count, MIN, MAX) : MIN)
-				: (canIncrement ? MAX : constrain(-- count, MIN, MAX));
+			count = COUNT_UP
+					? (canIncrement ? constrain(++ count, MIN, MAX) : MIN)
+					: (canIncrement ? MAX : constrain(-- count, MIN, MAX));
 		}
 		inline bool compare(double rate) {
 			return rate < 0 ? true
-				: rate == 0 ? count > MIN
-				: rate <= 1 ? count >= map(rate, 0, 1, MIN, MAX)
-				: false;
+					: rate == 0 ? count > MIN
+					: rate <= 1 ? count >= map(rate, 0, 1, MIN, MAX)
+					: false;
 		}
 };
 

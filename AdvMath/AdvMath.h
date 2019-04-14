@@ -31,8 +31,8 @@ inline double polyLine(double val, double *X, double* Y, uint8_t SIZE) {
 		if(X[index] > abs(val)) { break; }
 	}
 	ans = index == 0 ? Y[index]
-		: index == SIZE ? Y[index - 1]
-		: map(abs(val), X[index - 1], X[index], Y[index - 1], Y[index]);
+			: index == SIZE ? Y[index - 1]
+			: map(abs(val), X[index - 1], X[index], Y[index - 1], Y[index]);
 	ans *= signum(val);
 	return ans;
 }
