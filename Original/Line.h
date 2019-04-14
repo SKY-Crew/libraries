@@ -13,6 +13,7 @@ typedef struct {
 	bool isInAir;
 	Angle dirInside;
 	bool canPause;
+	bool isFront;
 } line_t;
 
 enum Color {
@@ -23,8 +24,7 @@ class Line {
 	public:
 		Line(bool, uint8_t, uint8_t*, uint8_t,
 			uint16_t, uint16_t, uint8_t, double);
-		line_t get(bool, Angle, Angle);
-		bool getIsLineFront();
+		line_t get(bool, Angle, Angle, bool);
 		uint16_t *getVal();
 		Color *getState();
 		uint8_t getQTY();
@@ -50,8 +50,6 @@ class Line {
 		uint8_t countIIA = 0;
 
 		line_t line;
-
-		bool isLineFront;
 };
 
 #endif

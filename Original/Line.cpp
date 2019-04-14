@@ -39,13 +39,13 @@ line_t Line::get(bool isFW, Angle gyro, Angle diffGyro) {
 
 	if(!CAN_LEAVE_LINE) {
 		//ライン無効
-		line = {false, false, false, false, false, false};
+		line = {false, false, false, false, false, false , false};
 	}else if(qtyILB >= THRE_IS_IN_AIR) {
 		//持ち上げられている
 		countIIA ++;
 		if(countIIA >= MAX_CIIA) {
 			countIIA = MAX_CIIA;
-			line = {false, false, false, true, false, false};
+			line = {false, false, false, true, false, false, false};
 		}
 	}else if(qtyILW <= 1) {
 		//ライン上でない
@@ -103,9 +103,9 @@ line_t Line::get(bool isFW, Angle gyro, Angle diffGyro) {
 		line.isWholeOut = false;
 
 		//後ろのライン・前方の角にいるか
-		isLineFront = (line.dirInside - gyro).isDown(55);
+		line.isFront = (line.dirInside - gyro).isDown(55);
 		if(bool(gyro)) {
-			line.isOutside |= (line.dirInside - gyro).isUp(55) || isLineFront;
+			line.isOutside |= (line.dirInside - gyro).isUp(55) || line.isFront;
 			line.canPause = line.isHalfOut;
 		}else {
 			line.isOutside |= line.isHalfOut;
@@ -127,10 +127,6 @@ line_t Line::get(bool isFW, Angle gyro, Angle diffGyro) {
 	}
 
 	return line;
-}
-
-bool Line::getIsLineFront() {
-	return isLineFront;
 }
 
 uint16_t *Line::getVal() {
