@@ -12,41 +12,40 @@ Comc::Comc(uint8_t P_SERIAL, uint8_t P_ONOFF, uint16_t MAX_C_SND, uint16_t MAX_C
 	pinMode(P_ONOFF, INPUT);
 }
 
-comc_t Comc::communicate(bool canRun, bool isFW) {
+comc_t Comc::communicate(bool canRun, bool isFW, double ball_r) {
 	comc_t fellow = prvFellow;
 
 	countSnd ++;
 	if(countSnd >= MAX_C_SND) {
-		sndWireless(canRun, isFW);
+		sndWireless(canRun,
+				(uint8_t) constrain(map(ball_r, 0, 512, 0, 0x80), 0, 0x80 - 1) << 1
+				+ (isFW ? 1 : 0));
 		countSnd = 0;
 	}
 
 	countNoRcv ++;
-	fellow.exists = true;
-	fellow.isFW = rcvWireless();
+	fellow = rcvWireless();
 	if(countNoRcv >= MAX_C_NR) {
 		countNoRcv = MAX_C_NR;
-		fellow.exists = false;
-		fellow.isFW = !isFW;
+		fellow = {false, !isFW, 512};
 	}
 
 	prvFellow = fellow;
 	return fellow;
 }
 
-void Comc::sndWireless(bool canRun, bool isFW) {
-	uint8_t sndData;
+void Comc::sndWireless(bool canRun, uint8_t sndData) {
 	if(digitalRead(P_ONOFF) && canRun) {
-		sndData = isFW ? 1 : 0;
 		sComc.get()->write(sndData);
 	}
 }
 
-bool Comc::rcvWireless() {
-	bool rcvData = prvFellow.isFW;
+comc_t Comc::rcvWireless() {
+	comc_t rcvData = prvFellow;
 	if(digitalRead(P_ONOFF) && sComc.get()->available()) {
 		while (sComc.get()->available()) {
-			rcvData = sComc.get()->read() == 1;
+			uint8_t rcv = sComc.get()->read();
+			rcvData = {true, extractBit(rcv, 0, 0) == 1, extractBit(rcv, 1, 7)};
 		}
 		countNoRcv = 0;
 	}

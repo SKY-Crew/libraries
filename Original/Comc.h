@@ -3,21 +3,23 @@
 
 #include <Arduino.h>
 #include "AdvMath.h"
+#include "Angle.h"
 #include "AdvSerial.h"
 
 typedef struct {
 	bool exists;
 	bool isFW;
+	double ball_r;
 } comc_t;
 
 class Comc {
 	public:
 		Comc(uint8_t, uint8_t, uint16_t, uint16_t);
-		comc_t communicate(bool, bool);
+		comc_t communicate(bool, bool, double);
 		bool getCanUse();
 	private:
-		void sndWireless(bool, bool);
-		bool rcvWireless();
+		void sndWireless(bool, uint8_t);
+		comc_t rcvWireless();
 
 		AdvSerial sComc;
 
