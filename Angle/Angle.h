@@ -11,9 +11,9 @@ class Angle {
 	public:
 		inline Angle(bool hasVal = false, double angle = 0) { setAngle(hasVal, angle); }
 		inline Angle(double angle) { setAngle(true, angle); }
-		inline Angle(int angle) { setAngle(true, (double)angle); }
-		inline Angle(int16_t angle) { setAngle(true, (double)angle); }
-		inline Angle(int32_t angle) { setAngle(true, (double)angle); }
+		inline Angle(int angle) { setAngle(true, (double) angle); }
+		inline Angle(int16_t angle) { setAngle(true, (double) angle); }
+		inline Angle(int32_t angle) { setAngle(true, (double) angle); }
 
 		inline void setAngle(bool hasVal = false, double angle = 0) {
 			this->hasVal = hasVal;

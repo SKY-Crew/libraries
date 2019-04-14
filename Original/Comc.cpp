@@ -18,7 +18,7 @@ comc_t Comc::communicate(bool canRun, bool isFW, double ball_r) {
 	countSnd ++;
 	if(countSnd >= MAX_C_SND) {
 		sndWireless(canRun,
-				(uint8_t) constrain(map(ball_r, 0, 512, 0, 0x80), 0, 0x80 - 1) << 1
+				((uint8_t) constrain(map(ball_r, 0, 512, 0, 0x80), 0, 0x80 - 1) << 1)
 				+ (isFW ? 1 : 0));
 		countSnd = 0;
 	}
@@ -45,7 +45,7 @@ comc_t Comc::rcvWireless() {
 	if(digitalRead(P_ONOFF) && sComc.get()->available()) {
 		while (sComc.get()->available()) {
 			uint8_t rcv = sComc.get()->read();
-			rcvData = {true, extractBit(rcv, 0, 0) == 1, extractBit(rcv, 1, 7)};
+			rcvData = {true, extractBit(rcv, 0, 0) == 1, (double) extractBit(rcv, 1, 7)};
 		}
 		countNoRcv = 0;
 	}
