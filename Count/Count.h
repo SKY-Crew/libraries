@@ -27,7 +27,7 @@ class Count {
 
 		inline void reset(int16_t count = -1) {
 			if(count == -1) {
-				count = COUNT_UP ? MIN : MAX;
+				count = MIN;
 			}
 			this->count = constrain(count, MIN, MAX);
 		}
