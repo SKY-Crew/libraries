@@ -52,35 +52,15 @@ inline uint8_t extractBit(uint8_t byte, uint8_t firstDigit, uint8_t lastDigit) {
 	return (byte & createBinOnes(lastDigit + 1)) >> firstDigit;
 }
 
-inline void copyArray(uint8_t *copiedArray, uint8_t *basisArray, uint8_t size) {
-	for(int num = 0; num < size; num ++) { copiedArray[num] = basisArray[num]; }
+template<typename T> void copyArray(T *copiedArray, T *basisArray, uint8_t SIZE) {
+	for(int num = 0; num < SIZE; num ++) { copiedArray[num] = basisArray[num]; }
 }
-inline void copyArray(uint16_t *copiedArray, uint16_t *basisArray, uint8_t size) {
-	for(int num = 0; num < size; num ++) { copiedArray[num] = basisArray[num]; }
-}
-inline void copyArray(int16_t *copiedArray, int16_t *basisArray, uint8_t size) {
-	for(int num = 0; num < size; num ++) { copiedArray[num] = basisArray[num]; }
-}
-inline void copyArray(double *copiedArray, double *basisArray, uint8_t size) {
-	for(int num = 0; num < size; num ++) { copiedArray[num] = basisArray[num]; }
-}
-inline void copyArray(double **copiedArray, double **basisArray, uint8_t size) {
-	for(int num = 0; num < size; num ++) { copiedArray[num] = basisArray[num]; }
+template<typename T> void copyArray(T **copiedArray, T **basisArray, uint8_t SIZE) {
+	for(int num = 0; num < SIZE; num ++) { copiedArray[num] = basisArray[num]; }
 }
 
 inline String str() { return ""; }
-inline String str(int64_t a) { return String(a); }
-inline String str(uint64_t a) { return String(a); }
-inline String str(int32_t a) { return String(a); }
-inline String str(uint32_t a) { return String(a); }
-inline String str(int16_t a) { return String(a); }
-inline String str(uint16_t a) { return String(a); }
-inline String str(int8_t a) { return String(a); }
-inline String str(uint8_t a) { return String(a); }
-inline String str(int a) { return String(a); }
-inline String str(double a) { return String(a); }
-inline String str(float a) { return String(a); }
-inline String str(char a) { return String(a); }
+template<typename T> String str(T a) { return String(a); }
 inline String str(const char* a) { return String(a); }
 inline String str(bool a) { return a ? "T" : "F"; }
 inline String str(double a, uint16_t index) {
