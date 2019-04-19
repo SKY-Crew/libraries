@@ -2,6 +2,7 @@
 #define COUNT_ORIG
 
 #include <Arduino.h>
+
 #include "AdvMath.h"
 
 class Count {

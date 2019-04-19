@@ -2,10 +2,11 @@
 #define BALL_ORIG
 
 #include <Arduino.h>
+
 #include "AdvMath.h"
-#include "Debug.h"
 #include "Angle.h"
 #include "Count.h"
+#include "Debug.h"
 
 class Ball {
 	public:

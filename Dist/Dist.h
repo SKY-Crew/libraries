@@ -2,6 +2,7 @@
 #define DIST_ORIG
 
 #include <Arduino.h>
+
 #include "AdvMath.h"
 
 enum Dist {

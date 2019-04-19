@@ -2,6 +2,7 @@
 #define ANGLE_ORIG
 
 #include <Arduino.h>
+
 #include "AdvMath.h"
 
 class Angle {

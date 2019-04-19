@@ -2,8 +2,9 @@
 #define INA219_ORIG
 
 #include <Arduino.h>
-#include "AdvMath.h"
 #include "Adafruit_INA219.h"
+
+#include "AdvMath.h"
 
 class INA219 {
 	public:

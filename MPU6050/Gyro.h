@@ -5,11 +5,12 @@
 #include "I2Cdev.h"
 #include <float.h>
 #include "math.h"
+
 #include "AdvMath.h"
-#include "Debug.h"
 #include "Angle.h"
-#include "AdvWire.h"
 #include "Count.h"
+#include "Debug.h"
+#include "AdvWire.h"
 
 class Gyro {
   public:

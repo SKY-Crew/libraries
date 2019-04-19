@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include <Wire.h>
+
 #include "AdvMath.h"
 
 class AdvWire {

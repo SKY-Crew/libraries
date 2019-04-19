@@ -2,9 +2,10 @@
 #define LINE_ORIG
 
 #include <Arduino.h>
+
 #include "AdvMath.h"
-#include "Debug.h"
 #include "Angle.h"
+#include "Debug.h"
 
 typedef struct {
 	bool isOutside;

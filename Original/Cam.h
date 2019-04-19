@@ -2,8 +2,8 @@
 #define CAM_ORIG
 
 #include <Arduino.h>
+
 #include "AdvMath.h"
-#include "AdvSerial.h"
 #include "Angle.h"
 #include "Dist.h"
 
@@ -13,6 +13,8 @@ enum RotPos {
 enum DiffPos {
 	NONE, SMALL, LARGE
 };
+#include "Debug.h"
+#include "AdvSerial.h"
 
 typedef struct {
 	Dist distGK; // 0~2
