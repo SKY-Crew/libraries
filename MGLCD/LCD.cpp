@@ -83,8 +83,8 @@ void LCD::drawAngelRing(uint8_t QTY_LINE, Color *stateLine, uint8_t XCoord) {
 }
 
 void LCD::redraw() {
-	if(digitalRead(P_REDRAW)) {
-		while(digitalRead(P_REDRAW)) {  }
+	if(digitalRead(P_REDRAW) && !prvRedraw) {
 		page = (page + 1) % MAX_PAGE;
 	}
+	prvRedraw = digitalRead(P_REDRAW);
 }

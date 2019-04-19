@@ -39,6 +39,7 @@ class LCD {
 
 		uint8_t countPrint = 0;
 		uint8_t page = 0;
+		bool prvRedraw = false;
 };
 
 #endif
