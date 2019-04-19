@@ -2,13 +2,13 @@
 
 Kicker::Kicker(uint8_t P_KICKER, uint8_t P_RUN_KICKER,
 	uint16_t MAX_CK, uint16_t MAX_CKW) {
-	//copy
+	// copy
 	this->P_KICKER = P_KICKER;
 	this->P_RUN_KICKER = P_RUN_KICKER;
 	this->MAX_CK = MAX_CK;
 	this->MAX_CKW = MAX_CKW;
 
-	//init
+	// init
 	pinMode(P_KICKER, OUTPUT);
 	pinMode(P_RUN_KICKER, INPUT);
 

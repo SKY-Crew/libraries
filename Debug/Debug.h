@@ -4,7 +4,7 @@
 #include <Arduino.h>
 
 #define trace(xx) if(trace_break(xx))
-//#define trace(xx) if(false)
+// #define trace(xx) if(false)
 
 extern int trace_data;
 

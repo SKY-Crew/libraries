@@ -2,7 +2,7 @@
 
 Motor::Motor(bool CAN_MOVE, uint8_t QTY, uint8_t *P_DIR, uint8_t *P_PWR,
 	int16_t firstRM, double SLOPE_POWER, double INTERCEPT_POWER) {
-	//copy
+	// copy
 	this->CAN_MOVE = CAN_MOVE;
 	this->QTY = QTY;
 	this->P_DIR = new uint8_t[QTY];
@@ -17,6 +17,7 @@ Motor::Motor(bool CAN_MOVE, uint8_t QTY, uint8_t *P_DIR, uint8_t *P_PWR,
 	this->SLOPE_POWER = SLOPE_POWER;
 	this->INTERCEPT_POWER = INTERCEPT_POWER;
 
+	// init
 	for(uint8_t i = 0; i < QTY; i ++) {
 		ROT_MOTOR[i] = new Angle();
 		if(QTY == 4) {
@@ -31,7 +32,6 @@ Motor::Motor(bool CAN_MOVE, uint8_t QTY, uint8_t *P_DIR, uint8_t *P_PWR,
 		SIN_RW[i] = sin(ROT_WHEEL[i]);
 	}
 
-	//init
 	for(uint8_t i = 0; i < QTY; i ++) {
 		pinMode(P_DIR[i], OUTPUT);
 		pinMode(P_PWR[i], OUTPUT);
@@ -47,14 +47,14 @@ void Motor::run(Angle moveAngle, int16_t rotPower, uint16_t maxPower) {
 	if(!haveRun) {
 		trace(1) { Serial.println("Motor:"+str(moveAngle)); }
 		int16_t power[QTY];
-		//モーターパワー計算
+		// モーターパワー計算
 		if(!bool(moveAngle)) {
-			//回転移動のみ
+			// 回転移動のみ
 			for(uint8_t i = 0; i < QTY; i ++) {
 				power[i] = rotPower;
 			}
 		}else {
-			//平行+回転移動
+			// 平行+回転移動
 			float ratePower[QTY];
 			vectorXY_t xyPower = {0, 0};
 			for(uint8_t i = 0; i < QTY; i ++) {
@@ -67,11 +67,11 @@ void Motor::run(Angle moveAngle, int16_t rotPower, uint16_t maxPower) {
 				power[i] = maxPower * ratePower[i] / distVP * MAX_DVP + rotPower;
 			}
 		}
-		//パワー変換
+		// パワー変換
 		for(uint8_t i = 0; i < QTY; i ++) {
 			power[i] = power[i] == 0 ? 0 : power[i] * SLOPE_POWER + signum(power[i]) * INTERCEPT_POWER;
 		}
-		//モーター制御
+		// モーター制御
 		for(uint8_t i = 0; i < QTY; i ++) {
 			spin(i, power[i]);
 		}
@@ -82,7 +82,9 @@ void Motor::run(Angle moveAngle, int16_t rotPower, uint16_t maxPower) {
 void Motor::spin(uint8_t port, int16_t power) {
 	if(CAN_MOVE) {
 		power = absConstrain(power, 255);
+		// 回転方向
 		digitalWrite(P_DIR[port], 0.5 - signum(power) * 0.5);
+		// パワー
 		analogWrite(P_PWR[port], abs(power));
 	}
 }

@@ -5,7 +5,7 @@ Ball::Ball(uint8_t QTY, uint8_t *PORT,
 	uint8_t SIZE_THRE_DIST, double *THRE_DIST, uint8_t SIZE_DIR, double **DIR, double **PLUS_DIR,
 	uint8_t P_CATCH, uint16_t THRE_CATCH, uint8_t MAX_C_CATCH,
 	uint8_t P_IN_AIR, uint16_t THRE_IN_AIR) {
-	//copy
+	// copy
 	this->QTY = QTY;
 	this->PORT = new uint8_t[QTY];
 	copyArray(this->PORT, PORT, QTY);
@@ -43,12 +43,11 @@ Ball::Ball(uint8_t QTY, uint8_t *PORT,
 	this->P_IN_AIR = P_IN_AIR;
 	this->THRE_IN_AIR = THRE_IN_AIR;
 
-
+	// init
 	for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
 		prv[numBall] = 0;
 	}
 
-	//init
 	for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
 		pinMode(PORT[numBall], INPUT);
 	}
@@ -63,12 +62,12 @@ Ball::Ball(uint8_t QTY, uint8_t *PORT,
 vectorRT_t Ball::get() {
 	vectorRT_t vRT = {0, 0};
 	bool findingBall = true;
-	//初期化
+	// 初期化
 	for(int numBall = 0; numBall < QTY; numBall ++) {
 		val[numBall] = 0;
 	}
 	valInAir = 0;
-	//計測
+	// 計測
 	uint64_t time = micros();
 	uint16_t countMax = 0;
 	while(micros() - time < CYCLE * MEASURING_COUNT) {
@@ -82,7 +81,7 @@ vectorRT_t Ball::get() {
 		}
 	}
 
-	//比率化
+	// 比率化
 	for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
 		val[numBall] *= 1000.0 / (double) countMax;
 	}
@@ -96,16 +95,16 @@ vectorRT_t Ball::get() {
 				val[numBall] = filter(val[numBall], prv[numBall], CHANGE_RATE);
 			}
 		}
-		//平均値保存
+		// 平均値保存
 		prv[numBall] = val[numBall];
 	}
 
-	//距離計算
+	// 距離計算
 	for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
 		vRT.r += val[numBall];
 	}
 	vRT.r /= (double) QTY;
-	//弱反応切り捨て
+	// 弱反応切り捨て
 	bool isAllWeak = true;
 	for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
 		if(val[numBall] > THRE_WEAK) {
@@ -116,7 +115,7 @@ vectorRT_t Ball::get() {
 	for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
 		weak[numBall] = isAllWeak ? val[numBall] : max(val[numBall] - THRE_WEAK, 0);
 	}
-	//ベクトル合成
+	// ベクトル合成
 	vectorXY_t vXY = {0, 0};
 	for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
 		vXY.x += weak[numBall] * COS_IR[numBall];
@@ -124,12 +123,12 @@ vectorRT_t Ball::get() {
 	}
 	vRT.t = toDegrees(atan2(vXY.y, vXY.x));
 
-	//null判定
+	// null判定
 	if(findingBall) {
 		vRT.t = false;
 	}
 
-	//diffInAir計算
+	// diffInAir計算
 	diffInAir = valInAir - vRT.r;
 
 	trace(2) {

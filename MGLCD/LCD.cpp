@@ -2,7 +2,7 @@
 
 LCD::LCD(uint8_t P_REDRAW, uint8_t P_SCK, uint8_t P_MOSI, uint8_t P_CS, uint8_t P_DI,
 	uint32_t WAIT, uint8_t MAX_CP, uint8_t QTY_LINE) {
-	//copy
+	// copy
 	this->P_REDRAW = P_REDRAW;
 	this->MAX_CP = MAX_CP;
 	lcd = new MGLCD_AQM1248A_SoftwareSPI(MGLCD_SpiPin4(P_SCK, P_MOSI, P_CS, P_DI), WAIT);
@@ -17,7 +17,7 @@ LCD::LCD(uint8_t P_REDRAW, uint8_t P_SCK, uint8_t P_MOSI, uint8_t P_CS, uint8_t 
 		COS_LINE[numLine] = cos(angleLine);
 	}
 
-	//init
+	// init
 	pinMode(P_REDRAW, INPUT);
 
 	lcd->Reset();

@@ -1,13 +1,13 @@
 #include "Comc.h"
 
 Comc::Comc(uint8_t P_SERIAL, uint8_t P_ONOFF, uint16_t MAX_C_SND, uint16_t MAX_C_NR) {
-	//copy
+	// copy
 	sComc.set(P_SERIAL);
 	this->P_ONOFF = P_ONOFF;
 	this->MAX_C_SND = MAX_C_SND;
 	this->MAX_C_NR = MAX_C_NR;
 
-	//init
+	// init
 	sComc.get()->begin(9600);
 	pinMode(P_ONOFF, INPUT);
 }

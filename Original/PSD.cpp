@@ -1,13 +1,13 @@
 #include "PSD.h"
 
 PSD::PSD(uint8_t P_WIRE, double CHANGE_RATE, uint16_t THRE_IS_CLOSE, uint8_t MAX_CC) {
-	//copy
+	// copy
 	wPSD.set(P_WIRE);
 
 	this->CHANGE_RATE = CHANGE_RATE;
 	this->THRE_IS_CLOSE = THRE_IS_CLOSE;
 
-	//init
+	// init
 	wPSD.get()->begin();
 	cClose = Count(MAX_CC, false);
 }
