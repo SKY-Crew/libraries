@@ -93,13 +93,14 @@ Angle Gyro::get() {
     newPinState = digitalRead(RESET_PIN);
 
     rounded = (int16_t)round(yaw);
-    toSend = rounded - _gyro_base;
 
     bool baseChanged = false;
     if (newPinState == HIGH && _gyro_oldPinState == LOW) {
       baseChanged = true;
       _gyro_base = rounded;
     }
+
+    toSend = rounded - _gyro_base;
 
     _gyro_oldPinState = newPinState;
 
