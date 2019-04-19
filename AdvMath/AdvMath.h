@@ -8,13 +8,6 @@ typedef struct {
 	double y;
 } vectorXY_t;
 
-enum Side { //// issue:SIDE表示してみる
-	LEFT = -1, CENTER, RIGHT
-};
-enum Diff {
-	NONE, SMALL, LARGE, TOO_LARGE, SIZE_DIFF
-};
-
 inline int8_t signum(double x) { return x > 0 ? 1 : x < 0 ? -1 : 0; }
 inline double map(double x, double in_min, double in_max, double out_min, double out_max) {
 	return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
