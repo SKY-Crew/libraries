@@ -17,7 +17,7 @@ Kicker::Kicker(uint8_t P_KICKER, uint8_t P_RUN_KICKER,
 }
 
 
-void Kicker::kick(bool start) {
+void Kicker::run(bool start) {
 	if(!haveChecked) {
 		cKicking.increase(kicking);
 		if(bool(cKicking)) {
@@ -34,7 +34,7 @@ void Kicker::kick(bool start) {
 }
 
 void Kicker::check() {
-	kick(digitalRead(P_RUN_KICKER) && !prvStart);
+	run(digitalRead(P_RUN_KICKER) && !prvStart);
 	prvStart = digitalRead(P_RUN_KICKER);
 }
 

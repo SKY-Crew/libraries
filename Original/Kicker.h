@@ -10,7 +10,7 @@
 class Kicker {
 	public:
 		Kicker(uint8_t, uint8_t, uint16_t, uint16_t);
-		void kick(bool);
+		void run(bool);
 		void check();
 		bool getIsKicking();
 		void setHaveChecked(bool);
