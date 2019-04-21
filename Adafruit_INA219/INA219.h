@@ -8,12 +8,14 @@
 
 class INA219 {
 	public:
-		INA219(uint8_t, double, double, uint8_t, uint8_t);
+		INA219(uint8_t, double, double, double, uint8_t, uint8_t);
 		bool checkVolt();
 		double getVal();
+		double getRate();
 	private:
 		double LOW_VOLT;
 		double HIGH_VOLT;
+		double MAX_VOLT;
 
 		uint8_t MAX_CR;
 		uint8_t countRead = 0;

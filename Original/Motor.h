@@ -13,6 +13,8 @@ class Motor {
 		void run(Angle, int16_t, uint16_t);
 		void spin(uint8_t, int16_t);
 		void setHaveRun(bool);
+
+		void setRateVolt(double);
 	private:
 		bool CAN_MOVE;
 		uint8_t QTY;
@@ -26,6 +28,7 @@ class Motor {
 		double SLOPE_POWER;
 		double INTERCEPT_POWER;
 		bool haveRun = false;
+		double rateVolt;
 };
 
 #endif
