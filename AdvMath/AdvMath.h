@@ -51,17 +51,17 @@ inline uint8_t extractBit(uint8_t byte, uint8_t firstDigit, uint8_t lastDigit) {
 	return (byte & createBinOnes(lastDigit + 1)) >> firstDigit;
 }
 
-template<typename T> void copyArray(T *copiedArray, T *basisArray, uint8_t SIZE) {
+template<typename T> inline void copyArray(T *copiedArray, T *basisArray, uint8_t SIZE) {
 	for(int num = 0; num < SIZE; num ++) { copiedArray[num] = basisArray[num]; }
 }
-template<typename T> void copyArray(T **copiedArray, T **basisArray, uint8_t SIZE) {
+template<typename T> inline void copyArray(T **copiedArray, T **basisArray, uint8_t SIZE) {
 	for(int num = 0; num < SIZE; num ++) { copiedArray[num] = basisArray[num]; }
 }
 
 inline String str() { return ""; }
-template<typename T> String str(T a) { return String(a); }
+template<typename T> inline String str(T a) { return String(a); }
 inline String str(const char* a) { return String(a); }
-inline String str(bool a) { return a ? "T" : "F"; }
+inline String str(bool a) { return a ? "#" : "."; }
 inline String str(double a, uint16_t index) {
 	char c[16];
 	dtostrf(a, -1, index, c);
