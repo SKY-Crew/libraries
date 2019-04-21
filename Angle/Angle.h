@@ -54,7 +54,7 @@ class Angle {
 		bool isLeft(const Angle&) const;
 };
 
-inline String str(const Angle& a) { return (bool(a) ? String((int)double(a)) : "null"); }
+inline String str(const Angle& a) { return (bool(a) ? String((int)double(a)) : "---"); }
 
 inline const Angle operator+(const Angle& a, const Angle& b) { return Angle(a) += b; }
 inline const Angle operator-(const Angle& a, const Angle& b) { return Angle(a) -= b; }
