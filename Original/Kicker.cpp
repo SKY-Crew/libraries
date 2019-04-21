@@ -19,7 +19,6 @@ Kicker::Kicker(uint8_t P_KICKER, uint8_t P_RUN_KICKER,
 
 void Kicker::run(bool start) {
 	if(!haveChecked) {
-		cKicking.increase(kicking);
 		if(bool(cKicking)) {
 			digitalWrite(P_KICKER, LOW);
 			kicking = false;
@@ -29,6 +28,8 @@ void Kicker::run(bool start) {
 			digitalWrite(P_KICKER, HIGH);
 			kicking = true;
 		}
+		cWait.increase(!kicking);
+		cKicking.increase(kicking);
 	}
 	haveChecked = true;
 }
@@ -44,4 +45,8 @@ bool Kicker::getIsKicking() {
 
 void Kicker::setHaveChecked(bool haveChecked) {
 	this->haveChecked = haveChecked;
+}
+
+void Kicker::setPower(int16_t power) {
+	if(!bool(cKicking)) { cKicking.set_MAX(power < 0 ? MAX_CK : power); }
 }

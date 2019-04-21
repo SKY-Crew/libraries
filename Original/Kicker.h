@@ -14,6 +14,7 @@ class Kicker {
 		void check();
 		bool getIsKicking();
 		void setHaveChecked(bool);
+		void setPower(int16_t = -1);
 	private:
 		uint8_t P_KICKER;
 		uint8_t P_RUN_KICKER;
