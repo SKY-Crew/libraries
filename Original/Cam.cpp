@@ -1,11 +1,10 @@
 #include "Cam.h"
 
-Cam::Cam(uint8_t P_SERIAL, uint8_t P_ONOFF, uint8_t CENTER_OWN_GOAL,
+Cam::Cam(uint8_t P_SERIAL, uint8_t P_ONOFF,
 	uint16_t SLOPE_RG, uint16_t INTERCEPT_RG) {
 	// copy
 	sCam.set(P_SERIAL);
 	this->P_ONOFF = P_ONOFF;
-	this->CENTER_OWN_GOAL = CENTER_OWN_GOAL;
 	this->SLOPE_RG = SLOPE_RG;
 	this->INTERCEPT_RG = INTERCEPT_RG;
 
@@ -18,26 +17,43 @@ Cam::Cam(uint8_t P_SERIAL, uint8_t P_ONOFF, uint8_t CENTER_OWN_GOAL,
 cam_t Cam::get() {
 	if(!digitalRead(P_ONOFF)) {
 		if(sCam.get()->available()) {
-			uint8_t val = sCam.get()->read();
-			switch(extractBit(val, 6, 7)) {
-				case 0b00: // GK
-					goal.isInCorner = extractBit(val, 5, 5) == 1;
-					goal.distGK = Dist(extractBit(val, 3, 4) + PROPER);
-					goal.posOwn = CENTER_OWN_GOAL - extractBit(val, 0, 2);
-					goal.rotOwn = RotPos(signum(goal.posOwn));
-					goal.diffOwn = DiffPos(abs(goal.posOwn));
-					break;
-				case 0b01: // FW
-					goal.isWide = extractBit(val, 6, 6) == 1;
-					goal.distFW = Dist(extractBit(val, 4, 5) + TOO_CLOSE);
-					break;
-				case 0b10: // rotOpp
-					goal.rotOpp = map(extractBit(val, 0, 5), 0, 60, -180, 180);
-					break;
+			int16_t val[4] = {-1, -1, -1, -1};
+			while(sCam.get()->available()) {
+				uint8_t crt = sCam.get()->read();
+				val[extractBit(crt, 6, 7)] = crt;
 			}
+
+			if(val[0] >= 0) { // rotOpp
+				Angle crtRot = extractBit(val[0], 0, 5) > 60 ? Angle(false) : 
+						map(extractBit(val[0], 0, 5), 0, 60, 90, -90);
+				goal.rotOpp = bool(goal.rotOpp) ? filterAngle(crtRot, goal.rotOpp, 0.2) : crtRot;
+			}
+			if(val[1] >= 0) { // rotOwn
+				goal.rotOwn = extractBit(val[1], 0, 5) > 60 ? Angle(false) : 
+						map(extractBit(val[1], 0, 5), 0, 60, 90, -90) + 180;
+			}
+			if(val[2] >= 0) { // distOwn
+				double crtDist = extractBit(val[2], 0, 5);
+				goal.distOwn = filter(crtDist, goal.distOwn, 0.2);
+			}
+			if(val[3] >= 0) { // others
+				goal.isOppWide = extractBit(val[3], 0, 0) == 1;
+				int8_t posOwn = extractBit(val[3], 1, 3) - SIZE_DIFF + 1;
+				goal.sideOwn = Side(signum(posOwn));
+				goal.diffOwn = Diff(abs(posOwn));
+				goal.isInCorner = Side(extractBit(val[3], 4, 5) - 1);
+			}
+
+			trace(8) { Serial.println(str("rotOpp:")+str(goal.rotOpp)
+							+str("\trotOwn:")+str(goal.rotOwn)
+							+str("\tdistOwn:")+str(goal.distOwn)); }
+			trace(9) { Serial.println(str("isOppWide:")+str(goal.isOppWide)
+							+str("\tposOwn:")+str(goal.sideOwn * goal.diffOwn)
+							+str("\tisInCorner:")+str(goal.isInCorner)); }
+
 		}
 	}else {
-		goal = {PROPER, 0, CENTER, NONE, PROPER, 0, true, false};
+		goal = {0, true, 0, 64, CENTER, NONE, CENTER};
 	}
 	return goal;
 }

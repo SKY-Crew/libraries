@@ -6,30 +6,24 @@
 #include "AdvMath.h"
 #include "Angle.h"
 #include "Dist.h"
-
-enum RotPos {
-	LEFT = -1, CENTER, RIGHT
-};
-enum DiffPos {
-	NONE, SMALL, LARGE
-};
 #include "Debug.h"
 #include "AdvSerial.h"
 
 typedef struct {
-	Dist distGK; // 0~2
-	int8_t posOwn;
-	RotPos rotOwn;
-	DiffPos diffOwn;
-	Dist distFW; // 0~2
 	Angle rotOpp;
-	bool isWide; // 0~1
-	bool isInCorner; // 0~1
+	bool isOppWide;
+
+	Angle rotOwn;
+	double distOwn;
+	Side sideOwn;
+	Diff diffOwn;
+
+	Side isInCorner;
 } cam_t;
 
 class Cam {
 	public:
-		Cam(uint8_t, uint8_t, uint8_t, uint16_t, uint16_t);
+		Cam(uint8_t, uint8_t, uint16_t, uint16_t);
 		cam_t get();
 		int16_t multiRotGoal(Angle);
 		bool getCanUse();
@@ -38,8 +32,6 @@ class Cam {
 		AdvSerial sCam;
 
 		uint8_t P_ONOFF;
-
-		uint8_t CENTER_OWN_GOAL;
 
 		cam_t goal;
 
