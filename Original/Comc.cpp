@@ -12,29 +12,37 @@ Comc::Comc(uint8_t P_SERIAL, uint8_t P_ONOFF, uint16_t MAX_C_SND, uint16_t MAX_C
 	pinMode(P_ONOFF, INPUT);
 }
 
-comc_t Comc::communicate(bool canRun, bool isFW, double ball_r) {
+comc_t Comc::rcv(bool isFW) {
 	comc_t fellow = prvFellow;
-
-	countSnd ++;
-	if(countSnd >= MAX_C_SND) {
-		sndWireless(canRun,
-				((uint8_t) constrain(map(ball_r, 0, 512, 0, 0x80), 0, 0x80 - 1) << 1)
-				+ (isFW ? 1 : 0));
-		countSnd = 0;
-	}
 
 	countNoRcv ++;
 	fellow = rcvWireless();
 	if(countNoRcv >= MAX_C_NR) {
 		countNoRcv = MAX_C_NR;
-		fellow = {false, !isFW, 512};
+		fellow = {false, !isFW, 512, 64, false, false};
 	}
 
 	prvFellow = fellow;
 
-	trace(7) { Serial.println("Fellow:"+str(fellow.exists)+" "+str(fellow.isFW)+" "+str(fellow.ball_r)); }
+	trace(7) { Serial.println("Fellow:"+str(fellow.exists)+" "+str(fellow.isFW)
+				+" "+str(fellow.ball_r)+" "+str(fellow.allowBecomeFW)+" "+str(fellow.distOwn)); }
 
 	return fellow;
+}
+
+void Comc::snd(bool canRun, bool isFW, double ball_r, double distOwn, bool allowBecomeFW, bool isInAir) {
+	countSnd ++;
+	if(countSnd >= MAX_C_SND) {
+		sndWireless(canRun,
+				((isFW ? 1 : 0) << 6)
+				+ ((isInAir ? 1 : 0) << 5)
+				+ (uint8_t) constrain(map(ball_r, 0, 512, 0, 32), 0, 31));
+		sndWireless(canRun,
+				(1 << 7)
+				+ ((allowBecomeFW ? 1 : 0) << 6)
+				+ (uint8_t) constrain(distOwn, 0, 63));
+		countSnd = 0;
+	}
 }
 
 void Comc::sndWireless(bool canRun, uint8_t sndData) {
@@ -48,7 +56,18 @@ comc_t Comc::rcvWireless() {
 	if(digitalRead(P_ONOFF) && sComc.get()->available()) {
 		while (sComc.get()->available()) {
 			uint8_t rcv = sComc.get()->read();
-			rcvData = {true, extractBit(rcv, 0, 0) == 1, (double) extractBit(rcv, 1, 7)};
+			rcvData.exists = true;
+			switch(extractBit(rcv, 7, 7)) {
+				case 0:
+				rcvData.isFW = extractBit(rcv, 6, 6) == 1;
+				rcvData.isInAir = extractBit(rcv, 5, 5) == 1;
+				rcvData.ball_r = map(extractBit(rcv, 0, 4), 0, 32, 0, 512);
+					break;
+				case 1:
+				rcvData.allowBecomeFW = extractBit(rcv, 6, 6) == 1;
+				rcvData.distOwn = extractBit(rcv, 0, 5);
+					break;
+			}
 		}
 		countNoRcv = 0;
 	}

@@ -12,12 +12,16 @@ typedef struct {
 	bool exists;
 	bool isFW;
 	double ball_r;
+	double distOwn;
+	bool allowBecomeFW;
+	bool isInAir;
 } comc_t;
 
 class Comc {
 	public:
 		Comc(uint8_t, uint8_t, uint16_t, uint16_t);
-		comc_t communicate(bool, bool, double);
+		comc_t rcv(bool);
+		void snd(bool, bool, double, double, bool, bool);
 		bool getCanUse();
 	private:
 		void sndWireless(bool, uint8_t);
