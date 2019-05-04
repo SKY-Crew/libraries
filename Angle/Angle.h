@@ -93,8 +93,8 @@ inline Angle constrainAngle(const Angle& a, const Angle& A_min, const Angle& A_m
 	return abs(a - A_min) <= abs(a - A_max) ? A_min : A_max;
 }
 inline Angle filterAngle(const Angle& a, const Angle& avg, double CHANGE_RATE) {
-	return filter(double(avg), double(a), CHANGE_RATE)
-	 + (abs(double(a) - double(avg)) > 180 ? 360 * (a >= avg ? CHANGE_RATE : 1 - CHANGE_RATE) : 0);
+	return filter(double(a), double(avg), CHANGE_RATE)
+	 + (abs(double(a) - double(avg)) > 180 ? 360 * CHANGE_RATE * (a >= avg ? -1 : 1) : 0);
 }
 inline double cos(const Angle& a) {
 	return bool(a) ? advRound(cos(toRadians(double(a))), 5) : 0;
