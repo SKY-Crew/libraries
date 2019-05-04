@@ -132,12 +132,12 @@ Angle Gyro::getDiff() {
   return crt - prv;
 }
 
-int16_t Gyro::multiRot(Angle origin) {
-  double error[] = {0, 0}; // P, D
+int16_t Gyro::multiRot(Angle origin, bool isOnLine) {
   error[0] = absMinus(double(crt + origin), 1.5);
   error[1] = digitalRead(RESET_PIN) ? 0 : filter(double(getDiff()) * 10, error[1], 0.6);
   error[1] = absMinus(error[1], 1);
-  return polyLine(error[0], POINT, ROT, SIZE_POINT) + error[1] * Kd;
+  return polyLine(error[0], POINT[isOnLine ? 1 : 0], ROT[isOnLine ? 1 : 0], SIZE_POINT)
+      + error[1] * Kd[isOnLine ? 1 : 0];
 }
 
 bool Gyro::getCanUse() {
