@@ -9,7 +9,7 @@
 
 class Motor {
 	public:
-		Motor(bool, uint8_t, uint8_t*, uint8_t*, int16_t, double, double);
+		Motor(bool, uint8_t, uint8_t*, uint8_t*, int16_t, double, double, double*);
 		void run(Angle, int16_t, uint16_t);
 		void spin(uint8_t, int16_t);
 		void setHaveRun(bool);
@@ -27,6 +27,7 @@ class Motor {
 		double MAX_DVP;
 		double SLOPE_POWER;
 		double INTERCEPT_POWER;
+		double *MULTI_POWER;
 		bool haveRun = false;
 		double rateVolt;
 };

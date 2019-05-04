@@ -1,7 +1,7 @@
 #include "Motor.h"
 
 Motor::Motor(bool CAN_MOVE, uint8_t QTY, uint8_t *P_DIR, uint8_t *P_PWR,
-	int16_t firstRM, double SLOPE_POWER, double INTERCEPT_POWER) {
+	int16_t firstRM, double SLOPE_POWER, double INTERCEPT_POWER, double *MULTI_POWER) {
 	// copy
 	this->CAN_MOVE = CAN_MOVE;
 	this->QTY = QTY;
@@ -16,6 +16,8 @@ Motor::Motor(bool CAN_MOVE, uint8_t QTY, uint8_t *P_DIR, uint8_t *P_PWR,
 	MAX_DVP = abs(cos(toRadians(firstRM)) * QTY);
 	this->SLOPE_POWER = SLOPE_POWER;
 	this->INTERCEPT_POWER = INTERCEPT_POWER;
+	this->MULTI_POWER = new double[QTY];
+	copyArray(this->MULTI_POWER, MULTI_POWER, QTY);
 
 	// init
 	for(uint8_t i = 0; i < QTY; i ++) {
@@ -47,7 +49,6 @@ void Motor::run(Angle moveAngle, int16_t rotPower, uint16_t maxPower) {
 	if(!haveRun) {
 		trace(1) { Serial.println("Motor:"+str(moveAngle)+
 				" "+str(rotPower)+" "+str(maxPower)); }
-
 		int16_t power[QTY];
 		// モーターパワー計算
 		maxPower -= maxPower * rateVolt * 0.25;
@@ -73,6 +74,7 @@ void Motor::run(Angle moveAngle, int16_t rotPower, uint16_t maxPower) {
 		// パワー変換
 		for(uint8_t i = 0; i < QTY; i ++) {
 			power[i] = power[i] == 0 ? 0 : power[i] * SLOPE_POWER + signum(power[i]) * INTERCEPT_POWER;
+			power[i] *= MULTI_POWER[i];
 		}
 		// モーター制御
 		for(uint8_t i = 0; i < QTY; i ++) {
