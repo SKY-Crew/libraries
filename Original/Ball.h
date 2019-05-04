@@ -11,7 +11,7 @@
 class Ball {
 	public:
 		Ball(uint8_t, uint8_t*,
-			uint8_t, uint16_t, double,
+			uint8_t, uint16_t, double, double,
 			uint8_t, double*, uint8_t, double**, double**,
 			uint8_t, uint16_t, uint8_t,
 			uint8_t, uint16_t);
@@ -40,6 +40,7 @@ class Ball {
 		uint8_t MEASURING_COUNT;
 		uint16_t THRE_WEAK;
 		double CHANGE_RATE;
+		double PLUS_T;
 
 		uint8_t SIZE_THRE_DIST;
 		double *THRE_DIST;
@@ -52,6 +53,7 @@ class Ball {
 		uint16_t *prv;
 		uint16_t *crt;
 
+		double prvBall_r;
 
 		uint8_t P_CATCH;
 		uint16_t THRE_CATCH;
