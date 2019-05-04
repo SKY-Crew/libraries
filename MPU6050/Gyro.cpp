@@ -7,7 +7,7 @@ void Gyro::_gyro_initialize() {
 }
 
 Gyro::Gyro(uint8_t P_WIRE, uint8_t PORT, uint8_t ONOFF_PIN, uint8_t RESET_PIN,
-  uint8_t SIZE_POINT, double *POINT, double *ROT, double Kd,
+  uint8_t SIZE_POINT, double **POINT, double **ROT, double *Kd,
   uint8_t BROKEN_THRE, uint8_t STOP_FRAMES, uint8_t STAY_THRE) {
   // copy
   wGyro.set(P_WIRE);
@@ -17,12 +17,11 @@ Gyro::Gyro(uint8_t P_WIRE, uint8_t PORT, uint8_t ONOFF_PIN, uint8_t RESET_PIN,
   this->ONOFF_PIN = ONOFF_PIN;
   this->RESET_PIN = RESET_PIN;
   this->SIZE_POINT = SIZE_POINT;
-  this->POINT = new double[SIZE_POINT];
+  this->POINT = new double*[SIZE_POINT];
   copyArray(this->POINT, POINT, SIZE_POINT);
-  this->ROT = new double[SIZE_POINT];
+  this->ROT = new double*[SIZE_POINT];
   copyArray(this->ROT, ROT, SIZE_POINT);
-
-  this->Kd = Kd;
+  copyArray(this->Kd, Kd, 2);
 
   this->BROKEN_THRE = BROKEN_THRE;
 
