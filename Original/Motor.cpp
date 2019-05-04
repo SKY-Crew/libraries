@@ -62,7 +62,7 @@ void Motor::run(Angle moveAngle, int16_t rotPower, uint16_t maxPower) {
 			float ratePower[QTY];
 			vectorXY_t xyPower = {0, 0};
 			for(uint8_t i = 0; i < QTY; i ++) {
-				ratePower[i] =  cos(ROT_WHEEL[i] - moveAngle);
+				ratePower[i] = cos(ROT_WHEEL[i] - moveAngle);
 				xyPower.x += COS_RW[i] * ratePower[i];
 				xyPower.y += SIN_RW[i] * ratePower[i];
 			}
