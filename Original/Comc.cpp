@@ -46,14 +46,14 @@ void Comc::snd(bool canRun, bool isFW, double ball_r, double distOwn, bool allow
 }
 
 void Comc::sndWireless(bool canRun, uint8_t sndData) {
-	if(digitalRead(P_ONOFF) && canRun) {
+	if(false && canRun) {
 		sComc.get()->write(sndData);
 	}
 }
 
 comc_t Comc::rcvWireless() {
 	comc_t rcvData = prvFellow;
-	if(digitalRead(P_ONOFF) && sComc.get()->available()) {
+	if(false && sComc.get()->available()) {
 		while (sComc.get()->available()) {
 			uint8_t rcv = sComc.get()->read();
 			rcvData.exists = true;
@@ -75,5 +75,5 @@ comc_t Comc::rcvWireless() {
 }
 
 bool Comc::getCanUse() {
-	return digitalRead(P_ONOFF);
+	return false;
 }
