@@ -14,7 +14,7 @@ Cam::Cam(uint8_t P_SERIAL, uint8_t P_ONOFF,
 	pinMode(P_ONOFF, INPUT);
 }
 
-cam_t Cam::get() {
+cam_t Cam::get(bool isInAir) {
 	if(!digitalRead(P_ONOFF)) {
 		if(sCam.get()->available()) {
 			int16_t val[4] = {-1, -1, -1, -1};
@@ -24,21 +24,26 @@ cam_t Cam::get() {
 			}
 
 			if(val[0] >= 0) { // rotOpp
-				Angle crtRot = extractBit(val[0], 0, 5) > 60 ? Angle(false) : 
+				Angle crtRot = extractBit(val[0], 0, 5) >= 59 || extractBit(val[0], 0, 5) <= 0 ? Angle(false) : 
 						map(extractBit(val[0], 0, 5), 0, 60, 90, -90);
-				goal.rotOpp = bool(goal.rotOpp) ? filterAngle(crtRot, goal.rotOpp, 0.2) : crtRot;
+				goal.rotOpp = bool(goal.rotOpp) ? filterAngle(crtRot, goal.rotOpp, 0.1) : crtRot;
 			}
 			if(val[1] >= 0) { // rotOwn
 				goal.rotOwn = extractBit(val[1], 0, 5) > 60 ? Angle(false) : 
 						map(extractBit(val[1], 0, 5), 0, 60, 90, -90) + 180;
 			}
 			if(val[2] >= 0) { // distOwn
-				double crtDist = extractBit(val[2], 0, 5);
-				goal.distOwn = filter(crtDist, goal.distOwn, 0.2);
+				double crtDist = extractBit(val[2], 0, 5); //* 0.8;
+				goal.distOwn = filter(crtDist, goal.distOwn, 0.9);
 			}
 			if(val[3] >= 0) { // others
 				goal.isOppWide = extractBit(val[3], 0, 0) == 1;
-				int8_t posOwn = extractBit(val[3], 1, 3) - SIZE_DIFF + 1;
+				int8_t posOwn;
+				if(extractBit(val[3], 1, 3) == 7) {
+					posOwn = isInAir ? 0 : goal.sideOwn * 3;
+				}else {
+					posOwn = extractBit(val[3], 1, 3) - SIZE_DIFF + 1;
+				}
 				goal.sideOwn = Side(signum(posOwn));
 				goal.diffOwn = Diff(abs(posOwn));
 				goal.isInCorner = Side(extractBit(val[3], 4, 5) - 1);
