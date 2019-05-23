@@ -9,6 +9,7 @@ PSD::PSD(uint8_t P_WIRE, double CHANGE_RATE, uint16_t THRE_IS_CLOSE, uint8_t MAX
 
 	// init
 	wPSD.get()->begin();
+	wPSD.get()->setClock(4*1000*1000);
 	cClose = Count(MAX_CC, false);
 }
 

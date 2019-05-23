@@ -369,6 +369,7 @@ void Adafruit_INA219::begin(uint8_t P_WIRE, uint8_t addr) {
 void Adafruit_INA219::begin(uint8_t P_WIRE) {
   w_ina219.set(P_WIRE);
   w_ina219.get()->begin();
+  w_ina219.get()->setClock(4*1000*1000);
   // Set chip to large range config values to start
   setCalibration_32V_2A();
 }

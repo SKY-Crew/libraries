@@ -11,6 +11,7 @@ Gyro::Gyro(uint8_t P_WIRE, uint8_t PORT, uint8_t ONOFF_PIN, uint8_t RESET_PIN,
   uint8_t BROKEN_THRE, uint8_t STOP_FRAMES, uint8_t STAY_THRE) {
   // copy
   wGyro.set(P_WIRE);
+  wGyro.get()->setClock(4*1000*1000);
 
   _gyro_mpu = new MPU6050(PORT);
 
