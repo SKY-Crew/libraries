@@ -59,7 +59,7 @@ inline uint8_t extractBit(uint8_t byte, uint8_t firstDigit, uint8_t lastDigit) {
 }
 
 template<typename T> inline void copyArray(T *copiedArray, T *basisArray, uint8_t SIZE) {
-	for(int num = 0; num < SIZE; num ++) { copiedArray[num] = basisArray[num]; }
+	memcpy(copiedArray, basisArray, sizeof(T) * SIZE);
 }
 template<typename T> inline void copyArray(T **copiedArray, T **basisArray, uint8_t SIZE) {
 	for(int num = 0; num < SIZE; num ++) { copiedArray[num] = basisArray[num]; }
