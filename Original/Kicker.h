@@ -9,7 +9,7 @@
 
 class Kicker {
 	public:
-		Kicker(uint8_t, uint8_t, uint16_t, uint16_t);
+		Kicker(uint8_t, uint8_t, uint16_t, uint16_t, uint16_t);
 		void run(bool);
 		void check();
 		bool getIsKicking();
@@ -26,7 +26,8 @@ class Kicker {
 
 		bool kicking = false;
 		bool haveChecked = false;
-		bool prvStart = false;
+		Count cStart;
+		bool prvStart;
 };
 
 #endif

@@ -1,7 +1,7 @@
 #include "Kicker.h"
 
 Kicker::Kicker(uint8_t P_KICKER, uint8_t P_RUN_KICKER,
-	uint16_t MAX_CK, uint16_t MAX_CKW) {
+	uint16_t MAX_CK, uint16_t MAX_CKW, uint16_t MAX_CS) {
 	// copy
 	this->P_KICKER = P_KICKER;
 	this->P_RUN_KICKER = P_RUN_KICKER;
@@ -14,6 +14,7 @@ Kicker::Kicker(uint8_t P_KICKER, uint8_t P_RUN_KICKER,
 
 	cKicking.set_MAX(MAX_CK);
 	cWait.set_MAX(MAX_CKW);
+	cStart.set_MAX(MAX_CS);
 }
 
 
@@ -35,8 +36,9 @@ void Kicker::run(bool start) {
 }
 
 void Kicker::check() {
-	run(digitalRead(P_RUN_KICKER) && !prvStart);
-	prvStart = digitalRead(P_RUN_KICKER);
+	cStart.increase(digitalRead(P_RUN_KICKER));
+	run(bool(cStart) && !prvStart);
+	prvStart = bool(cStart);
 }
 
 bool Kicker::getIsKicking() {
