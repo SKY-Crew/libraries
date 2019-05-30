@@ -105,12 +105,13 @@ line_t Line::get(bool isFW, Angle gyro, Angle diffGyro, bool isInCorner) {
 		line.isInAir = false;
 
 		// 後ろのライン・前方の角にいるか
-		line.isFront = (line.dirInside - gyro).isDown(55);
+		Angle absoluteDI = line.dirInside - gyro;
+		line.isFront = absoluteDI.isDown(55);
 		if(!bool(gyro)) {
 			line.isOutside |= line.isHalfOut;
 			line.canPause = true;
 		}else {
-			line.isOutside |= (line.dirInside - gyro).isUp(55) || line.isFront;
+			line.isOutside |= absoluteDI.isUp(55) || line.isFront;
 			line.canPause = line.isHalfOut;
 		}
 		if(isInCorner) {
