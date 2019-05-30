@@ -92,6 +92,7 @@ line_t Line::get(bool isFW, Angle gyro, Angle diffGyro, bool isInCorner) {
 			line.isHalfOut = false;
 			if(line.isWholeOut || (line.dirInside - prvDI).isDown(70)) {
 				line.dirInside += 180;
+				maxIntvL = QTY - maxIntvL;
 				line.isHalfOut = true;
 			}
 			// 平均値計算
