@@ -1,7 +1,7 @@
 #include "Ball.h"
 
 Ball::Ball(uint8_t QTY, uint8_t *PORT,
-	uint8_t MEASURING_COUNT, uint16_t THRE_WEAK, double CHANGE_RATE, double PLUS_T,
+	uint8_t MEASURING_COUNT, uint16_t THRE_WEAK, double CHANGE_RATE, double CHANGE_RATE_T, double PLUS_T,
 	uint8_t SIZE_THRE_DIST, double *THRE_DIST, uint8_t SIZE_DIR, double **DIR, double **PLUS_DIR,
 	uint8_t P_CATCH, uint16_t THRE_CATCH, uint8_t MAX_C_CATCH,
 	uint8_t P_IN_AIR, uint16_t THRE_IN_AIR) {
@@ -20,6 +20,7 @@ Ball::Ball(uint8_t QTY, uint8_t *PORT,
 	this->MEASURING_COUNT = MEASURING_COUNT;
 	this->THRE_WEAK = THRE_WEAK;
 	this->CHANGE_RATE = CHANGE_RATE;
+	this->CHANGE_RATE_T = CHANGE_RATE_T;
 	this->PLUS_T = PLUS_T;
 
 	this->SIZE_THRE_DIST = SIZE_THRE_DIST;
@@ -135,8 +136,9 @@ vectorRT_t Ball::get() {
 	// diffInAir計算
 	diffInAir = valInAir - vRT.r;
 
-	vRT.r = filter(vRT.r, prvBall_r, 0.1);
-	prvBall_r = vRT.r;
+	vRT.r = filter(vRT.r, prvBall.r, CHANGE_RATE_T);
+
+	prvBall = vRT;
 
 	trace(2) {
 		Serial.print(str("Ball:[ "));
