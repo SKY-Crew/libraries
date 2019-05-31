@@ -13,7 +13,7 @@ Motor::Motor(bool CAN_MOVE, uint8_t QTY, uint8_t *P_DIR, uint8_t *P_PWR,
 	ROT_WHEEL = new Angle[QTY];
 	SIN_RW = new double[QTY];
 	COS_RW = new double[QTY];
-	MAX_DVP = abs(cos(toRadians(firstRM)) * QTY);
+	MAX_DVP = abs(cos(toRadians(firstRM)));
 	this->SLOPE_POWER = SLOPE_POWER;
 	this->INTERCEPT_POWER = INTERCEPT_POWER;
 	this->MULTI_POWER = new double[QTY];
@@ -60,15 +60,11 @@ void Motor::run(Angle moveAngle, int16_t rotPower, uint16_t maxPower) {
 		}else {
 			// 平行+回転移動
 			float ratePower[QTY];
-			vectorXY_t xyPower = {0, 0};
 			for(uint8_t i = 0; i < QTY; i ++) {
 				ratePower[i] = cos(ROT_WHEEL[i] - moveAngle);
-				xyPower.x += COS_RW[i] * ratePower[i];
-				xyPower.y += SIN_RW[i] * ratePower[i];
 			}
-			float distVP = sqrt(xyPower.x * xyPower.x + xyPower.y * xyPower.y);
 			for(uint8_t i = 0; i < QTY; i ++) {
-				power[i] = maxPower * ratePower[i] / distVP * MAX_DVP + rotPower;
+				power[i] = maxPower * ratePower[i] / MAX_DVP + rotPower;
 			}
 		}
 		// パワー変換
