@@ -13,8 +13,7 @@ class Ball {
 		Ball(uint8_t, uint8_t*,
 			uint8_t, uint16_t, double, double, double,
 			uint8_t, double*, uint8_t, double**, double**,
-			uint8_t, uint16_t, uint8_t,
-			uint8_t, uint16_t);
+			uint8_t, uint16_t, uint8_t);
 		vectorRT_t get();
 		uint16_t *getVal();
 		uint8_t getQTY();
@@ -26,9 +25,6 @@ class Ball {
 		bool getCatch();
 		bool compareCatch(double);
 		uint16_t getValCatch();
-
-		bool getIsInAir();
-		uint16_t getValInAir();
 	private:
 		uint8_t QTY;
 		uint8_t *PORT;
@@ -61,13 +57,6 @@ class Ball {
 
 		uint16_t valCatch;
 		Count cCatch;
-
-
-		uint8_t P_IN_AIR;
-		uint16_t THRE_IN_AIR;
-
-		uint16_t valInAir;
-		uint16_t diffInAir;
 };
 
 #endif

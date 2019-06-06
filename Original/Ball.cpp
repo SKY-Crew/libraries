@@ -3,8 +3,7 @@
 Ball::Ball(uint8_t QTY, uint8_t *PORT,
 	uint8_t MEASURING_COUNT, uint16_t THRE_WEAK, double CHANGE_RATE, double CHANGE_RATE_T, double PLUS_T,
 	uint8_t SIZE_THRE_DIST, double *THRE_DIST, uint8_t SIZE_DIR, double **DIR, double **PLUS_DIR,
-	uint8_t P_CATCH, uint16_t THRE_CATCH, uint8_t MAX_C_CATCH,
-	uint8_t P_IN_AIR, uint16_t THRE_IN_AIR) {
+	uint8_t P_CATCH, uint16_t THRE_CATCH, uint8_t MAX_C_CATCH) {
 	// copy
 	this->QTY = QTY;
 	this->PORT = new uint8_t[QTY];
@@ -41,10 +40,6 @@ Ball::Ball(uint8_t QTY, uint8_t *PORT,
 	this->P_CATCH = P_CATCH;
 	this->THRE_CATCH = THRE_CATCH;
 
-
-	this->P_IN_AIR = P_IN_AIR;
-	this->THRE_IN_AIR = THRE_IN_AIR;
-
 	// init
 	for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
 		prv[numBall] = 0;
@@ -55,9 +50,6 @@ Ball::Ball(uint8_t QTY, uint8_t *PORT,
 	}
 
 	cCatch.set_MAX(MAX_C_CATCH);
-
-
-	pinMode(P_IN_AIR, INPUT);
 }
 
 
@@ -68,18 +60,13 @@ vectorRT_t Ball::get() {
 	for(int numBall = 0; numBall < QTY; numBall ++) {
 		val[numBall] = 0;
 	}
-	valInAir = 0;
 	// 計測
 	uint64_t time = micros();
 	uint16_t countMax = 0;
 	while(micros() - time < CYCLE * MEASURING_COUNT) {
 		countMax ++;
-		for(uint8_t numBall = 0; numBall <= QTY; numBall ++) {
-			if(numBall == QTY) {
-				valInAir += !digitalRead(P_IN_AIR);
-			}else {
-				val[numBall] += !digitalRead(PORT[numBall]);
-			}
+		for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
+			val[numBall] += !digitalRead(PORT[numBall]);
 		}
 	}
 
@@ -87,7 +74,6 @@ vectorRT_t Ball::get() {
 	for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
 		val[numBall] *= 1000.0 / (double) countMax;
 	}
-	valInAir *= 1000.0 / (double) countMax;
 
 	for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
 		if(val[numBall] > 0) {
@@ -133,9 +119,6 @@ vectorRT_t Ball::get() {
 	}
 	vRT.r *= map(double(abs(vRT.t)), 0, 180, 2.5, 4.2);
 
-	// diffInAir計算
-	diffInAir = valInAir - vRT.r;
-
 	vRT.r = filter(vRT.r, prvBall.r, CHANGE_RATE_T);
 
 	prvBall = vRT;
@@ -147,8 +130,6 @@ vectorRT_t Ball::get() {
 		}
 		Serial.println(str("]"));
 	}
-
-	trace(3) { Serial.println("Ball(InAir):"+str(valInAir)); }
 
 	return vRT;
 }
@@ -195,13 +176,4 @@ bool Ball::compareCatch(double rate) {
 
 uint16_t Ball::getValCatch() {
 	return valCatch;
-}
-
-
-bool Ball::getIsInAir() {
-	return diffInAir >= THRE_IN_AIR;
-}
-
-uint16_t Ball::getValInAir() {
-	return valInAir;
 }
