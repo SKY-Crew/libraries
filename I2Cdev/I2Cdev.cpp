@@ -5,12 +5,12 @@
 // Changelog:
 //      2013-05-06 - add Francesco Ferrara's Fastwire v0.24 implementation with small modifications
 //      2013-05-05 - fix issue with writing bit values to words (Sasquatch/Farzanegan)
-//      2012-06-09 - fix major issue with reading > 32 bytes at a time with Arduino Wire1
+//      2012-06-09 - fix major issue with reading > 32 bytes at a time with Arduino Wire2
 //                 - add compiler warnings when using outdated or IDE or limited I2Cdev implementation
 //      2011-11-01 - fix write*Bits mask calculation (thanks sasquatch @ Arduino forums)
 //      2011-10-03 - added automatic Arduino version detection for ease of use
-//      2011-10-02 - added Gene Knight's NBWire1 TwoWire1 class implementation with small modifications
-//      2011-08-31 - added support for Arduino 1.0 Wire1 library (methods are different from 0.x)
+//      2011-10-02 - added Gene Knight's NBWire2 TwoWire2 class implementation with small modifications
+//      2011-08-31 - added support for Arduino 1.0 Wire2 library (methods are different from 0.x)
 //      2011-08-03 - added optional timeout parameter to read* methods to easily change from default
 //      2011-08-02 - added support for 16-bit registers
 //                 - fixed incorrect Doxygen comments on some methods
@@ -49,22 +49,22 @@ THE SOFTWARE.
 
     #ifdef I2CDEV_IMPLEMENTATION_WARNINGS
         #if ARDUINO < 100
-            #warning Using outdated Arduino IDE with Wire1 library is functionally limiting.
+            #warning Using outdated Arduino IDE with Wire2 library is functionally limiting.
             #warning Arduino IDE v1.6.5+ with I2Cdev Fastwire implementation is recommended.
             #warning This I2Cdev implementation does not support:
             #warning - Repeated starts conditions
-            #warning - Timeout detection (some Wire1 requests block forever)
+            #warning - Timeout detection (some Wire2 requests block forever)
         #elif ARDUINO == 100
-            #warning Using outdated Arduino IDE with Wire1 library is functionally limiting.
+            #warning Using outdated Arduino IDE with Wire2 library is functionally limiting.
             #warning Arduino IDE v1.6.5+ with I2Cdev Fastwire implementation is recommended.
             #warning This I2Cdev implementation does not support:
             #warning - Repeated starts conditions
-            #warning - Timeout detection (some Wire1 requests block forever)
+            #warning - Timeout detection (some Wire2 requests block forever)
         #elif ARDUINO > 100
-            /*#warning Using current Arduino IDE with Wire1 library is functionally limiting.
+            /*#warning Using current Arduino IDE with Wire2 library is functionally limiting.
             #warning Arduino IDE v1.6.5+ with I2CDEV_BUILTIN_FASTWIRE implementation is recommended.
             #warning This I2Cdev implementation does not support:
-            #warning - Timeout detection (some Wire1 requests block forever)*/
+            #warning - Timeout detection (some Wire2 requests block forever)*/
         #endif
     #endif
 
@@ -80,10 +80,10 @@ THE SOFTWARE.
         #warning - Repeated starts conditions
     #endif
 
-    // NBWire1 implementation based heavily on code by Gene Knight <Gene@Telobot.com>
+    // NBWire2 implementation based heavily on code by Gene Knight <Gene@Telobot.com>
     // Originally posted on the Arduino forum at http://arduino.cc/forum/index.php/topic,70705.0.html
     // Originally offered to the i2cdevlib project at http://arduino.cc/forum/index.php/topic,68210.30.html
-    TwoWire1 Wire1;
+    TwoWire2 Wire2;
 
 #endif
 
@@ -220,68 +220,68 @@ int8_t I2Cdev::readBytes(uint8_t devAddr, uint8_t regAddr, uint8_t length, uint8
     #if (I2CDEV_IMPLEMENTATION == I2CDEV_ARDUINO_WIRE)
 
         #if (ARDUINO < 100)
-            // Arduino v00xx (before v1.0), Wire1 library
+            // Arduino v00xx (before v1.0), Wire2 library
 
             // I2C/TWI subsystem uses internal buffer that breaks with large data requests
             // so if user requests more than BUFFER_LENGTH bytes, we have to do it in
             // smaller chunks instead of all at once
             for (uint8_t k = 0; k < length; k += min(length, BUFFER_LENGTH)) {
-                Wire1.beginTransmission(devAddr);
-                Wire1.send(regAddr);
-                Wire1.endTransmission();
-                Wire1.beginTransmission(devAddr);
-                Wire1.requestFrom(devAddr, (uint8_t)min(length - k, BUFFER_LENGTH));
+                Wire2.beginTransmission(devAddr);
+                Wire2.send(regAddr);
+                Wire2.endTransmission();
+                Wire2.beginTransmission(devAddr);
+                Wire2.requestFrom(devAddr, (uint8_t)min(length - k, BUFFER_LENGTH));
 
-                for (; Wire1.available() && (timeout == 0 || millis() - t1 < timeout); count++) {
-                    data[count] = Wire1.receive();
+                for (; Wire2.available() && (timeout == 0 || millis() - t1 < timeout); count++) {
+                    data[count] = Wire2.receive();
                     #ifdef I2CDEV_SERIAL_DEBUG
                         Serial.print(data[count], HEX);
                         if (count + 1 < length) Serial.print(" ");
                     #endif
                 }
 
-                Wire1.endTransmission();
+                Wire2.endTransmission();
             }
         #elif (ARDUINO == 100)
-            // Arduino v1.0.0, Wire1 library
+            // Arduino v1.0.0, Wire2 library
             // Adds standardized write() and read() stream methods instead of send() and receive()
 
             // I2C/TWI subsystem uses internal buffer that breaks with large data requests
             // so if user requests more than BUFFER_LENGTH bytes, we have to do it in
             // smaller chunks instead of all at once
             for (uint8_t k = 0; k < length; k += min(length, BUFFER_LENGTH)) {
-                Wire1.beginTransmission(devAddr);
-                Wire1.write(regAddr);
-                Wire1.endTransmission();
-                Wire1.beginTransmission(devAddr);
-                Wire1.requestFrom(devAddr, (uint8_t)min(length - k, BUFFER_LENGTH));
+                Wire2.beginTransmission(devAddr);
+                Wire2.write(regAddr);
+                Wire2.endTransmission();
+                Wire2.beginTransmission(devAddr);
+                Wire2.requestFrom(devAddr, (uint8_t)min(length - k, BUFFER_LENGTH));
 
-                for (; Wire1.available() && (timeout == 0 || millis() - t1 < timeout); count++) {
-                    data[count] = Wire1.read();
+                for (; Wire2.available() && (timeout == 0 || millis() - t1 < timeout); count++) {
+                    data[count] = Wire2.read();
                     #ifdef I2CDEV_SERIAL_DEBUG
                         Serial.print(data[count], HEX);
                         if (count + 1 < length) Serial.print(" ");
                     #endif
                 }
 
-                Wire1.endTransmission();
+                Wire2.endTransmission();
             }
         #elif (ARDUINO > 100)
-            // Arduino v1.0.1+, Wire1 library
+            // Arduino v1.0.1+, Wire2 library
             // Adds official support for repeated start condition, yay!
 
             // I2C/TWI subsystem uses internal buffer that breaks with large data requests
             // so if user requests more than BUFFER_LENGTH bytes, we have to do it in
             // smaller chunks instead of all at once
             for (uint8_t k = 0; k < length; k += min(length, BUFFER_LENGTH)) {
-                Wire1.beginTransmission(devAddr);
-                Wire1.write(regAddr);
-                Wire1.endTransmission();
-                Wire1.beginTransmission(devAddr);
-                Wire1.requestFrom(devAddr, (uint8_t)min(length - k, BUFFER_LENGTH));
+                Wire2.beginTransmission(devAddr);
+                Wire2.write(regAddr);
+                Wire2.endTransmission();
+                Wire2.beginTransmission(devAddr);
+                Wire2.requestFrom(devAddr, (uint8_t)min(length - k, BUFFER_LENGTH));
 
-                for (; Wire1.available() && (timeout == 0 || millis() - t1 < timeout); count++) {
-                    data[count] = Wire1.read();
+                for (; Wire2.available() && (timeout == 0 || millis() - t1 < timeout); count++) {
+                    data[count] = Wire2.read();
                     #ifdef I2CDEV_SERIAL_DEBUG
                         Serial.print(data[count], HEX);
                         if (count + 1 < length) Serial.print(" ");
@@ -340,26 +340,26 @@ int8_t I2Cdev::readWords(uint8_t devAddr, uint8_t regAddr, uint8_t length, uint1
     #if (I2CDEV_IMPLEMENTATION == I2CDEV_ARDUINO_WIRE)
 
         #if (ARDUINO < 100)
-            // Arduino v00xx (before v1.0), Wire1 library
+            // Arduino v00xx (before v1.0), Wire2 library
 
             // I2C/TWI subsystem uses internal buffer that breaks with large data requests
             // so if user requests more than BUFFER_LENGTH bytes, we have to do it in
             // smaller chunks instead of all at once
             for (uint8_t k = 0; k < length * 2; k += min(length * 2, BUFFER_LENGTH)) {
-                Wire1.beginTransmission(devAddr);
-                Wire1.send(regAddr);
-                Wire1.endTransmission();
-                Wire1.beginTransmission(devAddr);
-                Wire1.requestFrom(devAddr, (uint8_t)(length * 2)); // length=words, this wants bytes
+                Wire2.beginTransmission(devAddr);
+                Wire2.send(regAddr);
+                Wire2.endTransmission();
+                Wire2.beginTransmission(devAddr);
+                Wire2.requestFrom(devAddr, (uint8_t)(length * 2)); // length=words, this wants bytes
 
                 bool msb = true; // starts with MSB, then LSB
-                for (; Wire1.available() && count < length && (timeout == 0 || millis() - t1 < timeout);) {
+                for (; Wire2.available() && count < length && (timeout == 0 || millis() - t1 < timeout);) {
                     if (msb) {
                         // first byte is bits 15-8 (MSb=15)
-                        data[count] = Wire1.receive() << 8;
+                        data[count] = Wire2.receive() << 8;
                     } else {
                         // second byte is bits 7-0 (LSb=0)
-                        data[count] |= Wire1.receive();
+                        data[count] |= Wire2.receive();
                         #ifdef I2CDEV_SERIAL_DEBUG
                             Serial.print(data[count], HEX);
                             if (count + 1 < length) Serial.print(" ");
@@ -369,30 +369,30 @@ int8_t I2Cdev::readWords(uint8_t devAddr, uint8_t regAddr, uint8_t length, uint1
                     msb = !msb;
                 }
 
-                Wire1.endTransmission();
+                Wire2.endTransmission();
             }
         #elif (ARDUINO == 100)
-            // Arduino v1.0.0, Wire1 library
+            // Arduino v1.0.0, Wire2 library
             // Adds standardized write() and read() stream methods instead of send() and receive()
 
             // I2C/TWI subsystem uses internal buffer that breaks with large data requests
             // so if user requests more than BUFFER_LENGTH bytes, we have to do it in
             // smaller chunks instead of all at once
             for (uint8_t k = 0; k < length * 2; k += min(length * 2, BUFFER_LENGTH)) {
-                Wire1.beginTransmission(devAddr);
-                Wire1.write(regAddr);
-                Wire1.endTransmission();
-                Wire1.beginTransmission(devAddr);
-                Wire1.requestFrom(devAddr, (uint8_t)(length * 2)); // length=words, this wants bytes
+                Wire2.beginTransmission(devAddr);
+                Wire2.write(regAddr);
+                Wire2.endTransmission();
+                Wire2.beginTransmission(devAddr);
+                Wire2.requestFrom(devAddr, (uint8_t)(length * 2)); // length=words, this wants bytes
 
                 bool msb = true; // starts with MSB, then LSB
-                for (; Wire1.available() && count < length && (timeout == 0 || millis() - t1 < timeout);) {
+                for (; Wire2.available() && count < length && (timeout == 0 || millis() - t1 < timeout);) {
                     if (msb) {
                         // first byte is bits 15-8 (MSb=15)
-                        data[count] = Wire1.read() << 8;
+                        data[count] = Wire2.read() << 8;
                     } else {
                         // second byte is bits 7-0 (LSb=0)
-                        data[count] |= Wire1.read();
+                        data[count] |= Wire2.read();
                         #ifdef I2CDEV_SERIAL_DEBUG
                             Serial.print(data[count], HEX);
                             if (count + 1 < length) Serial.print(" ");
@@ -402,30 +402,30 @@ int8_t I2Cdev::readWords(uint8_t devAddr, uint8_t regAddr, uint8_t length, uint1
                     msb = !msb;
                 }
 
-                Wire1.endTransmission();
+                Wire2.endTransmission();
             }
         #elif (ARDUINO > 100)
-            // Arduino v1.0.1+, Wire1 library
+            // Arduino v1.0.1+, Wire2 library
             // Adds official support for repeated start condition, yay!
 
             // I2C/TWI subsystem uses internal buffer that breaks with large data requests
             // so if user requests more than BUFFER_LENGTH bytes, we have to do it in
             // smaller chunks instead of all at once
             for (uint8_t k = 0; k < length * 2; k += min(length * 2, BUFFER_LENGTH)) {
-                Wire1.beginTransmission(devAddr);
-                Wire1.write(regAddr);
-                Wire1.endTransmission();
-                Wire1.beginTransmission(devAddr);
-                Wire1.requestFrom(devAddr, (uint8_t)(length * 2)); // length=words, this wants bytes
+                Wire2.beginTransmission(devAddr);
+                Wire2.write(regAddr);
+                Wire2.endTransmission();
+                Wire2.beginTransmission(devAddr);
+                Wire2.requestFrom(devAddr, (uint8_t)(length * 2)); // length=words, this wants bytes
 
                 bool msb = true; // starts with MSB, then LSB
-                for (; Wire1.available() && count < length && (timeout == 0 || millis() - t1 < timeout);) {
+                for (; Wire2.available() && count < length && (timeout == 0 || millis() - t1 < timeout);) {
                     if (msb) {
                         // first byte is bits 15-8 (MSb=15)
-                        data[count] = Wire1.read() << 8;
+                        data[count] = Wire2.read() << 8;
                     } else {
                         // second byte is bits 7-0 (LSb=0)
-                        data[count] |= Wire1.read();
+                        data[count] |= Wire2.read();
                         #ifdef I2CDEV_SERIAL_DEBUG
                             Serial.print(data[count], HEX);
                             if (count + 1 < length) Serial.print(" ");
@@ -435,7 +435,7 @@ int8_t I2Cdev::readWords(uint8_t devAddr, uint8_t regAddr, uint8_t length, uint1
                     msb = !msb;
                 }
 
-                Wire1.endTransmission();
+                Wire2.endTransmission();
             }
         #endif
 
@@ -592,11 +592,11 @@ bool I2Cdev::writeBytes(uint8_t devAddr, uint8_t regAddr, uint8_t length, uint8_
     #endif
     uint8_t status = 0;
     #if ((I2CDEV_IMPLEMENTATION == I2CDEV_ARDUINO_WIRE && ARDUINO < 100) || I2CDEV_IMPLEMENTATION == I2CDEV_BUILTIN_NBWIRE)
-        Wire1.beginTransmission(devAddr);
-        Wire1.send((uint8_t) regAddr); // send address
+        Wire2.beginTransmission(devAddr);
+        Wire2.send((uint8_t) regAddr); // send address
     #elif (I2CDEV_IMPLEMENTATION == I2CDEV_ARDUINO_WIRE && ARDUINO >= 100)
-        Wire1.beginTransmission(devAddr);
-        Wire1.write((uint8_t) regAddr); // send address
+        Wire2.beginTransmission(devAddr);
+        Wire2.write((uint8_t) regAddr); // send address
     #elif (I2CDEV_IMPLEMENTATION == I2CDEV_BUILTIN_FASTWIRE)
         Fastwire::beginTransmission(devAddr);
         Fastwire::write(regAddr);
@@ -607,17 +607,17 @@ bool I2Cdev::writeBytes(uint8_t devAddr, uint8_t regAddr, uint8_t length, uint8_
             if (i + 1 < length) Serial.print(" ");
         #endif
         #if ((I2CDEV_IMPLEMENTATION == I2CDEV_ARDUINO_WIRE && ARDUINO < 100) || I2CDEV_IMPLEMENTATION == I2CDEV_BUILTIN_NBWIRE)
-            Wire1.send((uint8_t) data[i]);
+            Wire2.send((uint8_t) data[i]);
         #elif (I2CDEV_IMPLEMENTATION == I2CDEV_ARDUINO_WIRE && ARDUINO >= 100)
-            Wire1.write((uint8_t) data[i]);
+            Wire2.write((uint8_t) data[i]);
         #elif (I2CDEV_IMPLEMENTATION == I2CDEV_BUILTIN_FASTWIRE)
             Fastwire::write((uint8_t) data[i]);
         #endif
     }
     #if ((I2CDEV_IMPLEMENTATION == I2CDEV_ARDUINO_WIRE && ARDUINO < 100) || I2CDEV_IMPLEMENTATION == I2CDEV_BUILTIN_NBWIRE)
-        Wire1.endTransmission();
+        Wire2.endTransmission();
     #elif (I2CDEV_IMPLEMENTATION == I2CDEV_ARDUINO_WIRE && ARDUINO >= 100)
-        status = Wire1.endTransmission();
+        status = Wire2.endTransmission();
     #elif (I2CDEV_IMPLEMENTATION == I2CDEV_BUILTIN_FASTWIRE)
         Fastwire::stop();
         //status = Fastwire::endTransmission();
@@ -647,11 +647,11 @@ bool I2Cdev::writeWords(uint8_t devAddr, uint8_t regAddr, uint8_t length, uint16
     #endif
     uint8_t status = 0;
     #if ((I2CDEV_IMPLEMENTATION == I2CDEV_ARDUINO_WIRE && ARDUINO < 100) || I2CDEV_IMPLEMENTATION == I2CDEV_BUILTIN_NBWIRE)
-        Wire1.beginTransmission(devAddr);
-        Wire1.send(regAddr); // send address
+        Wire2.beginTransmission(devAddr);
+        Wire2.send(regAddr); // send address
     #elif (I2CDEV_IMPLEMENTATION == I2CDEV_ARDUINO_WIRE && ARDUINO >= 100)
-        Wire1.beginTransmission(devAddr);
-        Wire1.write(regAddr); // send address
+        Wire2.beginTransmission(devAddr);
+        Wire2.write(regAddr); // send address
     #elif (I2CDEV_IMPLEMENTATION == I2CDEV_BUILTIN_FASTWIRE)
         Fastwire::beginTransmission(devAddr);
         Fastwire::write(regAddr);
@@ -662,11 +662,11 @@ bool I2Cdev::writeWords(uint8_t devAddr, uint8_t regAddr, uint8_t length, uint16
             if (i + 1 < length) Serial.print(" ");
         #endif
         #if ((I2CDEV_IMPLEMENTATION == I2CDEV_ARDUINO_WIRE && ARDUINO < 100) || I2CDEV_IMPLEMENTATION == I2CDEV_BUILTIN_NBWIRE)
-            Wire1.send((uint8_t)(data[i] >> 8));     // send MSB
-            Wire1.send((uint8_t)data[i++]);          // send LSB
+            Wire2.send((uint8_t)(data[i] >> 8));     // send MSB
+            Wire2.send((uint8_t)data[i++]);          // send LSB
         #elif (I2CDEV_IMPLEMENTATION == I2CDEV_ARDUINO_WIRE && ARDUINO >= 100)
-            Wire1.write((uint8_t)(data[i] >> 8));    // send MSB
-            Wire1.write((uint8_t)data[i++]);         // send LSB
+            Wire2.write((uint8_t)(data[i] >> 8));    // send MSB
+            Wire2.write((uint8_t)data[i++]);         // send LSB
         #elif (I2CDEV_IMPLEMENTATION == I2CDEV_BUILTIN_FASTWIRE)
             Fastwire::write((uint8_t)(data[i] >> 8));       // send MSB
             status = Fastwire::write((uint8_t)data[i++]);   // send LSB
@@ -674,9 +674,9 @@ bool I2Cdev::writeWords(uint8_t devAddr, uint8_t regAddr, uint8_t length, uint16
         #endif
     }
     #if ((I2CDEV_IMPLEMENTATION == I2CDEV_ARDUINO_WIRE && ARDUINO < 100) || I2CDEV_IMPLEMENTATION == I2CDEV_BUILTIN_NBWIRE)
-        Wire1.endTransmission();
+        Wire2.endTransmission();
     #elif (I2CDEV_IMPLEMENTATION == I2CDEV_ARDUINO_WIRE && ARDUINO >= 100)
-        status = Wire1.endTransmission();
+        status = Wire2.endTransmission();
     #elif (I2CDEV_IMPLEMENTATION == I2CDEV_BUILTIN_FASTWIRE)
         Fastwire::stop();
         //status = Fastwire::endTransmission();
@@ -701,7 +701,7 @@ uint16_t I2Cdev::readTimeout = I2CDEV_DEFAULT_READ_TIMEOUT;
     //////////////////////
 
     /*
-    FastWire1
+    FastWire2
     - 0.24 added stop
     - 0.23 added reset
 
@@ -741,8 +741,8 @@ uint16_t I2Cdev::readTimeout = I2CDEV_DEFAULT_READ_TIMEOUT;
     }
 
     // added by Jeff Rowberg 2013-05-07:
-    // Arduino Wire1-style "beginTransmission" function
-    // (takes 7-bit device address like the Wire1 method, NOT 8-bit: 0x68, not 0xD0/0xD1)
+    // Arduino Wire2-style "beginTransmission" function
+    // (takes 7-bit device address like the Wire2 method, NOT 8-bit: 0x68, not 0xD0/0xD1)
     byte Fastwire::beginTransmission(byte device) {
         byte twst, retry;
         retry = 2;
@@ -890,7 +890,7 @@ uint16_t I2Cdev::readTimeout = I2CDEV_DEFAULT_READ_TIMEOUT;
 #endif
 
 #if I2CDEV_IMPLEMENTATION == I2CDEV_BUILTIN_NBWIRE
-    // NBWire1 implementation based heavily on code by Gene Knight <Gene@Telobot.com>
+    // NBWire2 implementation based heavily on code by Gene Knight <Gene@Telobot.com>
     // Originally posted on the Arduino forum at http://arduino.cc/forum/index.php/topic,70705.0.html
     // Originally offered to the i2cdevlib project at http://arduino.cc/forum/index.php/topic,68210.30.html
 
@@ -899,7 +899,7 @@ uint16_t I2Cdev::readTimeout = I2CDEV_DEFAULT_READ_TIMEOUT;
 
     Offhand, the only funky part that I can think of is in nbrequestFrom, where the buffer
     length and index are set *before* the data is actually read. The problem is that these
-    are variables local to the TwoWire1 object, and by the time we actually have read the
+    are variables local to the TwoWire2 object, and by the time we actually have read the
     data, and know what the length actually is, we have no simple access to the object's
     variables. The actual bytes read *is* given to the callback function, though.
 
@@ -927,18 +927,18 @@ uint16_t I2Cdev::readTimeout = I2CDEV_DEFAULT_READ_TIMEOUT;
 
     */
 
-    uint8_t TwoWire1::rxBuffer[NBWIRE_BUFFER_LENGTH];
-    uint8_t TwoWire1::rxBufferIndex = 0;
-    uint8_t TwoWire1::rxBufferLength = 0;
+    uint8_t TwoWire2::rxBuffer[NBWIRE_BUFFER_LENGTH];
+    uint8_t TwoWire2::rxBufferIndex = 0;
+    uint8_t TwoWire2::rxBufferLength = 0;
 
-    uint8_t TwoWire1::txAddress = 0;
-    uint8_t TwoWire1::txBuffer[NBWIRE_BUFFER_LENGTH];
-    uint8_t TwoWire1::txBufferIndex = 0;
-    uint8_t TwoWire1::txBufferLength = 0;
+    uint8_t TwoWire2::txAddress = 0;
+    uint8_t TwoWire2::txBuffer[NBWIRE_BUFFER_LENGTH];
+    uint8_t TwoWire2::txBufferIndex = 0;
+    uint8_t TwoWire2::txBufferLength = 0;
 
-    //uint8_t TwoWire1::transmitting = 0;
-    void (*TwoWire1::user_onRequest)(void);
-    void (*TwoWire1::user_onReceive)(int);
+    //uint8_t TwoWire2::transmitting = 0;
+    void (*TwoWire2::user_onRequest)(void);
+    void (*TwoWire2::user_onReceive)(int);
 
     static volatile uint8_t twi_transmitting;
     static volatile uint8_t twi_state;
@@ -1328,9 +1328,9 @@ uint16_t I2Cdev::readTimeout = I2CDEV_DEFAULT_READ_TIMEOUT;
         if (fNextInterruptFunction) return fNextInterruptFunction();
     }
 
-    TwoWire1::TwoWire1() { }
+    TwoWire2::TwoWire2() { }
 
-    void TwoWire1::begin(void) {
+    void TwoWire2::begin(void) {
         rxBufferIndex = 0;
         rxBufferLength = 0;
 
@@ -1340,7 +1340,7 @@ uint16_t I2Cdev::readTimeout = I2CDEV_DEFAULT_READ_TIMEOUT;
         twi_init();
     }
 
-    void TwoWire1::beginTransmission(uint8_t address) {
+    void TwoWire2::beginTransmission(uint8_t address) {
         //beginTransmission((uint8_t)address);
 
         // indicate that we are transmitting
@@ -1354,7 +1354,7 @@ uint16_t I2Cdev::readTimeout = I2CDEV_DEFAULT_READ_TIMEOUT;
         txBufferLength = 0;
     }
 
-    uint8_t TwoWire1::endTransmission(uint16_t timeout) {
+    uint8_t TwoWire2::endTransmission(uint16_t timeout) {
         // transmit buffer (blocking)
         //int8_t ret =
         twi_cbendTransmissionDone = NULL;
@@ -1370,13 +1370,13 @@ uint16_t I2Cdev::readTimeout = I2CDEV_DEFAULT_READ_TIMEOUT;
         return ret;
     }
 
-    void TwoWire1::nbendTransmission(void (*function)(int)) {
+    void TwoWire2::nbendTransmission(void (*function)(int)) {
         twi_cbendTransmissionDone = function;
         twi_writeTo(txAddress, txBuffer, txBufferLength, 1);
         return;
     }
 
-    void TwoWire1::send(uint8_t data) {
+    void TwoWire2::send(uint8_t data) {
         if (twi_transmitting) {
             // in master transmitter mode
             // don't bother if buffer is full
@@ -1397,7 +1397,7 @@ uint16_t I2Cdev::readTimeout = I2CDEV_DEFAULT_READ_TIMEOUT;
         }
     }
 
-    uint8_t TwoWire1::receive(void) {
+    uint8_t TwoWire2::receive(void) {
         // default to returning null char
         // for people using with char strings
         uint8_t value = 0;
@@ -1411,7 +1411,7 @@ uint16_t I2Cdev::readTimeout = I2CDEV_DEFAULT_READ_TIMEOUT;
         return value;
     }
 
-    uint8_t TwoWire1::requestFrom(uint8_t address, int quantity, uint16_t timeout) {
+    uint8_t TwoWire2::requestFrom(uint8_t address, int quantity, uint16_t timeout) {
         // clamp to buffer length
         if (quantity > NBWIRE_BUFFER_LENGTH) {
             quantity = NBWIRE_BUFFER_LENGTH;
@@ -1429,7 +1429,7 @@ uint16_t I2Cdev::readTimeout = I2CDEV_DEFAULT_READ_TIMEOUT;
         return read;
     }
 
-    void TwoWire1::nbrequestFrom(uint8_t address, int quantity, void (*function)(int)) {
+    void TwoWire2::nbrequestFrom(uint8_t address, int quantity, void (*function)(int)) {
         // clamp to buffer length
         if (quantity > NBWIRE_BUFFER_LENGTH) {
             quantity = NBWIRE_BUFFER_LENGTH;
@@ -1450,7 +1450,7 @@ uint16_t I2Cdev::readTimeout = I2CDEV_DEFAULT_READ_TIMEOUT;
         return; //read;
     }
 
-    uint8_t TwoWire1::available(void) {
+    uint8_t TwoWire2::available(void) {
         return rxBufferLength - rxBufferIndex;
     }
 
