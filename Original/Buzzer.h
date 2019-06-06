@@ -10,11 +10,13 @@
 class Buzzer {
 	public:
 		Buzzer(uint8_t);
-		void set(uint8_t, uint16_t);
-		void beep(bool);
+		void set(uint8_t = 88, uint16_t = 0, bool = true);
+		void beep(bool = false);
 	private:
 		uint8_t PORT;
 
+		uint16_t crtNote;
+		uint16_t prvNote;
 		uint64_t timeStart;
 		uint64_t period;
 
