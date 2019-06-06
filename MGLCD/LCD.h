@@ -15,10 +15,10 @@
 
 class LCD {
 	public:
-		LCD(uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint32_t, uint8_t, uint8_t);
+		LCD(uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint32_t, uint8_t, Angle, uint8_t);
 		void run(Angle, line_t, bool, bool, bool, bool, comc_t,
 			uint8_t, uint16_t*, Color*, double, cam_t,
-			vectorRT_t, uint8_t, uint16_t*, uint16_t, bool,
+			vectorRT_t, uint8_t, uint16_t*,
 			uint16_t, bool, uint16_t, bool, Dist,
 			uint16_t, uint16_t, bool*, Dist, Dist);
 		void run4IR(uint8_t, uint16_t*, uint16_t*, double*);
@@ -32,6 +32,8 @@ class LCD {
 		uint8_t MAX_CP;
 		uint8_t MAX_PAGE;
 		MGLCD_AQM1248A_SoftwareSPI *lcd;
+
+		Angle PLUS_T;
 
 		uint8_t QTY_LINE;
 		double *SIN_LINE;

@@ -1,7 +1,7 @@
 #include "LCD.h"
 
 LCD::LCD(uint8_t P_REDRAW, uint8_t P_SCK, uint8_t P_MOSI, uint8_t P_CS, uint8_t P_DI,
-	uint32_t WAIT, uint8_t MAX_CP, uint8_t QTY_LINE) {
+	uint32_t WAIT, uint8_t MAX_CP, Angle PLUS_T, uint8_t QTY_LINE) {
 	// copy
 	this->P_REDRAW = P_REDRAW;
 	this->MAX_CP = MAX_CP;
@@ -11,8 +11,10 @@ LCD::LCD(uint8_t P_REDRAW, uint8_t P_SCK, uint8_t P_MOSI, uint8_t P_CS, uint8_t 
 	SIN_LINE = new double[QTY_LINE];
 	COS_LINE = new double[QTY_LINE];
 
+	this->PLUS_T = PLUS_T;
+
 	for(uint8_t numLine = 0; numLine < QTY_LINE; numLine ++) {
-		Angle angleLine = numLine * 360.0 / QTY_LINE + 90;
+		Angle angleLine = numLine * 360.0 / QTY_LINE - 90 + PLUS_T;
 		SIN_LINE[numLine] = sin(angleLine);
 		COS_LINE[numLine] = cos(angleLine);
 	}
@@ -43,7 +45,7 @@ void LCD::write(String data, uint8_t XCoord, uint8_t YCoord) {
 }
 
 void LCD::drawMeter(Angle theta, uint8_t XCoord, bool canDrawCircle) {
-	Angle convertedTheta = theta + 180;
+	Angle convertedTheta = theta + PLUS_T;
 	lcd->Locate((theta < 0 && bool(theta) ? 2 : 3) + XCoord, convertedTheta.isDown(90) ? 2 : 3);
 	lcd->print(str(theta));
 	if(canDrawCircle) {
