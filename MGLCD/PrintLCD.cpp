@@ -2,7 +2,7 @@
 
 void LCD::run(Angle gyro, line_t line, bool canUseCam, bool canUseGyro, bool isFW, bool canUseComc, comc_t fellow,
 		uint8_t QTY_LINE, uint16_t *valLine, Color *stateLine, double valIna219, cam_t goal,
-		vectorRT_t ball, uint8_t QTY_IR, uint16_t *valIR, uint16_t valInAir, bool isBallInAir,
+		vectorRT_t ball, uint8_t QTY_IR, uint16_t *valIR,
 		uint16_t valCatch, bool catchingBall, uint16_t valBF, bool isBallForward, Dist distBall,
 		uint16_t valFrontPSD, uint16_t valBackPSD, bool *enemyStands, Dist distGoalPSD, Dist distGoal) {
 	redraw();
@@ -37,8 +37,6 @@ void LCD::run(Angle gyro, line_t line, bool canUseCam, bool canUseGyro, bool isF
 				for(uint8_t numIR = 0; numIR < QTY_IR; numIR ++) {
 					write(valIR[numIR], 9 + (numIR % 3) * 4, floor(numIR / 3.0));
 				}
-				write("Up:"+str(valInAir), 13, 5);
-				write((isBallInAir ? OOO : XXX), 19, 5);
 				break;
 			case 3:
 				write("Catch:"+str(valCatch), 0, 0);
