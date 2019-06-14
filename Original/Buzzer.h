@@ -12,6 +12,7 @@ class Buzzer {
 		Buzzer(uint8_t);
 		void set(uint8_t = 88, uint16_t = 0, bool = true);
 		void beep(bool = false);
+		uint8_t noteMap(double, double, double);
 	private:
 		uint8_t PORT;
 

@@ -20,6 +20,9 @@ inline double map(double x, double in_min, double in_max, double out_min, double
 	return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 inline double absConstrain(double x, double a) { return constrain(x, - abs(a), abs(a)); }
+inline double constrainMap(double x, double from_min, double from_max, double to_min, double to_max) {
+	return constrain(map(x, from_min, from_max, to_min, to_max), to_min, to_max);
+}
 inline double toDegrees(double theta) { return theta * 180.0 / M_PI; }
 inline double toRadians(double deg) { return deg * M_PI / 180.0; }
 

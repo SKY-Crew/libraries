@@ -32,3 +32,7 @@ void Buzzer::beep(bool startBeep) {
 	if(startBeep) { timeStart = millis(); }
 	analogWrite(PORT, millis() - timeStart < period ? LOUDNESS : 0);
 }
+
+uint8_t Buzzer::noteMap(double val, double from_min, double from_max) {
+	return constrainMap(val, from_min, from_max, 0, QTY_NOTE - 1);
+}
