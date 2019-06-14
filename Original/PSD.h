@@ -15,7 +15,7 @@ class PSD {
 		bool getBool(bool = true);
 		double getVal(bool = true);
 	private:
-		AdvWire wPSD;
+		uint8_t PORT;
 
 		double CHANGE_RATE;
 		uint16_t THRE_IS_CLOSE;
