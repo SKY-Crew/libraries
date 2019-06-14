@@ -71,6 +71,6 @@ bool Cam::getCanUse() {
 	return !digitalRead(P_ONOFF);
 }
 
-void Cam::send(double gyro) {
-	sCam.get()->write((uint8_t) map(gyro, -180, 180, 0, 256));
+void Cam::send(double gyro, bool isFW) {
+	sCam.get()->write((uint8_t) map(gyro, -180, 180, 0, 127) + (isFW << 7));
 }

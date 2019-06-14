@@ -27,7 +27,7 @@ class Cam {
 		cam_t get(bool);
 		int16_t multiRotGoal(Angle);
 		bool getCanUse();
-		void send(double);
+		void send(double, bool);
 	private:
 		AdvSerial sCam;
 
