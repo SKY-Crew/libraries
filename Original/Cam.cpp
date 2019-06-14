@@ -10,7 +10,6 @@ Cam::Cam(uint8_t P_SERIAL, uint8_t P_ONOFF,
 
 	// init
 	sCam.get()->begin(9600);
-
 	pinMode(P_ONOFF, INPUT);
 }
 
@@ -24,12 +23,12 @@ cam_t Cam::get(bool isInAir) {
 			}
 
 			if(val[0] >= 0) { // rotOpp
-				Angle crtRot = extractBit(val[0], 0, 5) >= 59 || extractBit(val[0], 0, 5) <= 0 ? Angle(false) : 
+				Angle crtRot = extractBit(val[0], 0, 5) >= 59 || extractBit(val[0], 0, 5) <= 0 ? Angle(false) :
 						map(extractBit(val[0], 0, 5), 0, 60, 90, -90);
 				goal.rotOpp = bool(goal.rotOpp) ? filterAngle(crtRot, goal.rotOpp, 0.1) : crtRot;
 			}
 			if(val[1] >= 0) { // rotOwn
-				goal.rotOwn = extractBit(val[1], 0, 5) > 60 ? Angle(false) : 
+				goal.rotOwn = extractBit(val[1], 0, 5) > 60 ? Angle(false) :
 						map(extractBit(val[1], 0, 5), 0, 60, 90, -90) + 180;
 			}
 			if(val[2] >= 0) { // distOwn
