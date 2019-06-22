@@ -88,10 +88,7 @@ vectorRT_t Ball::get() {
 	}
 
 	// 距離計算
-	for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
-		vRT.r += val[numBall];
-	}
-	vRT.r /= (double) QTY;
+	vRT.r = mean(val, QTY);
 	// 弱反応切り捨て
 	bool isAllWeak = true;
 	for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
