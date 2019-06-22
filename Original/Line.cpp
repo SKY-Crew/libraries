@@ -22,7 +22,7 @@ Line::Line(bool CAN_LEAVE_LINE, uint8_t QTY, uint8_t *PORT, uint8_t MAX_CIIA,
 	crtState = new Color[QTY];
 }
 
-line_t Line::get(bool isFW, Angle gyro, Angle diffGyro, bool isInCorner) {
+line_t Line::get(Angle gyro, Angle diffGyro) {
 	int qtyILW = 0;
 	int qtyILB = 0;
 	for(int numLine = 0; numLine < QTY; numLine ++) {
@@ -39,13 +39,13 @@ line_t Line::get(bool isFW, Angle gyro, Angle diffGyro, bool isInCorner) {
 
 	if(!CAN_LEAVE_LINE) {
 		// ライン無効
-		line = {false, false, false, false, false, false , false};
+		line = {false, false, false, false, false, false , false, false, 1};
 	}else if(qtyILB >= THRE_IS_IN_AIR) {
 		// 持ち上げられている
 		countIIA ++;
 		if(countIIA >= MAX_CIIA) {
 			countIIA = MAX_CIIA;
-			line = {false, false, false, true, false, false, false};
+			line = {false, false, false, true, false, false, false, false, 1};
 		}
 	}else if(qtyILW <= 1) {
 		// ライン上でない
@@ -53,10 +53,13 @@ line_t Line::get(bool isFW, Angle gyro, Angle diffGyro, bool isInCorner) {
 		line.isOutside = line.isHalfOut && bool(prvDI);
 		line.isWholeOut = line.isOutside;
 		line.dirInside = line.isOutside ? prvDI : false;
-		if(bool(gyro) && bool(line.dirInside)) {
+		if(bool(line.dirInside)) {
 			line.dirInside += diffGyro;
 		}
 		line.isInAir = false;
+		line.isFront = false;
+		line.isBack = false;
+		line.insideRate = line.isOutside ? 0 : 1;
 	}else {
 		// ライン上
 		countIIA = 0;
@@ -105,23 +108,11 @@ line_t Line::get(bool isFW, Angle gyro, Angle diffGyro, bool isInCorner) {
 		line.isWholeOut = false;
 		line.isInAir = false;
 
-		// 後ろのライン・前方の角にいるか
 		Angle absoluteDI = line.dirInside - gyro;
 		line.isFront = absoluteDI.isDown(55);
-		if(!bool(gyro)) {
-			line.isOutside |= line.isHalfOut;
-			line.canPause = true;
-		}else {
-			line.isOutside |= absoluteDI.isUp(55) || line.isFront;
-			line.canPause = line.isHalfOut;
-		}
-		if(isInCorner) {
-			line.isOutside |= line.isHalfOut;
-			line.canPause = true;
-		}
-		if(!isFW) {
-			line.isOutside = true;
-		}
+		line.isBack = absoluteDI.isUp(55);
+
+		line.insideRate = (double)maxIntvL / QTY;
 	}
 
 	prvDI = line.dirInside;
@@ -134,6 +125,23 @@ line_t Line::get(bool isFW, Angle gyro, Angle diffGyro, bool isInCorner) {
 		Serial.println(str("]"));
 	}
 
+	return line;
+}
+
+line_t Line::modify(bool isFW, Angle gyro, bool isInCorner, bool isGoalClose) {
+	if(bool(line.dirInside)) {
+		// 後ろのライン・前方の角にいるか
+		if(!bool(gyro) || isGoalClose || isInCorner) {
+			line.isOutside |= line.isHalfOut;
+			line.canPause = true;
+		}else {
+			line.isOutside |= line.isFront || line.isBack;
+			line.canPause = line.isHalfOut;
+		}
+		if(!isFW) {
+			line.isOutside = true;
+		}
+	}
 	return line;
 }
 

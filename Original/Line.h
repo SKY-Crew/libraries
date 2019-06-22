@@ -15,6 +15,8 @@ typedef struct {
 	Angle dirInside;
 	bool canPause;
 	bool isFront;
+	bool isBack;
+	double insideRate;
 } line_t;
 
 enum Color {
@@ -25,7 +27,8 @@ class Line {
 	public:
 		Line(bool, uint8_t, uint8_t*, uint8_t,
 			uint16_t, uint16_t, uint8_t, double);
-		line_t get(bool, Angle, Angle, bool);
+		line_t get(Angle, Angle);
+		line_t modify(bool, Angle, bool, bool);
 		uint16_t *getVal();
 		Color *getState();
 		uint8_t getQTY();
