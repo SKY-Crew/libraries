@@ -9,7 +9,7 @@ Cam::Cam(uint8_t P_SERIAL, uint8_t P_ONOFF,
 	this->INTERCEPT_RG = INTERCEPT_RG;
 
 	// init
-	sCam.get()->begin(9600);
+	sCam.get()->begin(38400);
 	pinMode(P_ONOFF, INPUT);
 }
 
@@ -23,19 +23,15 @@ cam_t Cam::get(bool isInAir) {
 			}
 
 			if(val[0] >= 0) { // rotOpp
-				Angle crtRot = extractBit(val[0], 0, 5) >= 59 || extractBit(val[0], 0, 5) <= 0
+				crtRot = extractBit(val[0], 0, 5) >= 59 || extractBit(val[0], 0, 5) <= 0
 						? Angle(false) : map(extractBit(val[0], 0, 5), 0, 60, 90, -90);
-				goal.rotOpp = bool(goal.rotOpp) ? filterAngle(crtRot, goal.rotOpp, 0.1) : crtRot;
 			}
 			if(val[1] >= 0) { // rotOwn
 				goal.rotOwn = extractBit(val[1], 0, 5) > 60 ?
 						Angle(false) : map(extractBit(val[1], 0, 5), 0, 60, 90, -90) + 180;
 			}
 			if(val[2] >= 0) { // distOwn
-				double crtDist = extractBit(val[2], 0, 5);
-				goal.distOwn =
-						crtDist == 0 ? goal.distOwn
-						: filter(crtDist, goal.distOwn, 0.9);
+				crtDist = extractBit(val[2], 0, 5);
 			}
 			if(val[3] >= 0) { // others
 				goal.isOppWide = extractBit(val[3], 0, 0) == 1;
@@ -57,6 +53,8 @@ cam_t Cam::get(bool isInAir) {
 							+str("\tposOwn:")+str(goal.sideOwn * goal.diffOwn)
 							+str("\tisInCorner:")+str(goal.isInCorner)); }
 		}
+		goal.rotOpp = bool(goal.rotOpp) ? filterAngle(crtRot, goal.rotOpp, 0.95) : crtRot;
+		goal.distOwn = crtDist != 0 ? filter(crtDist, goal.distOwn, 0.9) : goal.distOwn;
 	}else {
 		goal = {0, true, 0, 64, CENTER, NONE, CENTER};
 	}

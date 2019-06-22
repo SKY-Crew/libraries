@@ -35,6 +35,9 @@ class Cam {
 
 		cam_t goal;
 
+		Angle crtRot;
+		double crtDist;
+
 		uint16_t SLOPE_RG;
 		uint16_t INTERCEPT_RG;
 };
