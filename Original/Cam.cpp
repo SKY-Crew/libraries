@@ -53,7 +53,7 @@ cam_t Cam::get(bool isInAir) {
 							+str("\tposOwn:")+str(goal.sideOwn * goal.diffOwn)
 							+str("\tisInCorner:")+str(goal.isInCorner)); }
 		}
-		goal.rotOpp = bool(goal.rotOpp) ? filterAngle(crtRot, goal.rotOpp, 0.95) : crtRot;
+		goal.rotOpp = bool(goal.rotOpp) && bool(crtRot) ? filterAngle(crtRot, goal.rotOpp, 0.95) : crtRot;
 		goal.distOwn = crtDist != 0 ? filter(crtDist, goal.distOwn, 0.9) : goal.distOwn;
 	}else {
 		goal = {0, true, 0, 64, CENTER, NONE, CENTER};
