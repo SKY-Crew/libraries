@@ -7,7 +7,7 @@ void Gyro::_gyro_initialize() {
 }
 
 Gyro::Gyro(uint8_t P_WIRE, uint8_t PORT, uint8_t ONOFF_PIN, uint8_t RESET_PIN,
-  uint8_t SIZE_POINT, double **POINT, double **ROT, double *Kd,
+  uint8_t SIZE_POINT, double *POINT, double *ROT, double Kd,
   uint8_t BROKEN_THRE, uint8_t STOP_FRAMES, uint8_t STAY_THRE) {
   // copy
   wGyro.set(P_WIRE);
@@ -15,11 +15,11 @@ Gyro::Gyro(uint8_t P_WIRE, uint8_t PORT, uint8_t ONOFF_PIN, uint8_t RESET_PIN,
   this->ONOFF_PIN = ONOFF_PIN;
   this->RESET_PIN = RESET_PIN;
   this->SIZE_POINT = SIZE_POINT;
-  this->POINT = new double*[SIZE_POINT];
+  this->POINT = new double[SIZE_POINT];
   copyArray(this->POINT, POINT, SIZE_POINT);
-  this->ROT = new double*[SIZE_POINT];
+  this->ROT = new double[SIZE_POINT];
   copyArray(this->ROT, ROT, SIZE_POINT);
-  copyArray(this->Kd, Kd, 2);
+  this->Kd = Kd;
 
   this->BROKEN_THRE = BROKEN_THRE;
 
@@ -131,12 +131,12 @@ Angle Gyro::getDiff() {
   return crt - prv;
 }
 
-int16_t Gyro::multiRot(Angle origin, bool isOnLine) {
+int16_t Gyro::multiRot(Angle origin) {
   error[0] = absMinus(double(crt + origin), 1.5);
   error[1] = digitalRead(RESET_PIN) ? 0 : filter(double(getDiff()) * 10, error[1], 0.6);
   error[1] = absMinus(error[1], 1);
-  return polyLine(error[0], POINT[isOnLine ? 1 : 0], ROT[isOnLine ? 1 : 0], SIZE_POINT)
-      + error[1] * Kd[isOnLine ? 1 : 0];
+  return polyLine(error[0], POINT, ROT, SIZE_POINT)
+      + error[1] * Kd;
 }
 
 bool Gyro::getCanUse() {

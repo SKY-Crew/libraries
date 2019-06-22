@@ -14,10 +14,10 @@
 
 class Gyro {
   public:
-    Gyro(uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, double**, double**, double*, uint8_t, uint8_t, uint8_t);
+    Gyro(uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, double*, double*, double, uint8_t, uint8_t, uint8_t);
     Angle get();
     Angle getDiff();
-    int16_t multiRot(Angle, bool);
+    int16_t multiRot(Angle);
     bool getCanUse();
   private:
     void _gyro_initialize();
@@ -35,11 +35,11 @@ class Gyro {
     uint8_t ONOFF_PIN;
     uint8_t RESET_PIN;
     uint8_t SIZE_POINT;
-    double **POINT;
-    double **ROT;
+    double *POINT;
+    double *ROT;
 
     double error[2] = {0, 0}; // P, D
-    double Kd[2];
+    double Kd;
 
     Count stayCounter;
     // Count brokenCounter;
