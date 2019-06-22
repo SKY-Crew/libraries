@@ -23,17 +23,19 @@ cam_t Cam::get(bool isInAir) {
 			}
 
 			if(val[0] >= 0) { // rotOpp
-				Angle crtRot = extractBit(val[0], 0, 5) >= 59 || extractBit(val[0], 0, 5) <= 0 ? Angle(false) :
-						map(extractBit(val[0], 0, 5), 0, 60, 90, -90);
+				Angle crtRot = extractBit(val[0], 0, 5) >= 59 || extractBit(val[0], 0, 5) <= 0
+						? Angle(false) : map(extractBit(val[0], 0, 5), 0, 60, 90, -90);
 				goal.rotOpp = bool(goal.rotOpp) ? filterAngle(crtRot, goal.rotOpp, 0.1) : crtRot;
 			}
 			if(val[1] >= 0) { // rotOwn
-				goal.rotOwn = extractBit(val[1], 0, 5) > 60 ? Angle(false) :
-						map(extractBit(val[1], 0, 5), 0, 60, 90, -90) + 180;
+				goal.rotOwn = extractBit(val[1], 0, 5) > 60 ?
+						Angle(false) : map(extractBit(val[1], 0, 5), 0, 60, 90, -90) + 180;
 			}
 			if(val[2] >= 0) { // distOwn
-				double crtDist = extractBit(val[2], 0, 5); //* 0.8;
-				goal.distOwn = filter(crtDist, goal.distOwn, 0.9);
+				double crtDist = extractBit(val[2], 0, 5);
+				goal.distOwn =
+						crtDist == 0 ? goal.distOwn
+						: filter(crtDist, goal.distOwn, 0.9);
 			}
 			if(val[3] >= 0) { // others
 				goal.isOppWide = extractBit(val[3], 0, 0) == 1;
@@ -54,7 +56,6 @@ cam_t Cam::get(bool isInAir) {
 			trace(9) { Serial.println(str("isOppWide:")+str(goal.isOppWide)
 							+str("\tposOwn:")+str(goal.sideOwn * goal.diffOwn)
 							+str("\tisInCorner:")+str(goal.isInCorner)); }
-
 		}
 	}else {
 		goal = {0, true, 0, 64, CENTER, NONE, CENTER};
