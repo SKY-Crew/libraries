@@ -15,9 +15,9 @@ void LCD::run(Angle gyro, line_t line, bool canUseCam, bool canUseGyro, bool isF
 				drawMeter(line.dirInside, 8, false);
 				drawAngelRing(QTY_LINE, stateLine, 8);
 				write(str(advRound(valIna219, 1), 1), 17, 0);
-				write(canUseCam ? "cON" : "cOFF", 17, 1);
-				write(canUseGyro ? "gON" : "gOFF", 17, 2);
-				write(canUseComc ? "mON" : "mOFF", 17, 3);
+				write(canUseComc ? "mON" : "mOFF", 17, 1);
+				write(canUseCam ? "cON" : "cOFF", 17, 2);
+				write(canUseGyro ? "gON" : "gOFF", 17, 3);
 				write(fellow.exists ? fellow.isFW ? OOO+"FW" : OOO+"GK" : XXX+XXX+XXX, 17, 4);
 				write(isFW ? "FW" : "GK", 17, 5);
 				break;
