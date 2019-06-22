@@ -19,6 +19,17 @@ inline int8_t signum(double x) { return x > 0 ? 1 : x < 0 ? -1 : 0; }
 inline double map(double x, double in_min, double in_max, double out_min, double out_max) {
 	return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
+template<typename T> inline T sum(T *array, uint16_t size) {
+	T sum = 0;
+	for(int i = 0; i < size; i ++) {
+		sum += array[i];
+	}
+	return sum;
+}
+template<typename T> inline double mean(T *array, uint16_t size) {
+	return double(sum(array, size)) / size;
+}
+
 inline double absConstrain(double x, double a) { return constrain(x, - abs(a), abs(a)); }
 inline double constrainMap(double x, double from_min, double from_max, double to_min, double to_max) {
 	return constrain(map(x, from_min, from_max, to_min, to_max), to_min, to_max);
