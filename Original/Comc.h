@@ -13,7 +13,7 @@ typedef struct {
 	bool isFW;
 	double ball_r;
 	double distOwn;
-	bool allowBecomeFW;
+	bool allowChangeRole;
 	bool isInAir;
 } comc_t;
 
