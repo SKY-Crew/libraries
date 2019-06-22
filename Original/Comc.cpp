@@ -25,21 +25,21 @@ comc_t Comc::rcv(bool isFW) {
 	prvFellow = fellow;
 
 	trace(7) { Serial.println("Fellow:"+str(fellow.exists)+" "+str(fellow.isFW)
-				+" "+str(fellow.ball_r)+" "+str(fellow.allowBecomeFW)+" "+str(fellow.distOwn)); }
+				+" "+str(fellow.ball_r)+" "+str(fellow.allowChangeRole)+" "+str(fellow.distOwn)+" "+str(fellow.isInAir)); }
 
 	return fellow;
 }
 
-void Comc::snd(bool canRun, bool isFW, double ball_r, double distOwn, bool allowBecomeFW, bool isInAir) {
+void Comc::snd(bool canRun, bool isFW, double ball_r, double distOwn, bool allowChangeRole, bool isInAir) {
 	countSnd ++;
 	if(countSnd >= MAX_C_SND) {
 		sndWireless(canRun,
-				((isFW ? 1 : 0) << 6)
-				+ ((isInAir ? 1 : 0) << 5)
+				(isFW << 6)
+				+ (isInAir << 5)
 				+ (uint8_t) constrain(map(ball_r, 0, 512, 0, 32), 0, 31));
 		sndWireless(canRun,
 				(1 << 7)
-				+ ((allowBecomeFW ? 1 : 0) << 6)
+				+ (allowChangeRole << 6)
 				+ (uint8_t) constrain(distOwn, 0, 63));
 		countSnd = 0;
 	}
@@ -64,7 +64,7 @@ comc_t Comc::rcvWireless() {
 				rcvData.ball_r = map(extractBit(rcv, 0, 4), 0, 32, 0, 512);
 					break;
 				case 1:
-				rcvData.allowBecomeFW = extractBit(rcv, 6, 6) == 1;
+				rcvData.allowChangeRole = extractBit(rcv, 6, 6) == 1;
 				rcvData.distOwn = extractBit(rcv, 0, 5);
 					break;
 			}
