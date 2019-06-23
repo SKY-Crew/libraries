@@ -10,7 +10,7 @@
 
 class PSD {
 	public:
-		PSD(uint8_t, double, uint16_t, uint8_t);
+		PSD(uint8_t, double, uint16_t, uint8_t, uint8_t);
 		void get();
 		bool getBool(bool = true);
 		double getVal(bool = true);
@@ -22,8 +22,9 @@ class PSD {
 
 		double val;
 		double prv = 0;
+		Count cCannotSee;
 
-		Count cClose = 0;
+		Count cClose;
 };
 
 #endif

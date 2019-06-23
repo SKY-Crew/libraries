@@ -1,6 +1,6 @@
 #include "PSD.h"
 
-PSD::PSD(uint8_t PORT, double CHANGE_RATE, uint16_t THRE_IS_CLOSE, uint8_t MAX_CC) {
+PSD::PSD(uint8_t PORT, double CHANGE_RATE, uint16_t THRE_IS_CLOSE, uint8_t MAX_CCS, uint8_t MAX_CC) {
 	// copy
 	this->PORT = PORT;
 
@@ -8,11 +8,15 @@ PSD::PSD(uint8_t PORT, double CHANGE_RATE, uint16_t THRE_IS_CLOSE, uint8_t MAX_C
 	this->THRE_IS_CLOSE = THRE_IS_CLOSE;
 
 	// init
+	cCannotSee = Count(MAX_CCS, true);
 	cClose = Count(MAX_CC, false);
 }
 
 void PSD::get() {
-	val = filter(analogRead(PORT), prv, CHANGE_RATE);
+	val = analogRead(PORT);
+	cCannotSee.increase(val <= 2);
+	val = bool(cCannotSee) ? 0 : cCannotSee.compare(0) ? prv
+			: filter(analogRead(PORT), prv, CHANGE_RATE);
 	prv = val;
 
 	trace(6) { Serial.println("PSD:"+str(val)); }
