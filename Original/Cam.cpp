@@ -1,17 +1,10 @@
 #include "Cam.h"
 
 Cam::Cam(uint8_t P_SERIAL, uint8_t P_ONOFF,
-	uint16_t SLOPE_RG, uint16_t INTERCEPT_RG) {
+	uint8_t SIZE_POINT, double *POINT, double *ROT, double Kd) {
 	// copy
 	sCam.set(P_SERIAL);
 	this->P_ONOFF = P_ONOFF;
-	this->SLOPE_RG = SLOPE_RG;
-	this->INTERCEPT_RG = INTERCEPT_RG;
-
-	double Kd = 0.1; ////
-	uint8_t SIZE_POINT = 3;
-	double POINT[3] = {0, 5, 40};
-	double ROT[3] = {0, 10, 100};
 	pld.set(SIZE_POINT, POINT, ROT, Kd);
 
 	// init
@@ -67,8 +60,8 @@ cam_t Cam::get(bool isInAir) {
 	return goal;
 }
 
-	return double(rotGoal) * SLOPE_RG + signum(rotGoal) * INTERCEPT_RG;
 int16_t Cam::calRot(Angle crt) {
+	return pld.cal(crt);
 }
 
 bool Cam::getCanUse() {

@@ -24,7 +24,7 @@ typedef struct {
 
 class Cam {
 	public:
-		Cam(uint8_t, uint8_t, uint16_t, uint16_t);
+		Cam(uint8_t, uint8_t, uint8_t, double*, double*, double);
 		cam_t get(bool);
 		int16_t calRot(Angle);
 		bool getCanUse();
@@ -38,9 +38,6 @@ class Cam {
 
 		Angle crtRot;
 		double crtDist;
-
-		uint16_t SLOPE_RG;
-		uint16_t INTERCEPT_RG;
 
 		PlD pld;
 };
