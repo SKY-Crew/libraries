@@ -14,12 +14,8 @@ Gyro::Gyro(uint8_t P_WIRE, uint8_t PORT, uint8_t ONOFF_PIN, uint8_t RESET_PIN,
 
   this->ONOFF_PIN = ONOFF_PIN;
   this->RESET_PIN = RESET_PIN;
-  this->SIZE_POINT = SIZE_POINT;
-  this->POINT = new double[SIZE_POINT];
-  copyArray(this->POINT, POINT, SIZE_POINT);
-  this->ROT = new double[SIZE_POINT];
-  copyArray(this->ROT, ROT, SIZE_POINT);
-  this->Kd = Kd;
+
+  pld.set(SIZE_POINT, POINT, ROT, Kd);
 
   this->BROKEN_THRE = BROKEN_THRE;
 
@@ -131,12 +127,8 @@ Angle Gyro::getDiff() {
   return crt - prv;
 }
 
-  error[0] = absMinus(double(crt + origin), 1.5);
-  error[1] = digitalRead(RESET_PIN) ? 0 : filter(double(getDiff()) * 10, error[1], 0.6);
-  error[1] = absMinus(error[1], 1);
-  return polyLine(error[0], POINT, ROT, SIZE_POINT)
-      + error[1] * Kd;
 int16_t Gyro::calRot(Angle origin) {
+  return pld.cal(crt, origin, digitalRead(RESET_PIN));
 }
 
 bool Gyro::getCanUse() {

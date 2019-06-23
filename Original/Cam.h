@@ -6,6 +6,7 @@
 #include "AdvMath.h"
 #include "Angle.h"
 #include "Dist.h"
+#include "PlD.h"
 #include "Debug.h"
 #include "AdvSerial.h"
 
@@ -40,6 +41,8 @@ class Cam {
 
 		uint16_t SLOPE_RG;
 		uint16_t INTERCEPT_RG;
+
+		PlD pld;
 };
 
 #endif

@@ -9,6 +9,7 @@
 #include "AdvMath.h"
 #include "Angle.h"
 #include "Count.h"
+#include "PlD.h"
 #include "Debug.h"
 #include "AdvWire.h"
 
@@ -34,12 +35,8 @@ class Gyro {
 
     uint8_t ONOFF_PIN;
     uint8_t RESET_PIN;
-    uint8_t SIZE_POINT;
-    double *POINT;
-    double *ROT;
 
-    double error[2] = {0, 0}; // P, D
-    double Kd;
+    PlD pld;
 
     Count stayCounter;
     // Count brokenCounter;

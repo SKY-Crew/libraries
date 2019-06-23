@@ -8,6 +8,12 @@ Cam::Cam(uint8_t P_SERIAL, uint8_t P_ONOFF,
 	this->SLOPE_RG = SLOPE_RG;
 	this->INTERCEPT_RG = INTERCEPT_RG;
 
+	double Kd = 0.1; ////
+	uint8_t SIZE_POINT = 3;
+	double POINT[3] = {0, 5, 40};
+	double ROT[3] = {0, 10, 100};
+	pld.set(SIZE_POINT, POINT, ROT, Kd);
+
 	// init
 	sCam.get()->begin(38400);
 	pinMode(P_ONOFF, INPUT);
@@ -61,8 +67,8 @@ cam_t Cam::get(bool isInAir) {
 	return goal;
 }
 
-int16_t Cam::multiRotGoal(Angle rotGoal) {
 	return double(rotGoal) * SLOPE_RG + signum(rotGoal) * INTERCEPT_RG;
+int16_t Cam::calRotGoal(Angle crt) {
 }
 
 bool Cam::getCanUse() {
