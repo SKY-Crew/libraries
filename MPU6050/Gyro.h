@@ -17,7 +17,7 @@ class Gyro {
     Gyro(uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, double*, double*, double, uint8_t, uint8_t, uint8_t);
     Angle get();
     Angle getDiff();
-    int16_t multiRot(Angle);
+    int16_t calRot(Angle);
     bool getCanUse();
   private:
     void _gyro_initialize();
