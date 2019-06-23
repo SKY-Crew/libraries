@@ -68,7 +68,7 @@ cam_t Cam::get(bool isInAir) {
 }
 
 	return double(rotGoal) * SLOPE_RG + signum(rotGoal) * INTERCEPT_RG;
-int16_t Cam::calRotGoal(Angle crt) {
+int16_t Cam::calRot(Angle crt) {
 }
 
 bool Cam::getCanUse() {

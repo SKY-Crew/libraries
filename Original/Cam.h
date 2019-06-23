@@ -26,7 +26,7 @@ class Cam {
 	public:
 		Cam(uint8_t, uint8_t, uint16_t, uint16_t);
 		cam_t get(bool);
-		int16_t calRotGoal(Angle);
+		int16_t calRot(Angle);
 		bool getCanUse();
 		void send(double, bool);
 	private:
