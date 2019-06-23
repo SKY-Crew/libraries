@@ -1,6 +1,6 @@
 #include "PlD.h"
 
-void PlD() {  }
+PlD::PlD() {  }
 
 void PlD::set(uint8_t SIZE_POINT, double *POINT, double *ROT, double Kd) {
 	// copy
