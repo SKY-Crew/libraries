@@ -117,13 +117,7 @@ line_t Line::get(Angle gyro, Angle diffGyro) {
 
 	prvDI = line.dirInside;
 
-	trace(4) {
-		Serial.print(str("Line:[ "));
-		for(uint8_t numLine = 0; numLine < QTY; numLine ++) {
-			Serial.print(str(val[numLine])+" ");
-		}
-		Serial.println(str("]"));
-	}
+	trace(4) { Serial.print("Line:"+str(val,QTY)); }
 
 	return line;
 }

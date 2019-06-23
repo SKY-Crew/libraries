@@ -120,13 +120,7 @@ vectorRT_t Ball::get() {
 
 	prvBall = vRT;
 
-	trace(2) {
-		Serial.print(str("Ball:[ "));
-		for(uint8_t numBall = 0; numBall < QTY; numBall ++) {
-			Serial.print(str(val[numBall])+" ");
-		}
-		Serial.println(str("]"));
-	}
+	trace(2) { Serial.println("Ball:"+str(val,QTY)); }
 
 	return vRT;
 }

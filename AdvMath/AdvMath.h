@@ -88,5 +88,10 @@ inline String str(double a, uint16_t index) {
 	dtostrf(a, -1, index, c);
 	return str(c);
 }
+template<typename T> inline String str(T *a, uint8_t SIZE) {
+	String s = "[";
+	for(int i = 0; i < SIZE; i ++) { s += str(a[i])+" "; }
+	return s+"]";
+}
 
 #endif
