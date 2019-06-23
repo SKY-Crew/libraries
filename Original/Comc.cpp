@@ -36,7 +36,7 @@ void Comc::snd(bool canRun, bool isFW, double ball_r, double distOwn, bool allow
 		sndWireless(canRun,
 				(isFW << 6)
 				+ (isInAir << 5)
-				+ (uint8_t) constrain(map(ball_r, 0, 512, 0, 32), 0, 31));
+				+ (uint8_t) conMap(ball_r, 0, 512, 0, 32, 0, 31));
 		sndWireless(canRun,
 				(1 << 7)
 				+ (allowChangeRole << 6)

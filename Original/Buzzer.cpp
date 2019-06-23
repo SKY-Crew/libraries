@@ -34,5 +34,5 @@ void Buzzer::beep(bool startBeep) {
 }
 
 uint8_t Buzzer::noteMap(double val, double from_min, double from_max) {
-	return constrainMap(val, from_min, from_max, 0, QTY_NOTE - 1);
+	return conMap(val, from_min, from_max, 0, QTY_NOTE - 1);
 }

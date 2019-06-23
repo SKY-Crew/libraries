@@ -83,7 +83,7 @@ void Motor::run(Angle moveAngle, int16_t rotPower, uint16_t maxPower) {
 
 void Motor::spin(uint8_t port, int16_t power) {
 	if(CAN_MOVE) {
-		power = absConstrain(power, 255);
+		power = absCon(power, 255);
 		// 回転方向
 		digitalWrite(P_DIR[port], 0.5 - signum(power) * 0.5);
 		// パワー

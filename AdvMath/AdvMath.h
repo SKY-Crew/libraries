@@ -30,9 +30,9 @@ template<typename T> inline double mean(T *array, uint16_t size) {
 	return double(sum(array, size)) / size;
 }
 
-inline double absConstrain(double x, double a) { return constrain(x, - abs(a), abs(a)); }
-inline double constrainMap(double x, double from_min, double from_max, double to_min, double to_max) {
-	return constrain(map(x, from_min, from_max, to_min, to_max), to_min, to_max);
+inline double absCon(double x, double a) { return constrain(x, - abs(a), abs(a)); }
+inline double conMap(double x, double from_min, double from_max, double to_min, double to_max, double min = -10000, double max = -10000) {
+	return constrain(map(x, from_min, from_max, to_min, to_max), min == -10000 ? to_min : min, max == -10000 ? to_max : max);
 }
 inline double toDegrees(double theta) { return theta * 180.0 / M_PI; }
 inline double toRadians(double deg) { return deg * M_PI / 180.0; }
@@ -47,7 +47,7 @@ inline double simplifyDeg(double deg) {
 }
 
 inline double absMinus(double val, double minus) {
-	return val - absConstrain(signum(val) * minus, val);
+	return val - absCon(signum(val) * minus, val);
 }
 
 inline double filter(double val, double prv, double CHANGE_RATE) {
