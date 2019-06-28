@@ -87,7 +87,7 @@ inline bool Angle::isLeft(const Angle& A_diff) const{
 }
 
 inline int8_t signum(const Angle& a) { return bool(a) ? signum(double(a)) : 0; }
-inline Angle constrainAngle(const Angle& a, const Angle& A_min, const Angle& A_max) {
+inline Angle conAngle(const Angle& a, const Angle& A_min, const Angle& A_max) {
 	if(!bool(a)) { return false; }
 	if(a.inside(A_min, A_max)) { return a; }
 	return abs(a - A_min) <= abs(a - A_max) ? A_min : A_max;
