@@ -52,7 +52,7 @@ void Motor::run(Angle moveAngle, int16_t rotPower, uint16_t maxPower) {
 		int16_t power[QTY];
 		// モーターパワー計算
 		maxPower -= maxPower * rateVolt * 0.25;
-		maxPower *= 0.7;
+		maxPower *= 0.6;
 		if(!bool(moveAngle)) {
 			// 回転移動のみ
 			for(uint8_t i = 0; i < QTY; i ++) {
