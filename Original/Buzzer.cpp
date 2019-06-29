@@ -20,17 +20,24 @@ Buzzer::Buzzer(uint8_t PORT) {
 	}
 }
 
-void Buzzer::set(uint8_t INDEX_NOTE, uint16_t period, bool startBeep) {
+void Buzzer::set(uint8_t INDEX_NOTE, uint16_t period, bool startbeep, uint16_t rankBeep) {
+	if(!startbeep || this->rankBeep > rankBeep) { return; }
 	if(INDEX_NOTE >= 0 && INDEX_NOTE < QTY_NOTE) { crtNote = NOTE[INDEX_NOTE]; }
 	if(period > 0) { this->period = period; }
 	if(crtNote != prvNote) { analogWriteFrequency(PORT, crtNote); }
 	prvNote = crtNote;
-	beep(startBeep);
+	this->rankBeep = rankBeep;
 }
 
-void Buzzer::beep(bool startBeep) {
-	if(startBeep) { timeStart = millis(); }
-	analogWrite(PORT, millis() - timeStart < period ? LOUDNESS : 0);
+void Buzzer::beep() {
+	if(rankBeep > 0) { timeStart = millis(); }
+	if(!haveBeep) { analogWrite(PORT, millis() - timeStart < period ? LOUDNESS : 0); }
+	haveBeep = true;
+}
+
+void Buzzer::reset() {
+	haveBeep = false;
+	rankBeep = 0;
 }
 
 uint8_t Buzzer::noteMap(double val, double from_min, double from_max) {

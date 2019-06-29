@@ -10,8 +10,9 @@
 class Buzzer {
 	public:
 		Buzzer(uint8_t);
-		void set(uint8_t = 88, uint16_t = 0, bool = true);
-		void beep(bool = false);
+		void set(uint8_t = 88, uint16_t = 0, bool = false, uint16_t = 0);
+		void beep();
+		void reset();
 		uint8_t noteMap(double, double, double);
 	private:
 		uint8_t PORT;
@@ -20,6 +21,8 @@ class Buzzer {
 		uint16_t prvNote;
 		uint64_t timeStart;
 		uint64_t period;
+		uint16_t rankBeep;
+		bool haveBeep = false;
 
 		const uint8_t QTY_NOTE = 89;
 		const uint8_t INDEX_A = 46;
