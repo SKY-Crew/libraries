@@ -13,7 +13,7 @@ class Ball {
 		Ball(uint8_t, uint8_t*,
 			uint8_t, uint16_t, double, double, double,
 			uint8_t, double*, uint8_t, double**, double**,
-			uint8_t, uint16_t, uint8_t);
+			uint8_t, uint16_t, uint16_t, uint16_t);
 		vectorRT_t get();
 		uint16_t *getVal();
 		uint8_t getQTY();
@@ -23,6 +23,7 @@ class Ball {
 		Angle getDir(vectorRT_t);
 
 		bool getCatch();
+		bool getMayKick();
 		bool compareCatch(double);
 		uint16_t getValCatch();
 	private:
@@ -57,6 +58,7 @@ class Ball {
 
 		uint16_t valCatch;
 		Count cCatch;
+		Count cMayKick;
 };
 
 #endif

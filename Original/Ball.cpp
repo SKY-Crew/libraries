@@ -3,7 +3,7 @@
 Ball::Ball(uint8_t QTY, uint8_t *PORT,
 	uint8_t MEASURING_COUNT, uint16_t THRE_WEAK, double CHANGE_RATE, double CHANGE_RATE_T, double PLUS_T,
 	uint8_t SIZE_THRE_DIST, double *THRE_DIST, uint8_t SIZE_DIR, double **DIR, double **PLUS_DIR,
-	uint8_t P_CATCH, uint16_t THRE_CATCH, uint8_t MAX_C_CATCH) {
+	uint8_t P_CATCH, uint16_t THRE_CATCH, uint16_t MAX_C_CATCH, uint16_t MAX_C_MAY_KICK) {
 	// copy
 	this->QTY = QTY;
 	this->PORT = new uint8_t[QTY];
@@ -50,6 +50,8 @@ Ball::Ball(uint8_t QTY, uint8_t *PORT,
 	}
 
 	cCatch.set_MAX(MAX_C_CATCH);
+	cCatch.set_COUNT_UP(false);
+	cMayKick.set_MAX(MAX_C_MAY_KICK);
 }
 
 
@@ -159,6 +161,11 @@ bool Ball::getCatch() {
 	valCatch = analogRead(P_CATCH);
 	cCatch.increase(valCatch < THRE_CATCH);
 	return bool(cCatch);
+}
+
+bool Ball::getMayKick() {
+	cMayKick.increase(valCatch < THRE_CATCH);
+	return bool(cMayKick);
 }
 
 bool Ball::compareCatch(double rate) {
