@@ -134,3 +134,7 @@ int16_t Gyro::calRot(Angle origin) {
 bool Gyro::getCanUse() {
   return !digitalRead(ONOFF_PIN);
 }
+
+bool Gyro::resetting() {
+  return digitalRead(RESET_PIN);
+}

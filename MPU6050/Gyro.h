@@ -20,6 +20,7 @@ class Gyro {
     Angle getDiff();
     int16_t calRot(Angle);
     bool getCanUse();
+    bool resetting();
   private:
     void _gyro_initialize();
     float _gyro_calcYaw(uint8_t*);
