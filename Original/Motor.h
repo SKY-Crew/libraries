@@ -15,6 +15,7 @@ class Motor {
 		void setHaveRun(bool);
 
 		void setRateVolt(double);
+		void setRatePower(double);
 	private:
 		bool CAN_MOVE;
 		uint8_t QTY;
@@ -30,6 +31,7 @@ class Motor {
 		double *MULTI_POWER;
 		bool haveRun = false;
 		double rateVolt;
+		double ratePower;
 };
 
 #endif

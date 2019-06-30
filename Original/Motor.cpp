@@ -52,7 +52,7 @@ void Motor::run(Angle moveAngle, int16_t rotPower, uint16_t maxPower) {
 		int16_t power[QTY];
 		// モーターパワー計算
 		maxPower -= maxPower * rateVolt * 0.25;
-		maxPower *= 0.75;
+		maxPower *= ratePower;
 		if(!bool(moveAngle)) {
 			// 回転移動のみ
 			for(uint8_t i = 0; i < QTY; i ++) {
@@ -97,4 +97,8 @@ void Motor::setHaveRun(bool haveRun) {
 
 void Motor::setRateVolt(double rateVolt) {
 	this->rateVolt = rateVolt;
+}
+
+void Motor::setRatePower(double ratePower) {
+	this->ratePower = ratePower;
 }
