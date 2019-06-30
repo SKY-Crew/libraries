@@ -24,12 +24,12 @@ void Buzzer::set(uint8_t INDEX_NOTE, uint16_t period, bool startbeep, uint16_t r
 	if(!startbeep || this->rankBeep > rankBeep) { return; }
 	if(INDEX_NOTE >= 0 && INDEX_NOTE < QTY_NOTE) { crtNote = NOTE[INDEX_NOTE]; }
 	if(period > 0) { this->period = period; }
-	if(crtNote != prvNote) { analogWriteFrequency(PORT, crtNote); }
-	prvNote = crtNote;
 	this->rankBeep = rankBeep;
 }
 
 void Buzzer::beep() {
+	if(crtNote != prvNote) { analogWriteFrequency(PORT, crtNote); }
+	prvNote = crtNote;
 	if(rankBeep > 0) { timeStart = millis(); }
 	if(!haveBeep) { analogWrite(PORT, millis() - timeStart < period ? LOUDNESS : 0); }
 	haveBeep = true;
