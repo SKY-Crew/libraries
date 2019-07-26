@@ -124,16 +124,18 @@ line_t Line::get(Angle gyro, Angle diffGyro) {
 
 line_t Line::modify(bool isFW, Angle gyro, bool isInCorner, bool isGoalClose) {
 	if(bool(line.dirInside)) {
+		line.isOutside |= line.insideRate <= 0.4;
+		line.canPause = true;
 		// 後ろのライン・前方の角にいるか
 		if(!bool(gyro) || isGoalClose || isInCorner) {
 			line.isOutside |= line.isHalfOut;
-			line.canPause = true;
+			line.canPause |= true;
 		}else {
 			line.isOutside |= line.isFront || line.isBack;
-			line.canPause = line.isHalfOut;
+			line.canPause |= line.isHalfOut;
 		}
 		if(!isFW) {
-			line.isOutside = true;
+			line.isOutside |= true;
 		}
 	}
 	return line;

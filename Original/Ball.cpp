@@ -116,7 +116,7 @@ vectorRT_t Ball::get() {
 	}else {
 		vRT.t += PLUS_T;
 	}
-	vRT.r *= map(double(abs(vRT.t)), 0, 180, 2.5, 4.2);
+	vRT.r *= map(double(abs(vRT.t)), 0, 180, 2.5, 4.9);
 
 	vRT.r = filter(vRT.r, prvBall.r, CHANGE_RATE_T);
 
