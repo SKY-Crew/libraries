@@ -5,6 +5,7 @@
 
 #include "AdvMath.h"
 #include "Angle.h"
+#include "Count.h"
 #include "Dist.h"
 #include "PlD.h"
 #include "Debug.h"
@@ -28,7 +29,8 @@ class Cam {
 		cam_t get(bool);
 		int16_t calRot(Angle);
 		bool getCanUse();
-		void send(double, bool);
+		void snd(uint8_t);
+		Angle ball_t;
 	private:
 		AdvSerial sCam;
 
@@ -40,6 +42,8 @@ class Cam {
 		double crtDist;
 
 		PlD pld;
+
+		Count cBallExists;
 };
 
 #endif

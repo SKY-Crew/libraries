@@ -5,6 +5,7 @@
 
 #include "AdvMath.h"
 #include "Angle.h"
+#include "Count.h"
 #include "Debug.h"
 #include "AdvSerial.h"
 
@@ -23,8 +24,11 @@ class Comc {
 		comc_t rcv(bool);
 		void snd(bool, bool, double, double, bool, bool);
 		bool getCanUse();
-	private:
+		uint8_t getCommand();
 		void sndWireless(bool, uint8_t);
+		uint8_t rcv4TC4();
+		void snd4TC4(uint8_t);
+	private:
 		comc_t rcvWireless();
 
 		AdvSerial sComc;
@@ -37,6 +41,8 @@ class Comc {
 		uint16_t countNoRcv = 0;
 
 		comc_t prvFellow;
+
+		Count cMoveSide;
 };
 
 #endif

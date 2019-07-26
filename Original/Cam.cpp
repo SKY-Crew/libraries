@@ -10,6 +10,9 @@ Cam::Cam(uint8_t P_SERIAL, uint8_t P_ONOFF,
 	// init
 	sCam.get()->begin(38400);
 	pinMode(P_ONOFF, INPUT);
+
+	cBallExists.set_MAX(20);
+	cBallExists.set_COUNT_UP(false);
 }
 
 cam_t Cam::get(bool isInAir) {
@@ -28,6 +31,10 @@ cam_t Cam::get(bool isInAir) {
 			if(val[1] >= 0) { // rotOwn
 				goal.rotOwn = extractBit(val[1], 0, 5) > 60 ?
 						Angle(false) : map(extractBit(val[1], 0, 5), 0, 60, 90, -90) + 180;
+				cBallExists.increase(extractBit(val[1], 0, 5) <= 60);
+				Angle crtBall_t = extractBit(val[1], 0, 5) <= 60 ? map(extractBit(val[1], 0, 5), 0, 60, 0, -360) : Angle(false);
+				ball_t = bool(crtBall_t) ? crtBall_t :
+						bool(cBallExists) ? ball_t : Angle(false);
 			}
 			if(val[2] >= 0) { // distOwn
 				crtDist = extractBit(val[2], 0, 5);
@@ -68,6 +75,6 @@ bool Cam::getCanUse() {
 	return !digitalRead(P_ONOFF);
 }
 
-void Cam::send(double gyro, bool isFW) {
-	sCam.get()->write((uint8_t) map(gyro, -180, 180, 0, 127) + (isFW << 7));
+void Cam::snd(uint8_t snd) {
+	sCam.get()->write(snd);
 }

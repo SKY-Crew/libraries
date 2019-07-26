@@ -10,6 +10,8 @@ Comc::Comc(uint8_t P_SERIAL, uint8_t P_ONOFF, uint16_t MAX_C_SND, uint16_t MAX_C
 	// init
 	sComc.get()->begin(9600);
 	pinMode(P_ONOFF, INPUT);
+	cMoveSide.set_MAX(50);
+	cMoveSide.set_COUNT_UP(false);
 }
 
 comc_t Comc::rcv(bool isFW) {
@@ -76,4 +78,33 @@ comc_t Comc::rcvWireless() {
 
 bool Comc::getCanUse() {
 	return digitalRead(P_ONOFF);
+}
+
+uint8_t Comc::getCommand() {
+	if(sComc.get()->available()) {
+
+		char rcv;
+		while(sComc.get()->available()) {
+			rcv = sComc.get()->read();
+		}
+		switch(rcv) {
+			case 115: return 1; break;
+			case 83: return 2; break;
+			case 100: cMoveSide.increase(true); break;
+		}
+	}
+	cMoveSide.increase(false);
+	if(bool(cMoveSide)) { return 3; }
+	return 0;
+}
+
+uint8_t Comc::rcv4TC4() {
+	if(sComc.get()->available()) {
+		return sComc.get()->read();
+	}
+	return 0;
+}
+
+void Comc::snd4TC4(uint8_t snd) {
+	sComc.get()->write(snd);
 }
