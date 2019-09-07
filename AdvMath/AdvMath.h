@@ -21,7 +21,7 @@ inline double map(double x, double in_min, double in_max, double out_min, double
 }
 template<typename T> inline T sum(T *array, uint16_t size) {
 	T sum = 0;
-	for(int i = 0; i < size; i ++) {
+	for(uint8_t i = 0; i < size; i ++) {
 		sum += array[i];
 	}
 	return sum;
@@ -90,7 +90,7 @@ inline String str(double a, uint16_t index) {
 }
 template<typename T> inline String str(T *a, uint8_t SIZE) {
 	String s = "[";
-	for(int i = 0; i < SIZE; i ++) { s += str(a[i])+" "; }
+	for(uint8_t i = 0; i < SIZE; i ++) { s += str(a[i])+" "; }
 	return s+"]";
 }
 
