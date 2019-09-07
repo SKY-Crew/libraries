@@ -16,9 +16,11 @@ enum Diff {
 };
 
 inline int8_t signum(double x) { return x > 0 ? 1 : x < 0 ? -1 : 0; }
+#ifdef CORE_TEENSY
 inline double map(double x, double in_min, double in_max, double out_min, double out_max) {
 	return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
+#endif
 template<typename T> inline T sum(T *array, uint16_t size) {
 	T sum = 0;
 	for(uint8_t i = 0; i < size; i ++) {
