@@ -34,8 +34,8 @@ class Count {
 		}
 		inline void increase(bool canIncrement = true) {
 			count = COUNT_UP
-					? (canIncrement ? constrain(++ count, MIN, MAX) : MIN)
-					: (canIncrement ? MAX : constrain(-- count, MIN, MAX));
+					? (canIncrement ? constrain(count + 1, MIN, MAX) : MIN)
+					: (canIncrement ? MAX : constrain(count - 1, MIN, MAX));
 		}
 		inline bool compare(double rate) {
 			return rate < 0 ? true
