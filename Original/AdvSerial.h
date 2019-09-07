@@ -5,9 +5,15 @@
 
 #include "AdvMath.h"
 
+#ifdef USBCON
+#define Serial_t Serial_
+#else
+#define Serial_t HardwareSerial
+#endif
+
 class AdvSerial {
 	private:
-		HardwareSerial *SerialX;
+		Serial_t *SerialX;
 	public:
 		inline AdvSerial() {  }
 		inline AdvSerial(uint8_t P_SERIAL) { set(P_SERIAL); }
@@ -35,7 +41,7 @@ class AdvSerial {
 				#endif
 			}
 		}
-		inline HardwareSerial* get() { return SerialX; }
+		inline Serial_t* get() { return SerialX; }
 };
 
 #endif

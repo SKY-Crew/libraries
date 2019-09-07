@@ -28,7 +28,9 @@ void Buzzer::set(uint8_t INDEX_NOTE, uint16_t period, bool startbeep, uint16_t r
 }
 
 void Buzzer::beep() {
+	#ifdef CORE_TEENSY
 	if(crtNote != prvNote) { analogWriteFrequency(PORT, crtNote); }
+	#endif
 	prvNote = crtNote;
 	if(rankBeep > 0) { timeStart = millis(); }
 	if(!haveBeep) { analogWrite(PORT, millis() - timeStart < period ? LOUDNESS : 0); }

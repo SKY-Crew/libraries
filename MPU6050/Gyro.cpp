@@ -22,7 +22,11 @@ Gyro::Gyro(uint8_t P_WIRE, uint8_t PORT, uint8_t ONOFF_PIN, uint8_t RESET_PIN,
   // init
   _gyro_mpu = new MPU6050(PORT);
   wGyro.get()->begin();
+  #ifdef CORE_TEENSY
   wGyro.get()->setClock(4*1000*1000);
+  #else
+  wGyro.get()->setClock(9600);
+  #endif
 
   pinMode(MISO, OUTPUT);
 
@@ -69,9 +73,9 @@ Angle Gyro::get() {
 
     while (fifoSize % 42 != 0) {
       trace(30) { Serial.println("data uncompleted ///// reset ////"); }
-      int64_t from = micros();
+      int32_t from = micros();
       _gyro_mpu->resetFIFO();
-      int64_t to = micros();
+      int32_t to = micros();
       trace(30) { Serial.println("reset finished. took " + str(to - from) + "μs"); }
       fifoSize = _gyro_mpu->getFIFOCount();
     }
