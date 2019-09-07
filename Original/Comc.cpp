@@ -74,6 +74,17 @@ comc_t Comc::rcvWireless() {
 	return rcvData;
 }
 
+int8_t Comc::simplyRcv() {
+	if(sComc.get()->available()) {
+		return sComc.get()->read();
+	}
+	return -1;
+}
+
+void Comc::simplySnd(uint8_t snd) {
+	sComc.get()->write(snd);
+}
+
 bool Comc::getCanUse() {
 	return digitalRead(P_ONOFF);
 }

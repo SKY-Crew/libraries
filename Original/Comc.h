@@ -22,6 +22,8 @@ class Comc {
 		Comc(uint8_t, uint8_t, uint16_t, uint16_t);
 		comc_t rcv(bool);
 		void snd(bool, bool, double, double, bool, bool);
+		int8_t simplyRcv();
+		void simplySnd(uint8_t);
 		bool getCanUse();
 	private:
 		void sndWireless(bool, uint8_t);
