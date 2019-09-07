@@ -1,5 +1,9 @@
-#define wire Wire2
-#define twowire Wire2
+#ifndef wire
+#define wire Wire
+#endif
+#ifndef twowire
+#define twowire TwoWire
+#endif
 
 // I2Cdev library collection - Main I2C device class header file
 // Abstracts bit and byte I2C R/W functions into a convenient class
